@@ -3,7 +3,7 @@ import { Button } from 'react-native-paper'
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
 
-export default function Main() {
+export default function Main({ navigation }) {
   return (
     <Animatable.View style={styles.container}>
       <Animatable.Image
@@ -33,7 +33,7 @@ export default function Main() {
           mode='contained'
           color='#333333'
           dark='true'
-          onPress={() => console.log('Right button pressed')}
+          onPress={() => navigation.navigate('Register')}
         >
           Registo
         </Button>

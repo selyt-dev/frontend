@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/selyt.png",
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/selyt-splash.png",
       "resizeMode": "contain",
