@@ -22,7 +22,7 @@ export default function Main({ navigation }) {
           mode='contained'
           color='#333333'
           dark='true'
-          onPress={() => console.log('Left button pressed')}
+          onPress={() => navigation.navigate('Login')}
         >
           Login
         </Button>

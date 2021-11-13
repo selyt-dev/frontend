@@ -24,7 +24,9 @@
     "react-native-screens": "~3.8.0",
     "react-native-textinput-effects": "^0.6.2",
     "react-native-vector-icons": "^9.0.0",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "expo-secure-store": "~11.0.3",
+    "expo-app-loading": "~1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
