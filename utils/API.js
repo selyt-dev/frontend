@@ -1,6 +1,10 @@
 const BASE_URL = `https://${__DEV__ === 'production' ? 'prod' : 'dev'}.selyt.fun`
 
 module.exports = class API {
+  static login (body) {
+    return API.post('/user/login', body)
+  }
+
   static register (body) {
     return API.post('/user/register', body)
   }

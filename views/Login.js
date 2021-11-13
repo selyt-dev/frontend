@@ -1,32 +1,22 @@
 import { View } from 'react-native'
 import { TextInput, Button, Portal, Dialog, Paragraph, ActivityIndicator } from 'react-native-paper'
 import React from 'react'
-import { StyleSheet, Text, DatePickerAndroid, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
-import { register, login } from '../utils/LoginUtils'
+import { StyleSheet, Text, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { login } from '../utils/LoginUtils'
 
 import * as SecureStore from 'expo-secure-store'
 
-export default function Register({ navigation }) {
-  const currentDate = new Date(0)
-
-  const [name, setName] = React.useState('')
+export default function Login({ navigation }) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = React.useState('')
-  const [birthDate, setBirthDate] = React.useState(currentDate)
-  const [nif, setNif] = React.useState('')
-  const [phone, setPhone] = React.useState('')
 
   const [hidePassword, setHidePassword] = React.useState(true)
-  const [hidePasswordConfirmation, setHidePasswordConfirmation] = React.useState(true)
-
   const [hidePasswordIcon, setHidePasswordIcon] = React.useState('eye')
-  const [hidePasswordConfirmationIcon, setHidePasswordConfirmationIcon] = React.useState('eye')
 
   const [visible, setVisible] = React.useState(false);
   const [text, setText] = React.useState('');
 
-  const [textLoading, setTextLoading] = React.useState('A criar conta...');
+  const [textLoading, setTextLoading] = React.useState('A autenticar...');
   const [visibleLoading, setVisibleLoading] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -38,36 +28,17 @@ export default function Register({ navigation }) {
     setHidePasswordIcon(hidePassword ? 'eye-off' : 'eye')
   }
 
-  function changeConfirmationIcon() {
-    setHidePasswordConfirmation(!hidePasswordConfirmation)
-    setHidePasswordConfirmationIcon(hidePasswordConfirmation ? 'eye-off' : 'eye')
-  }
-
-  async function _register() {
+  async function _login() {
     setVisibleLoading(true)
 
-    const data = {
-      name,
-      email,
-      password,
-      passwordConfirmation,
-      birthDate,
-      nif,
-      phone
-    }
-
     try {
-      const { uid } = await register(data)
-      console.log(uid)
-      setTextLoading('Conta criada com sucesso! A autenticar...')
-
-      await SecureStore.setItemAsync('uid', uid);
-
       const { authorization } = await login(email, password)
       console.log(authorization)
 
       await SecureStore.setItemAsync('authorization', authorization);
       await SecureStore.setItemAsync('isAuthenticated', "true");
+
+      navigation.navigate('Start');
     } catch (error) {
       setVisibleLoading(false)
       setText(error.message)
@@ -83,18 +54,11 @@ export default function Register({ navigation }) {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.insideContainer}>
           <Text animation='fadeInUp' style={styles.logoText}>
-            Registo
+            Login
           </Text>
 
           <Text>&nbsp;</Text>
 
-          <TextInput
-            label="Nome"
-            value={name}
-            style={styles.textInput}
-            onChangeText={text => setName(text)}
-            left={<TextInput.Icon name="account" />}
-          />
           <TextInput
             label="Email"
             value={email}
@@ -112,55 +76,14 @@ export default function Register({ navigation }) {
             left={<TextInput.Icon name="form-textbox-password" />}
             right={<TextInput.Icon name={hidePasswordIcon} onPress={changeIcon} />}
           />
-          <TextInput
-            label="Confirmação de palavra-passe"
-            value={passwordConfirmation}
-            style={styles.textInput}
-            onChangeText={text => setPasswordConfirmation(text)}
-            secureTextEntry={hidePasswordConfirmation}
-            left={<TextInput.Icon name="form-textbox-password" />}
-            right={<TextInput.Icon name={hidePasswordConfirmationIcon} onPress={changeConfirmationIcon} />}
-          />
-          <TextInput
-            label="Data de Nascimento"
-            value={birthDate === currentDate ? '' : birthDate.toLocaleDateString()}
-            style={styles.textInput}
-            onFocus={async () => {
-              try {
-                const { action, year, month, day } = await DatePickerAndroid.open({ date: birthDate === currentDate ? Date.now() : birthDate, maxDate: Date.now() })
-                if (action !== DatePickerAndroid.dismissedAction) {
-                  setBirthDate(new Date(year, month, day))
-                }
-              } catch (e) {
-                console.warn(e)
-              }
-            }}
-            left={<TextInput.Icon name="calendar-range" />}
-          />
-          <TextInput
-            label="NIF"
-            value={nif}
-            style={styles.textInput}
-            onChangeText={text => setNif(text)}
-            keyboardType="phone-pad"
-            left={<TextInput.Icon name="card-account-details" />}
-          />
-          <TextInput
-            label="Número de Telemóvel"
-            value={phone}
-            style={styles.textInput}
-            onChangeText={text => setPhone(text)}
-            keyboardType="phone-pad"
-            left={<TextInput.Icon name="card-account-phone" />}
-          />
           <Text>&nbsp;</Text>
           <Button
             mode='contained'
             color='#333333'
             dark='true'
-            onPress={_register}
+            onPress={_login}
           >
-            Registar
+            Entrar
           </Button>
           <Portal>
             <Dialog visible={visibleLoading} dismissable={false}>
@@ -172,7 +95,7 @@ export default function Register({ navigation }) {
           </Portal>
           <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
-              <Dialog.Title>Não foi possível criar a sua conta.</Dialog.Title>
+              <Dialog.Title>Não foi possível autenticar.</Dialog.Title>
               <Dialog.Content>
                 <Paragraph>{text}</Paragraph>
               </Dialog.Content>
