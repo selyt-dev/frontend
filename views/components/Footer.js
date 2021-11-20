@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 
 import * as RootNavigation from '../../utils/react/RootNavigation.js';
 
-export default function AdCard() {
+export default function Footer() {
   return (
     <Appbar style={styles.bottom}>
       <Appbar.Action
