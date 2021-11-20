@@ -5,12 +5,20 @@ import { StyleSheet, Image, View, Pressable } from 'react-native'
 module.exports = class AdCard extends React.Component {
   constructor(props) {
     super(props);
+
+    this.props = props;
+
+    this.onPress = this.onPress.bind(this);
+  }
+
+  onPress() {
+    console.log(this.props.id);
   }
 
   render() {
     return (
       <Pressable
-        onPress={this.props.onPress}
+        onPress={this.onPress}
         style={styles.container}
       >
         <Image

@@ -6,6 +6,8 @@ import { register, login } from '../utils/LoginUtils'
 
 import * as SecureStore from 'expo-secure-store'
 
+import { getAndStoreUserData } from '../utils/react/DataStore'
+
 export default function Register({ navigation }) {
   const currentDate = new Date(0)
 
@@ -68,6 +70,12 @@ export default function Register({ navigation }) {
 
       await SecureStore.setItemAsync('authorization', authorization);
       await SecureStore.setItemAsync('isAuthenticated', "true");
+
+      getAndStoreUserData(authorization)
+
+      setVisibleLoading(false)
+
+      navigation.navigate('Start')
     } catch (error) {
       setVisibleLoading(false)
       setText(error.message)

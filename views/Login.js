@@ -4,6 +4,8 @@ import React from 'react'
 import { StyleSheet, Text, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { login } from '../utils/LoginUtils'
 
+import { getAndStoreUserData } from '../utils/react/DataStore'
+
 import * as SecureStore from 'expo-secure-store'
 
 export default function Login({ navigation }) {
@@ -37,6 +39,10 @@ export default function Login({ navigation }) {
 
       await SecureStore.setItemAsync('authorization', authorization);
       await SecureStore.setItemAsync('isAuthenticated', "true");
+
+      getAndStoreUserData(authorization)
+
+      setVisibleLoading(false)
 
       navigation.navigate('Start');
     } catch (error) {

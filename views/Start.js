@@ -1,36 +1,37 @@
-import * as Animatable from 'react-native-animatable'
-import { TextInput, Card, Appbar } from 'react-native-paper'
+import { TextInput, Card } from 'react-native-paper'
 import React from 'react'
-import { StyleSheet, Text, StatusBar, ScrollView, View, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, StatusBar, ScrollView, SafeAreaView, Pressable } from 'react-native'
 
 import AdCard from './components/AdCard'
+import Footer from './components/Footer'
 
 
-export default function Start({ navigation }) {
+export default function Start() {
   const [search, setSearch] = React.useState('')
 
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
-          label="O que procura?"
-          value={search}
-          style={styles.textInput}
-          onChangeText={text => setSearch(text)}
-          left={<TextInput.Icon name="magnify" />}
-        />
+        label="O que procura?"
+        value={search}
+        style={styles.textInput}
+        onChangeText={text => setSearch(text)}
+        left={<TextInput.Icon name="magnify" />}
+      />
 
-      <ScrollView style={styles.insideContainer} >
-
-        <Card style={styles.card} onPress={() => console.log('Ver todas as categorias')} >
-          <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />
-        </Card>
+      <ScrollView style={styles.insideContainer}>
+        <Pressable onPress={() => console.log('Ver todas as categorias')}>
+          <Card>
+            <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />
+          </Card>
+        </Pressable>
 
         <Text>&nbsp;</Text>
-        
+
         <Card>
           <Card.Title title="Anúncios Recomendados" />
           <Card.Content style={styles.adCard}>
-            <AdCard title="Livro" price="10" region="Lisboa" image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==" createdAt="2020-05-01" />
+            <AdCard id="0" title="Livro" price="10" region="Lisboa" image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==" createdAt="2020-05-01" />
             <AdCard title="Livro" price="10" region="Lisboa" image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==" createdAt="2020-05-01" />
             <AdCard title="Livro" price="10" region="Lisboa" image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==" createdAt="2020-05-01" />
             <AdCard title="Livro" price="10" region="Lisboa" image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==" createdAt="2020-05-01" />
@@ -45,18 +46,7 @@ export default function Start({ navigation }) {
           </Card.Content>
         </Card>
       </ScrollView>
-      <Appbar style={styles.bottom}>
-        <Appbar.Action
-          icon="archive"
-          onPress={() => console.log('Pressed archive')}
-        />
-        <Appbar.Action icon="mail" onPress={() => console.log('Pressed mail')} />
-        <Appbar.Action icon="label" onPress={() => console.log('Pressed label')} />
-        <Appbar.Action
-          icon="delete"
-          onPress={() => console.log('Pressed delete')}
-        />
-      </Appbar>
+      <Footer />
     </SafeAreaView>
   )
 }
@@ -72,6 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#fff',
     backgroundColor: '#222',
+    paddingBottom: 56
   },
   fixToText: {
     flexDirection: 'row',
@@ -91,13 +82,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: 7
-  },
-  bottom: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'space-between'
   },
   adCard: {
     flex: 1,

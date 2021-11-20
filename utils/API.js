@@ -1,19 +1,25 @@
 const BASE_URL = `https://${__DEV__ === 'production' ? 'prod' : 'dev'}.selyt.fun`
 
 module.exports = class API {
-  static login (body) {
+  static login(body) {
     return API.post('/user/login', body)
   }
 
-  static register (body) {
+  static register(body) {
     return API.post('/user/register', body)
   }
 
-  static get (route) {
-    return fetch(`${BASE_URL}${route}`)
+  static getSelf(authorization) {
+    return API.get('/user/@me', { authorization })
   }
 
-  static post (route, body) {
+  static get(route, headers = {}) {
+    return fetch(`${BASE_URL}${route}`, {
+      headers
+    })
+  }
+
+  static post(route, body) {
     return fetch(`${BASE_URL}${route}`, {
       method: 'POST',
       headers: {
