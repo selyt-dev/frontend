@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import { TextInput, Button, Portal, Dialog, Paragraph, ActivityIndicator } from 'react-native-paper'
 import React from 'react'
-import { StyleSheet, Text, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { StyleSheet, Text, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
 import { login } from '../utils/LoginUtils'
 
 import { getAndStoreUserData } from '../utils/react/DataStore'
@@ -35,12 +35,11 @@ export default function Login({ navigation }) {
 
     try {
       const { authorization } = await login(email, password)
-      console.log(authorization)
 
       await SecureStore.setItemAsync('authorization', authorization);
       await SecureStore.setItemAsync('isAuthenticated', "true");
 
-      getAndStoreUserData(authorization)
+      await getAndStoreUserData(authorization)
 
       setVisibleLoading(false)
 
@@ -58,7 +57,7 @@ export default function Login({ navigation }) {
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.insideContainer}>
+        <ScrollView style={styles.insideContainer}>
           <Text animation='fadeInUp' style={styles.logoText}>
             Login
           </Text>
@@ -110,7 +109,7 @@ export default function Login({ navigation }) {
               </Dialog.Actions>
             </Dialog>
           </Portal>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   )
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#222',
     // alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     padding: 24,
     flex: 1,
     // justifyContent: "space-around"

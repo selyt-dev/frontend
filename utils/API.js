@@ -1,6 +1,8 @@
 const BASE_URL = `https://${__DEV__ === 'production' ? 'prod' : 'dev'}.selyt.fun`
 
 module.exports = class API {
+  static BASE_URL = `https://${__DEV__ === 'production' ? 'prod' : 'dev'}.selyt.fun`
+
   static login(body) {
     return API.post('/user/login', body)
   }
@@ -13,6 +15,16 @@ module.exports = class API {
     return API.get('/user/@me', { authorization })
   }
 
+  static updateAvatar(authorization, avatar) {
+    return fetch(`${BASE_URL}/user/@me/avatar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'image/jpeg',
+        'Authorization': authorization
+      },
+      body: avatar
+    })
+  }
   static get(route, headers = {}) {
     return fetch(`${BASE_URL}${route}`, {
       headers

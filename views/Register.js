@@ -1,8 +1,10 @@
-import { View } from 'react-native'
 import { TextInput, Button, Portal, Dialog, Paragraph, ActivityIndicator } from 'react-native-paper'
 import React from 'react'
-import { StyleSheet, Text, DatePickerAndroid, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { StyleSheet, Text, DatePickerAndroid, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
 import { register, login } from '../utils/LoginUtils'
+
+import { MaskedTextInput } from "react-native-mask-text";
 
 import * as SecureStore from 'expo-secure-store'
 
@@ -16,6 +18,7 @@ export default function Register({ navigation }) {
   const [password, setPassword] = React.useState('')
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('')
   const [birthDate, setBirthDate] = React.useState(currentDate)
+  const [open, setOpen] = React.useState(false)
   const [nif, setNif] = React.useState('')
   const [phone, setPhone] = React.useState('')
 
@@ -45,6 +48,12 @@ export default function Register({ navigation }) {
     setHidePasswordConfirmationIcon(hidePasswordConfirmation ? 'eye-off' : 'eye')
   }
 
+  const onChangeBirthDate = (event, selectedDate) => {
+    const currentDate = selectedDate || birthDate;
+    setOpen(Platform.OS === 'ios');
+    setBirthDate(currentDate);
+  };
+
   async function _register() {
     setVisibleLoading(true)
 
@@ -54,9 +63,11 @@ export default function Register({ navigation }) {
       password,
       passwordConfirmation,
       birthDate,
-      nif,
-      phone
+      nif: parseInt(nif.replace(/\D/g, '')),
+      phone: parseInt(phone.replace(/\D/g, ''))
     }
+
+    console.log(data)
 
     try {
       const { uid } = await register(data)
@@ -89,7 +100,7 @@ export default function Register({ navigation }) {
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.insideContainer}>
+        <ScrollView style={styles.insideContainer}>
           <Text animation='fadeInUp' style={styles.logoText}>
             Registo
           </Text>
@@ -102,6 +113,8 @@ export default function Register({ navigation }) {
             style={styles.textInput}
             onChangeText={text => setName(text)}
             left={<TextInput.Icon name="account" />}
+            placeholder="João Santos"
+            onFocus={() => setOpen(false)}
           />
           <TextInput
             label="Email"
@@ -110,6 +123,8 @@ export default function Register({ navigation }) {
             onChangeText={text => setEmail(text)}
             keyboardType="email-address"
             left={<TextInput.Icon name="email" />}
+            placeholder="joão.santos@selyt.pt"
+            onFocus={() => setOpen(false)}
           />
           <TextInput
             label="Palavra-passe"
@@ -119,6 +134,7 @@ export default function Register({ navigation }) {
             secureTextEntry={hidePassword}
             left={<TextInput.Icon name="form-textbox-password" />}
             right={<TextInput.Icon name={hidePasswordIcon} onPress={changeIcon} />}
+            onFocus={() => setOpen(false)}
           />
           <TextInput
             label="Confirmação de palavra-passe"
@@ -128,23 +144,31 @@ export default function Register({ navigation }) {
             secureTextEntry={hidePasswordConfirmation}
             left={<TextInput.Icon name="form-textbox-password" />}
             right={<TextInput.Icon name={hidePasswordConfirmationIcon} onPress={changeConfirmationIcon} />}
+            onFocus={() => setOpen(false)}
           />
           <TextInput
             label="Data de Nascimento"
             value={birthDate === currentDate ? '' : birthDate.toLocaleDateString()}
             style={styles.textInput}
-            onFocus={async () => {
-              try {
-                const { action, year, month, day } = await DatePickerAndroid.open({ date: birthDate === currentDate ? Date.now() : birthDate, maxDate: Date.now() })
-                if (action !== DatePickerAndroid.dismissedAction) {
-                  setBirthDate(new Date(year, month, day))
-                }
-              } catch (e) {
-                console.warn(e)
-              }
+            onFocus={() => {
+              Keyboard.dismiss()
+              setOpen(true)
             }}
             left={<TextInput.Icon name="calendar-range" />}
           />
+
+          {open && (
+            <DateTimePicker
+              value={birthDate}
+              mode="date"
+              display="default"
+              onChange={onChangeBirthDate}
+              onCancel={() => setOpen(false)}
+              textColor="#fff"
+              style={{flex: 1}}
+            />
+          )}
+
           <TextInput
             label="NIF"
             value={nif}
@@ -152,6 +176,14 @@ export default function Register({ navigation }) {
             onChangeText={text => setNif(text)}
             keyboardType="phone-pad"
             left={<TextInput.Icon name="card-account-details" />}
+            placeholder="123 456 789"
+            render={props =>
+              <MaskedTextInput
+                {...props}
+                mask="999 999 999"
+              />
+            }
+            onFocus={() => setOpen(false)}
           />
           <TextInput
             label="Número de Telemóvel"
@@ -160,6 +192,14 @@ export default function Register({ navigation }) {
             onChangeText={text => setPhone(text)}
             keyboardType="phone-pad"
             left={<TextInput.Icon name="card-account-phone" />}
+            placeholder="912 345 678"
+            render={props =>
+              <MaskedTextInput
+                {...props}
+                mask="999 999 999"
+              />
+            }
+            onFocus={() => setOpen(false)}
           />
           <Text>&nbsp;</Text>
           <Button
@@ -189,7 +229,7 @@ export default function Register({ navigation }) {
               </Dialog.Actions>
             </Dialog>
           </Portal>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   )
@@ -220,7 +260,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#222',
     // alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     padding: 24,
     flex: 1,
     // justifyContent: "space-around"

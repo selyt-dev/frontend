@@ -5,7 +5,7 @@ import Start from './views/Start.js'
 import Account from './views/Account.js'
 
 import { Provider as PaperProvider } from 'react-native-paper'
-import { AppRegistry } from 'react-native'
+import { AppRegistry, StatusBar } from 'react-native'
 import React from 'react'
 import { name as appName } from './app.json'
 import { useFonts } from 'expo-font'
@@ -14,12 +14,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { navigationRef } from './utils/react/RootNavigation';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import AppLoading from 'expo-app-loading'
 
 import * as SecureStore from 'expo-secure-store'
 import API from './utils/API.js'
+
+import { getAndStoreUserData } from './utils/react/DataStore'
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +45,7 @@ export default function App() {
         const data = await res.json();
 
         if (data.user) {
-          await AsyncStorage.setItem('user', JSON.stringify(data.user));
+          await getAndStoreUserData(token)
           setIsSignedIn(true)
         } else {
           await SecureStore.setItemAsync('authorization', '')
@@ -73,6 +73,7 @@ export default function App() {
     return (
     <NavigationContainer ref={navigationRef}>
       <PaperProvider>
+      <StatusBar barStyle="light-content" translucent={true} />
         <Stack.Navigator>
         {isSignedIn ? (
             <>

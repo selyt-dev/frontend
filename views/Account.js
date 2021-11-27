@@ -1,26 +1,71 @@
 import { Avatar, Card } from 'react-native-paper'
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, StatusBar, ScrollView, View, SafeAreaView, Pressable } from 'react-native'
+import { StyleSheet, Text, StatusBar, ScrollView, View, SafeAreaView, Pressable, Image } from 'react-native'
 
 import Footer from './components/Footer'
 import { NativeModules } from 'react-native'
 
+import { getAndStoreUserData, getUserData } from '../utils/react/DataStore'
+
 import moment from 'moment/min/moment-with-locales';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
+
+import API from '../utils/API'
+
+import * as SecureStore from 'expo-secure-store'
 
 module.exports = class Account extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: null }
+    this.state = { user: null, image: null }
+
+    this.changeAvatar = this.changeAvatar.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     moment.locale(NativeModules.I18nManager.localeIdentifier)
-    AsyncStorage.getItem('user').then((user) => {
-      const userData = JSON.parse(user)
-      this.setState({ user: userData })
+    getUserData().then(user => {
+      this.setState({ user })
     })
+  }
+
+  async changeAvatar () {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      } else {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 1
+        });
+       
+        if (!result.cancelled) {
+          const image = await ImageManipulator.manipulateAsync(
+            result.uri,
+            [{ resize: { width: 128, height: 128 } }],
+            { base64: true, compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+          )
+
+          const data = await API.updateAvatar(await SecureStore.getItemAsync('authorization'), 'data:image/jpeg;base64,' + image.base64);
+          const response = await data.json();
+
+          if (response.ok) {
+            await getAndStoreUserData(await SecureStore.getItemAsync('authorization'));
+            getUserData().then(user => {
+              console.log(user.avatar)
+              this.setState({ user })
+            })
+          } else {
+            alert('Erro ao atualizar avatar');
+          }
+        }
+      }
+    }
   }
 
   render() {
@@ -30,11 +75,13 @@ module.exports = class Account extends React.Component {
           <Card style={styles.card}>
             <Card.Content style={styles.adCard}>
               <View style={styles.avatarContainer}>
-                {
-                  this.state.user?.avatar ?
-                    (<Avatar.Image size={100} source={{ uri: this.state.user?.avatar }} />) :
-                    (<Avatar.Icon size={100} icon="account" />)
-                }
+                <Pressable onPress={this.changeAvatar}>
+                  {
+                    this.state.user?.avatar ?
+                      (<Avatar.Image style={{ width: 100, height: 100}} size={100} source={{ uri: this.state.user.avatar }} />) :
+                      (<Avatar.Icon size={100} icon="account" />)
+                  }
+                </Pressable>
                 <Text style={styles.name}>{this.state.user?.name}</Text>
                 <Text style={styles.sub}>Membro desde {moment(this.state.user?.createdAt).format('MMMM [de] YYYY').toString()}</Text>
               </View>
