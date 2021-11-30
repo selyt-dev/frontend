@@ -1,24 +1,38 @@
-import { View } from 'react-native'
-import { TextInput, Button, Portal, Dialog, Paragraph, ActivityIndicator } from 'react-native-paper'
-import React from 'react'
-import { StyleSheet, Text, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
-import { login } from '../utils/LoginUtils'
+import { View } from "react-native";
+import {
+  TextInput,
+  Button,
+  Portal,
+  Dialog,
+  Paragraph,
+  ActivityIndicator,
+} from "react-native-paper";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+} from "react-native";
+import { login } from "../utils/LoginUtils";
 
-import { getAndStoreUserData } from '../utils/react/DataStore'
+import { getAndStoreUserData } from "../utils/react/DataStore";
 
-import * as SecureStore from 'expo-secure-store'
+import * as SecureStore from "expo-secure-store";
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  const [hidePassword, setHidePassword] = React.useState(true)
-  const [hidePasswordIcon, setHidePasswordIcon] = React.useState('eye')
+  const [hidePassword, setHidePassword] = React.useState(true);
+  const [hidePasswordIcon, setHidePasswordIcon] = React.useState("eye");
 
   const [visible, setVisible] = React.useState(false);
-  const [text, setText] = React.useState('');
+  const [text, setText] = React.useState("");
 
-  const [textLoading, setTextLoading] = React.useState('A autenticar...');
+  const [textLoading, setTextLoading] = React.useState("A autenticar...");
   const [visibleLoading, setVisibleLoading] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -26,28 +40,28 @@ export default function Login({ navigation }) {
   const hideDialog = () => setVisible(false);
 
   function changeIcon() {
-    setHidePassword(!hidePassword)
-    setHidePasswordIcon(hidePassword ? 'eye-off' : 'eye')
+    setHidePassword(!hidePassword);
+    setHidePasswordIcon(hidePassword ? "eye-off" : "eye");
   }
 
   async function _login() {
-    setVisibleLoading(true)
+    setVisibleLoading(true);
 
     try {
-      const { authorization } = await login(email, password)
+      const { authorization } = await login(email, password);
 
-      await SecureStore.setItemAsync('authorization', authorization);
-      await SecureStore.setItemAsync('isAuthenticated', "true");
+      await SecureStore.setItemAsync("authorization", authorization);
+      await SecureStore.setItemAsync("isAuthenticated", "true");
 
-      await getAndStoreUserData(authorization)
+      await getAndStoreUserData(authorization);
 
-      setVisibleLoading(false)
+      setVisibleLoading(false);
 
-      navigation.navigate('Start');
+      navigation.navigate("Start");
     } catch (error) {
-      setVisibleLoading(false)
-      setText(error.message)
-      showDialog()
+      setVisibleLoading(false);
+      setText(error.message);
+      showDialog();
     }
   }
 
@@ -58,7 +72,7 @@ export default function Login({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView style={styles.insideContainer}>
-          <Text animation='fadeInUp' style={styles.logoText}>
+          <Text animation="fadeInUp" style={styles.logoText}>
             Login
           </Text>
 
@@ -68,7 +82,7 @@ export default function Login({ navigation }) {
             label="Email"
             value={email}
             style={styles.textInput}
-            onChangeText={text => setEmail(text)}
+            onChangeText={(text) => setEmail(text)}
             keyboardType="email-address"
             left={<TextInput.Icon name="email" />}
           />
@@ -76,18 +90,15 @@ export default function Login({ navigation }) {
             label="Palavra-passe"
             value={password}
             style={styles.textInput}
-            onChangeText={text => setPassword(text)}
+            onChangeText={(text) => setPassword(text)}
             secureTextEntry={hidePassword}
             left={<TextInput.Icon name="form-textbox-password" />}
-            right={<TextInput.Icon name={hidePasswordIcon} onPress={changeIcon} />}
+            right={
+              <TextInput.Icon name={hidePasswordIcon} onPress={changeIcon} />
+            }
           />
           <Text>&nbsp;</Text>
-          <Button
-            mode='contained'
-            color='#333333'
-            dark='true'
-            onPress={_login}
-          >
+          <Button mode="contained" color="#333333" dark="true" onPress={_login}>
             Entrar
           </Button>
           <Portal>
@@ -112,7 +123,7 @@ export default function Login({ navigation }) {
         </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
-  )
+  );
 }
 
 /**
@@ -130,15 +141,15 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    color: '#fff',
-    backgroundColor: '#222',
+    color: "#fff",
+    backgroundColor: "#222",
     // alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   insideContainer: {
     flex: 1,
-    color: '#fff',
-    backgroundColor: '#222',
+    color: "#fff",
+    backgroundColor: "#222",
     // alignItems: 'center',
     // justifyContent: 'center',
     padding: 24,
@@ -146,22 +157,22 @@ const styles = StyleSheet.create({
     // justifyContent: "space-around"
   },
   fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   container2: {
-    width: '100%'
+    width: "100%",
   },
   image: {
     width: 150,
-    height: 150
+    height: 150,
   },
   logoText: {
-    color: '#fff',
-    fontFamily: 'CoolveticaRegular',
-    fontSize: 35
+    color: "#fff",
+    fontFamily: "CoolveticaRegular",
+    fontSize: 35,
   },
   textInput: {
-    marginBottom: 7
-  }
-})
+    marginBottom: 7,
+  },
+});
