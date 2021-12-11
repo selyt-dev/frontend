@@ -65,9 +65,11 @@ module.exports = class Account extends React.Component {
             }
           );
 
+          console.log(image)
+
           const data = await API.updateAvatar(
             await SecureStore.getItemAsync("authorization"),
-            "data:image/jpeg;base64," + image.base64
+            require('buffer').Buffer.from(image.base64, "base64")
           );
           const response = await data.json();
 

@@ -20,13 +20,17 @@ module.exports = class API {
   }
 
   static updateAvatar(authorization, avatar) {
+    const data = new FormData()
+    data.append("avatar", avatar)
+
+    console.log(data)
+
     return fetch(`${BASE_URL}/user/@me/avatar`, {
-      method: "PUT",
+      method: "POST",
       headers: {
-        "Content-Type": "image/jpeg",
         Authorization: authorization,
       },
-      body: avatar,
+      body: data,
     });
   }
   static get(route, headers = {}) {
