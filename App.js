@@ -4,7 +4,7 @@ import Login from "./views/Login.js";
 import Start from "./views/Start.js";
 import Account from "./views/Account.js";
 
-import { Provider as PaperProvider } from "react-native-paper";
+import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
 import { AppRegistry, StatusBar } from "react-native";
 import React from "react";
 import { name as appName } from "./app.json";
@@ -72,7 +72,7 @@ export default function App() {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <PaperProvider>
+      <PaperProvider theme={DarkTheme}>
         <StatusBar barStyle="light-content" translucent={true} />
         <Stack.Navigator>
           {isSignedIn ? (

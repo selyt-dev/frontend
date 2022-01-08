@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: 7,
+    backgroundColor: "#2c2c2c",
   },
   adCard: {
     flex: 1,

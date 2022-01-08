@@ -19,6 +19,8 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "pt.selyt.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/selyt-transparent.png",
         "backgroundColor": "#222222"

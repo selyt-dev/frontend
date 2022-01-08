@@ -1,4 +1,4 @@
-import { Avatar, Card } from "react-native-paper";
+import { Avatar, Card, List } from "react-native-paper";
 import React, { useEffect } from "react";
 import {
   StyleSheet,
@@ -37,10 +37,12 @@ module.exports = class Account extends React.Component {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     getUserData().then((user) => {
       if (user.hasAvatar) {
-        this.setState({ image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${user.id}.jpg` });
+        this.setState({
+          image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${user.id}.jpg`,
+        });
       }
 
-      console.log(this.state.image)
+      console.log(this.state.image);
 
       this.setState({ user });
     });
@@ -74,12 +76,14 @@ module.exports = class Account extends React.Component {
           const data = await API.updateAvatar(
             await SecureStore.getItemAsync("authorization"),
             `data:image/jpeg;base64,${image.base64}`
-          )
+          );
 
           const response = await data.json();
 
           if (response.ok) {
-            this.setState({ image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg` });
+            this.setState({
+              image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
+            });
           } else {
             alert("Erro ao atualizar avatar");
           }
@@ -100,7 +104,9 @@ module.exports = class Account extends React.Component {
                     <Avatar.Image
                       style={{ width: 100, height: 100 }}
                       size={100}
-                      source={{ uri: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg` }}
+                      source={{
+                        uri: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
+                      }}
                     />
                   ) : (
                     <Avatar.Icon size={100} icon="account" />
@@ -110,10 +116,43 @@ module.exports = class Account extends React.Component {
                 <Text style={styles.sub}>
                   Membro desde{" "}
                   {moment(this.state.user?.createdAt)
-                    .format("MMMM [de] YYYY")
+                    .format("MMMM YYYY")
                     .toString()}
                 </Text>
               </View>
+            </Card.Content>
+          </Card>
+
+          <Text>&nbsp;</Text>
+
+          <Card style={styles.card}>
+            <Card.Content style={styles.card}>
+              <List.Section>
+                <List.Subheader style={styles.subtitle}>
+                  A sua conta
+                </List.Subheader>
+                <List.Item
+                  title="Definições"
+                  left={() => <List.Icon icon="cog" />}
+                />
+                <List.Item
+                  title="Saldo"
+                  left={() => <List.Icon icon="currency-usd" />}
+                />
+                <List.Item
+                  title="Os seus anúncios"
+                  left={() => <List.Icon icon="post" />}
+                />
+                <List.Item
+                  title="Suporte"
+                  left={() => <List.Icon icon="help-circle" />}
+                />
+                <List.Item
+                  title="Sair"
+                  titleStyle={styles.logout}
+                  left={() => <List.Icon icon="exit-to-app" color="#ff3b3b" />}
+                />
+              </List.Section>
             </Card.Content>
           </Card>
         </ScrollView>
@@ -136,10 +175,17 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     marginTop: 10,
+    color: "#fff",
   },
   sub: {
     fontSize: 14,
     marginTop: 8,
+    color: "#fff",
+  },
+  subtitle: {
+    fontSize: 20,
+    marginTop: 8,
+    color: "#fff",
   },
   insideContainer: {
     flex: 1,
@@ -171,5 +217,12 @@ const styles = StyleSheet.create({
     alignContent: "center",
     flexDirection: "row",
     justifyContent: "center",
+  },
+  card: {
+    flex: 1,
+    //    flexDirection: "row",
+  },
+  logout: {
+    color: "#ff3b3b",
   },
 });
