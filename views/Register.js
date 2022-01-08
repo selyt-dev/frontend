@@ -21,8 +21,6 @@ import { register, login } from "../utils/LoginUtils";
 
 import { MaskedTextInput } from "react-native-mask-text";
 
-import * as SecureStore from "expo-secure-store";
-
 import { getAndStoreUserData } from "../utils/react/DataStore";
 
 export default function Register({ navigation }) {
@@ -90,18 +88,11 @@ export default function Register({ navigation }) {
 
     try {
       const { uid } = await register(data);
-      console.log(uid);
       setTextLoading("Conta criada com sucesso! A autenticar...");
 
-      await SecureStore.setItemAsync("uid", uid);
-
       const { authorization } = await login(email, password);
-      console.log(authorization);
 
-      await SecureStore.setItemAsync("authorization", authorization);
-      await SecureStore.setItemAsync("isAuthenticated", "true");
-
-      getAndStoreUserData(authorization);
+      await getAndStoreUserData(authorization);
 
       setVisibleLoading(false);
 

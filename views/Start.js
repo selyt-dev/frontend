@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: "#fff",
     backgroundColor: "#222",
-    paddingBottom: 56,
+    marginBottom: 56,
   },
   fixToText: {
     flexDirection: "row",

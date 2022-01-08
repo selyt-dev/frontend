@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import {
   TextInput,
   Button,
@@ -20,7 +19,6 @@ import { login } from "../utils/LoginUtils";
 
 import { getAndStoreUserData } from "../utils/react/DataStore";
 
-import * as SecureStore from "expo-secure-store";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState("");
@@ -49,9 +47,6 @@ export default function Login({ navigation }) {
 
     try {
       const { authorization } = await login(email, password);
-
-      await SecureStore.setItemAsync("authorization", authorization);
-      await SecureStore.setItemAsync("isAuthenticated", "true");
 
       await getAndStoreUserData(authorization);
 

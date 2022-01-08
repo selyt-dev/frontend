@@ -1,5 +1,12 @@
-import { Avatar, Card, List } from "react-native-paper";
-import React, { useEffect } from "react";
+import {
+  Avatar,
+  Card,
+  List,
+  Dialog,
+  Paragraph,
+  Button,
+} from "react-native-paper";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -14,7 +21,7 @@ import {
 import Footer from "./components/Footer";
 import { NativeModules } from "react-native";
 
-import { getAndStoreUserData, getUserData } from "../utils/react/DataStore";
+import { getUserData } from "../utils/react/DataStore";
 
 import moment from "moment/min/moment-with-locales";
 
@@ -25,10 +32,12 @@ import API from "../utils/API";
 
 import * as SecureStore from "expo-secure-store";
 
+import { clearUserData } from "../utils/react/DataStore";
+
 module.exports = class Account extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: null, image: null };
+    this.state = { user: null, logoutVisible: false };
 
     this.changeAvatar = this.changeAvatar.bind(this);
   }
@@ -36,14 +45,6 @@ module.exports = class Account extends React.Component {
   async componentDidMount() {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     getUserData().then((user) => {
-      if (user.hasAvatar) {
-        this.setState({
-          image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${user.id}.jpg`,
-        });
-      }
-
-      console.log(this.state.image);
-
       this.setState({ user });
     });
   }
@@ -80,12 +81,8 @@ module.exports = class Account extends React.Component {
 
           const response = await data.json();
 
-          if (response.ok) {
-            this.setState({
-              image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
-            });
-          } else {
-            alert("Erro ao atualizar avatar");
+          if (!response.ok) {
+            alert("Erro ao atualizar avatar!");
           }
         }
       }
@@ -151,12 +148,31 @@ module.exports = class Account extends React.Component {
                   title="Sair"
                   titleStyle={styles.logout}
                   left={() => <List.Icon icon="exit-to-app" color="#ff3b3b" />}
+                  onPress={() => this.setState({ logoutVisible: true })}
                 />
               </List.Section>
             </Card.Content>
           </Card>
         </ScrollView>
         <Footer />
+        <Dialog
+          visible={this.state.logoutVisible}
+          onDismiss={() => this.setState({ logoutVisible: false })}
+        >
+          <Dialog.Title>Alerta</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>Tem a certeza que quer sair?</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => this.setState({ logoutVisible: false })}>
+              Não
+            </Button>
+            <Button onPress={async () => {
+              await clearUserData();
+              this.props.navigation.navigate("Main");
+            }}>Sim</Button>
+          </Dialog.Actions>
+        </Dialog>
       </SafeAreaView>
     );
   }
@@ -191,7 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: "#fff",
     backgroundColor: "#222",
-    paddingBottom: 56,
+    marginBottom: 56,
   },
   fixToText: {
     flexDirection: "row",

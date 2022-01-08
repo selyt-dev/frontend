@@ -87,6 +87,21 @@ export default function App() {
                 options={{ headerShown: false }}
                 component={Account}
               />
+              <Stack.Screen
+                name="Main"
+                options={{ headerShown: false }}
+                component={Main}
+              />
+              <Stack.Screen
+                name="Login"
+                options={{ headerShown: false }}
+                component={Login}
+              />
+              <Stack.Screen
+                name="Register"
+                options={{ headerShown: false }}
+                component={Register}
+              />
             </>
           ) : (
             <>
