@@ -36,6 +36,12 @@ module.exports = class Account extends React.Component {
   async componentDidMount() {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     getUserData().then((user) => {
+      if (user.hasAvatar) {
+        this.setState({ image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${user.id}.jpg` });
+      }
+
+      console.log(this.state.image)
+
       this.setState({ user });
     });
   }
@@ -65,22 +71,15 @@ module.exports = class Account extends React.Component {
             }
           );
 
-          console.log(image)
-
           const data = await API.updateAvatar(
             await SecureStore.getItemAsync("authorization"),
-            require('buffer').Buffer.from(image.base64, "base64")
-          );
+            `data:image/jpeg;base64,${image.base64}`
+          )
+
           const response = await data.json();
 
           if (response.ok) {
-            await getAndStoreUserData(
-              await SecureStore.getItemAsync("authorization")
-            );
-            getUserData().then((user) => {
-              console.log(user.avatar);
-              this.setState({ user });
-            });
+            this.setState({ image: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg` });
           } else {
             alert("Erro ao atualizar avatar");
           }
@@ -97,11 +96,11 @@ module.exports = class Account extends React.Component {
             <Card.Content style={styles.adCard}>
               <View style={styles.avatarContainer}>
                 <Pressable onPress={this.changeAvatar}>
-                  {this.state.user?.avatar ? (
+                  {this.state.user?.hasAvatar ? (
                     <Avatar.Image
                       style={{ width: 100, height: 100 }}
                       size={100}
-                      source={{ uri: this.state.user.avatar }}
+                      source={{ uri: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg` }}
                     />
                   ) : (
                     <Avatar.Icon size={100} icon="account" />

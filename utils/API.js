@@ -1,11 +1,11 @@
-const BASE_URL = `https://${
-  __DEV__ === "production" ? "prod" : "dev"
-}.selyt.fun`;
+const BASE_URL = __DEV__
+  ? "http://192.168.1.66:8081"
+  : "https://selyt-api.herokuapp.com";
 
 module.exports = class API {
-  static BASE_URL = `https://${
-    __DEV__ === "production" ? "prod" : "dev"
-  }.selyt.fun`;
+  static BASE_URL = __DEV__
+    ? "http://192.168.1.66:8081"
+    : "https://selyt-api.herokuapp.com";
 
   static login(body) {
     return API.post("/user/login", body);
@@ -20,26 +20,26 @@ module.exports = class API {
   }
 
   static updateAvatar(authorization, avatar) {
-    const data = new FormData()
-    data.append("avatar", avatar)
-
-    console.log(data)
+    console.log(avatar)
 
     return fetch(`${BASE_URL}/user/@me/avatar`, {
       method: "POST",
       headers: {
         Authorization: authorization,
+        'Content-Type': 'application/json'
       },
-      body: data,
+      body: JSON.stringify({ avatar }),
     });
   }
   static get(route, headers = {}) {
+    console.log(__DEV__);
     return fetch(`${BASE_URL}${route}`, {
       headers,
     });
   }
 
   static post(route, body) {
+    console.log(__DEV__);
     return fetch(`${BASE_URL}${route}`, {
       method: "POST",
       headers: {
