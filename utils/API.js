@@ -20,8 +20,6 @@ module.exports = class API {
   }
 
   static updateAvatar(authorization, avatar) {
-    console.log(avatar)
-
     return fetch(`${BASE_URL}/user/@me/avatar`, {
       method: "POST",
       headers: {
@@ -32,14 +30,12 @@ module.exports = class API {
     });
   }
   static get(route, headers = {}) {
-    console.log(__DEV__);
     return fetch(`${BASE_URL}${route}`, {
       headers,
     });
   }
 
   static post(route, body) {
-    console.log(__DEV__);
     return fetch(`${BASE_URL}${route}`, {
       method: "POST",
       headers: {
