@@ -19,7 +19,6 @@ import { login } from "../utils/LoginUtils";
 
 import { getAndStoreUserData } from "../utils/react/DataStore";
 
-
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -92,6 +91,10 @@ export default function Login({ navigation }) {
               <TextInput.Icon name={hidePasswordIcon} onPress={changeIcon} />
             }
           />
+          <Text style={styles.text}>
+            Ao entrar na plataforma Selyt, concorda com os [termos de uso] e
+            [política de privacidade] da plataforma.
+          </Text>
           <Text>&nbsp;</Text>
           <Button mode="contained" color="#333333" dark="true" onPress={_login}>
             Entrar
@@ -147,7 +150,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#222",
     // alignItems: 'center',
     // justifyContent: 'center',
-    padding: 24,
+    padding: 26,
+    marginTop: 16,
     flex: 1,
     // justifyContent: "space-around"
   },
@@ -169,5 +173,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: 7,
+  },
+  text: {
+    color: "#fff",
   },
 });

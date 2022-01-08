@@ -43,7 +43,7 @@ module.exports = class DataStore {
         await SecureStore.deleteItemAsync("authorization");
         await SecureStore.deleteItemAsync("isAuthenticated");
         await AsyncStorage.removeItem("user");
-  
+
         resolve(true);
       } catch (error) {
         reject(error);

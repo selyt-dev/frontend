@@ -214,6 +214,10 @@ export default function Register({ navigation }) {
             )}
             onFocus={() => setOpen(false)}
           />
+          <Text style={styles.text}>
+            Ao registar uma conta na plataforma Selyt, concorda com os [termos
+            de uso] e [política de privacidade] da plataforma.
+          </Text>
           <Text>&nbsp;</Text>
           <Button
             mode="contained"
@@ -223,6 +227,9 @@ export default function Register({ navigation }) {
           >
             Registar
           </Button>
+          <Text>&nbsp;</Text>
+          <Text>&nbsp;</Text>
+          <Text>&nbsp;</Text>
           <Portal>
             <Dialog visible={visibleLoading} dismissable={false}>
               <Dialog.Title>{textLoading}</Dialog.Title>
@@ -248,18 +255,6 @@ export default function Register({ navigation }) {
   );
 }
 
-/**
- * <DatePickerModal
-          locale="pt-PT"
-          mode="single"
-          visible={open}
-          onDismiss={onDismissSingle}
-          date={birthDate}
-          onConfirm={onConfirmSingle}
-        
-        />
- */
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -274,7 +269,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#222",
     // alignItems: 'center',
     // justifyContent: 'center',
-    padding: 24,
+    padding: 26,
+    marginTop: 16,
     flex: 1,
     // justifyContent: "space-around"
   },
@@ -296,5 +292,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: 7,
+  },
+  text: {
+    color: "#fff",
   },
 });

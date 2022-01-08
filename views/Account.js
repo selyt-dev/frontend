@@ -167,10 +167,14 @@ module.exports = class Account extends React.Component {
             <Button onPress={() => this.setState({ logoutVisible: false })}>
               Não
             </Button>
-            <Button onPress={async () => {
-              await clearUserData();
-              this.props.navigation.navigate("Main");
-            }}>Sim</Button>
+            <Button
+              onPress={async () => {
+                await clearUserData();
+                this.props.navigation.navigate("Main");
+              }}
+            >
+              Sim
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </SafeAreaView>

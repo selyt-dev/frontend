@@ -24,7 +24,7 @@ module.exports = class API {
       method: "POST",
       headers: {
         Authorization: authorization,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ avatar }),
     });
