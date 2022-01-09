@@ -1,15 +1,6 @@
-import {
-  Card,
-  TextInput,
-  Button,
-} from "react-native-paper";
+import { Card, TextInput, Button } from "react-native-paper";
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  StatusBar,
-  SafeAreaView,
-} from "react-native";
+import { StyleSheet, Text, StatusBar, SafeAreaView } from "react-native";
 
 import { NativeModules } from "react-native";
 import * as SecureStore from "expo-secure-store";
