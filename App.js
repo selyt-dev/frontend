@@ -3,6 +3,7 @@ import Register from "./views/Register.js";
 import Login from "./views/Login.js";
 import Start from "./views/Start.js";
 import Account from "./views/Account.js";
+import AccountSettings from "./views/AccountSettings.js";
 
 import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
 import { AppRegistry, StatusBar } from "react-native";
@@ -88,6 +89,11 @@ export default function App() {
                 component={Account}
               />
               <Stack.Screen
+                name="AccountSettings"
+                options={{ headerShown: false }}
+                component={AccountSettings}
+              />
+              <Stack.Screen
                 name="Main"
                 options={{ headerShown: false }}
                 component={Main}
@@ -129,6 +135,11 @@ export default function App() {
                 name="Account"
                 options={{ headerShown: false }}
                 component={Account}
+              />
+              <Stack.Screen
+                name="AccountSettings"
+                options={{ headerShown: false }}
+                component={AccountSettings}
               />
             </>
           )}

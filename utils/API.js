@@ -19,6 +19,10 @@ module.exports = class API {
     return API.get("/user/@me", { authorization });
   }
 
+  static updateSelf(authorization, body) {
+    return API.put("/user/@me", authorization, body);
+  }
+
   static updateAvatar(authorization, avatar) {
     return fetch(`${BASE_URL}/user/@me/avatar`, {
       method: "POST",
@@ -29,6 +33,7 @@ module.exports = class API {
       body: JSON.stringify({ avatar }),
     });
   }
+
   static get(route, headers = {}) {
     return fetch(`${BASE_URL}${route}`, {
       headers,
@@ -40,6 +45,17 @@ module.exports = class API {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
+  static put(route, authorization, body) {
+    return fetch(`${BASE_URL}${route}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
       },
       body: JSON.stringify(body),
     });
