@@ -2,8 +2,8 @@ import Main from "./views/Main.js";
 import Register from "./views/Register.js";
 import Login from "./views/Login.js";
 import Start from "./views/Start.js";
-import Account from "./views/Account.js";
-import AccountSettings from "./views/AccountSettings.js";
+import Account from "./views/account/Account.js";
+import AccountSettings from "./views/account/AccountSettings.js";
 
 import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
 import { AppRegistry, StatusBar } from "react-native";

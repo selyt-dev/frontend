@@ -23,6 +23,10 @@ module.exports = class API {
     return API.put("/user/@me", authorization, body);
   }
 
+  static changePassword(authorization, body) {
+    return API.put("/user/@me/password", authorization, body);
+  }
+
   static updateAvatar(authorization, avatar) {
     return fetch(`${BASE_URL}/user/@me/avatar`, {
       method: "POST",
