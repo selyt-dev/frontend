@@ -1,11 +1,13 @@
-const BASE_URL = __DEV__
-  ? "http://192.168.1.66:8081"
-  : "https://selyt-api.herokuapp.com";
+import Constants from "expo-constants";
+const { manifest } = Constants;
+
+const BASE_URL =
+  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? `http://${manifest.debuggerHost.split(`:`).shift().concat(`:8081`)}`
+    : `https://selyt-api.herokuapp.com`;
 
 module.exports = class API {
-  static BASE_URL = __DEV__
-    ? "http://192.168.1.66:8081"
-    : "https://selyt-api.herokuapp.com";
+  static BASE_URL = BASE_URL;
 
   static login(body) {
     return API.post("/user/login", body);

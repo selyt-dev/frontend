@@ -5,6 +5,7 @@ import {
   Dialog,
   Paragraph,
   Button,
+  Portal,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -158,28 +159,31 @@ module.exports = class Account extends React.Component {
           </Card>
         </ScrollView>
         <Footer />
-        <Dialog
-          visible={this.state.logoutVisible}
-          onDismiss={() => this.setState({ logoutVisible: false })}
-        >
-          <Dialog.Title>Alerta</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>Tem a certeza que quer sair?</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => this.setState({ logoutVisible: false })}>
-              Não
-            </Button>
-            <Button
-              onPress={async () => {
-                await clearUserData();
-                this.props.navigation.navigate("Main");
-              }}
-            >
-              Sim
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
+        <Portal>
+          <Dialog
+            visible={this.state.logoutVisible}
+            onDismiss={() => this.setState({ logoutVisible: false })}
+          >
+            <Dialog.Title>Alerta</Dialog.Title>
+            <Dialog.Content>
+              <Paragraph>Tem a certeza que quer sair?</Paragraph>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={() => this.setState({ logoutVisible: false })}>
+                Não
+              </Button>
+              <Button
+                onPress={async () => {
+                  this.setState({ logoutVisible: false });
+                  await clearUserData();
+                  this.props.navigation.navigate("Main");
+                }}
+              >
+                Sim
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
       </SafeAreaView>
     );
   }

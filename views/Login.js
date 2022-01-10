@@ -19,6 +19,9 @@ import { login } from "../utils/LoginUtils";
 
 import { getAndStoreUserData } from "../utils/react/DataStore";
 
+import Constants from "expo-constants";
+const { manifest } = Constants;
+
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
