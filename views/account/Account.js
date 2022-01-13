@@ -6,6 +6,7 @@ import {
   Paragraph,
   Button,
   Portal,
+  ActivityIndicator,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -38,7 +39,14 @@ import { clearUserData } from "../../utils/react/DataStore";
 module.exports = class Account extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: null, logoutVisible: false };
+    this.state = {
+      user: null,
+      avatar: "",
+      logoutVisible: false,
+      loadingVisible: false,
+      errorVisible: false,
+      errorMessage: "",
+    };
 
     this.changeAvatar = this.changeAvatar.bind(this);
   }
@@ -47,6 +55,11 @@ module.exports = class Account extends React.Component {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     getUserData().then((user) => {
       this.setState({ user });
+      if (user.hasAvatar) {
+        this.setState({
+          avatar: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user.id}.jpg`,
+        });
+      }
     });
   }
 
@@ -54,9 +67,17 @@ module.exports = class Account extends React.Component {
     if (Platform.OS !== "web") {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
+
       if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
+        this.setState({ loadingVisible: false });
+        this.setState({
+          errorVisible: true,
+          errorMessage: "É necessária permissão para aceder à galeria.",
+        });
+        return;
       } else {
+        this.setState({ loadingVisible: true });
+
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
@@ -83,8 +104,17 @@ module.exports = class Account extends React.Component {
           const response = await data.json();
 
           if (!response.ok) {
-            alert("Erro ao atualizar avatar!");
+            this.setState({
+              loadingVisible: false,
+              errorVisible: true,
+              errorMessage: response.message,
+            });
+          } else {
+            console.log(image.uri);
+            this.setState({ loadingVisible: false, avatar: image.uri });
           }
+        } else {
+          this.setState({ loadingVisible: false });
         }
       }
     }
@@ -103,7 +133,9 @@ module.exports = class Account extends React.Component {
                       style={{ width: 100, height: 100 }}
                       size={100}
                       source={{
-                        uri: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
+                        uri:
+                          this.state.avatar ||
+                          `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
                       }}
                     />
                   ) : (
@@ -139,14 +171,17 @@ module.exports = class Account extends React.Component {
                 <List.Item
                   title="Saldo"
                   left={() => <List.Icon icon="currency-usd" />}
+                  onPress={() => console.log("Pressed Balance")}
                 />
                 <List.Item
                   title="Os seus anúncios"
                   left={() => <List.Icon icon="post" />}
+                  onPress={() => console.log("Pressed Ads")}
                 />
                 <List.Item
                   title="Suporte"
                   left={() => <List.Icon icon="help-circle" />}
+                  onPress={() => console.log("Pressed Support")}
                 />
                 <List.Item
                   title="Sair"
@@ -160,6 +195,28 @@ module.exports = class Account extends React.Component {
         </ScrollView>
         <Footer />
         <Portal>
+          <Dialog visible={this.state.loadingVisible} dismissable={false}>
+            <Dialog.Title>A atualizar avatar...</Dialog.Title>
+            <Dialog.Content>
+              <ActivityIndicator animating={this.state.loadingVisible} />
+            </Dialog.Content>
+          </Dialog>
+
+          <Dialog
+            visible={this.state.errorVisible}
+            onDismiss={() => this.setState({ errorVisible: false })}
+          >
+            <Dialog.Title>Não foi possível atualizar o avatar.</Dialog.Title>
+            <Dialog.Content>
+              <Paragraph>{this.state.errorMessage}</Paragraph>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={() => this.setState({ errorVisible: false })}>
+                Ok
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+
           <Dialog
             visible={this.state.logoutVisible}
             onDismiss={() => this.setState({ logoutVisible: false })}

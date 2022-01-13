@@ -1,4 +1,4 @@
-import { Card, TextInput, Button } from "react-native-paper";
+import { Card, TextInput, Button, Portal, Dialog } from "react-native-paper";
 import React from "react";
 import { StyleSheet, Text, StatusBar, SafeAreaView } from "react-native";
 
