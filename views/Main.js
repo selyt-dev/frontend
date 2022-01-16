@@ -3,13 +3,15 @@ import { Button } from "react-native-paper";
 import React from "react";
 import { StyleSheet, Text } from "react-native";
 
+import { IS_DARK_THEME, THEME_OBJECT } from "../utils/react/ThemeModule";
+
 export default function Main({ navigation }) {
   return (
     <Animatable.View style={styles.container}>
       <Animatable.Image
         animation="fadeInUp"
         style={styles.image}
-        source={require("../assets/selyt-transparent.png")}
+        source={IS_DARK_THEME ? require("../assets/selyt-transparent.png") : require("../assets/selyt-transparent-inverted.png")}
       />
       <Animatable.Text animation="fadeInUp" style={styles.logoText}>
         Selyt
@@ -20,8 +22,7 @@ export default function Main({ navigation }) {
       <Animatable.View animation="fadeInUp" style={styles.fixToText}>
         <Button
           mode="contained"
-          color="#333333"
-          dark="true"
+          dark={IS_DARK_THEME}
           onPress={() => navigation.navigate("Login")}
         >
           Login
@@ -31,8 +32,7 @@ export default function Main({ navigation }) {
         <Text>&nbsp;</Text>
         <Button
           mode="contained"
-          color="#333333"
-          dark="true"
+          dark={IS_DARK_THEME}
           onPress={() => navigation.navigate("Register")}
         >
           Registo
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoText: {
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
   },

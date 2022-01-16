@@ -23,6 +23,8 @@ import { MaskedTextInput } from "react-native-mask-text";
 
 import { getAndStoreUserData } from "../utils/react/DataStore";
 
+import { IS_DARK_THEME, THEME_OBJECT } from "../utils/react/ThemeModule";
+
 export default function Register({ navigation }) {
   const currentDate = new Date(0);
 
@@ -84,8 +86,6 @@ export default function Register({ navigation }) {
       phone: parseInt(phone.replace(/\D/g, "")),
     };
 
-    console.log(data);
-
     try {
       const { uid } = await register(data);
       setTextLoading("Conta criada com sucesso! A autenticar...");
@@ -121,6 +121,9 @@ export default function Register({ navigation }) {
             label="Nome"
             value={name}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setName(text)}
             left={<TextInput.Icon name="account" />}
             placeholder="João Santos"
@@ -130,6 +133,9 @@ export default function Register({ navigation }) {
             label="Email"
             value={email}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setEmail(text)}
             keyboardType="email-address"
             left={<TextInput.Icon name="email" />}
@@ -140,6 +146,9 @@ export default function Register({ navigation }) {
             label="Palavra-passe"
             value={password}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setPassword(text)}
             secureTextEntry={hidePassword}
             left={<TextInput.Icon name="form-textbox-password" />}
@@ -152,6 +161,9 @@ export default function Register({ navigation }) {
             label="Confirmação de palavra-passe"
             value={passwordConfirmation}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setPasswordConfirmation(text)}
             secureTextEntry={hidePasswordConfirmation}
             left={<TextInput.Icon name="form-textbox-password" />}
@@ -168,6 +180,9 @@ export default function Register({ navigation }) {
             value={
               birthDate === currentDate ? "" : birthDate.toLocaleDateString()
             }
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             style={styles.textInput}
             onFocus={() => {
               Keyboard.dismiss();
@@ -192,6 +207,9 @@ export default function Register({ navigation }) {
             label="NIF"
             value={nif}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setNif(text)}
             keyboardType="phone-pad"
             left={<TextInput.Icon name="card-account-details" />}
@@ -205,6 +223,9 @@ export default function Register({ navigation }) {
             label="Número de Telemóvel"
             value={phone}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setPhone(text)}
             keyboardType="phone-pad"
             left={<TextInput.Icon name="card-account-phone" />}
@@ -221,8 +242,7 @@ export default function Register({ navigation }) {
           <Text>&nbsp;</Text>
           <Button
             mode="contained"
-            color="#333333"
-            dark="true"
+            dark={IS_DARK_THEME}
             onPress={_register}
           >
             Registar
@@ -245,7 +265,7 @@ export default function Register({ navigation }) {
                 <Paragraph>{text}</Paragraph>
               </Dialog.Content>
               <Dialog.Actions>
-                <Button onPress={hideDialog}>Ok</Button>
+                <Button color={THEME_OBJECT.colors.text} onPress={hideDialog}>Ok</Button>
               </Dialog.Actions>
             </Dialog>
           </Portal>
@@ -259,14 +279,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     // alignItems: 'center',
     justifyContent: "center",
   },
   insideContainer: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     // alignItems: 'center',
     // justifyContent: 'center',
     padding: 26,
@@ -286,7 +306,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoText: {
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
   },
@@ -294,6 +314,6 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   text: {
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
 });

@@ -5,7 +5,7 @@ import Start from "./views/Start.js";
 import Account from "./views/account/Account.js";
 import AccountSettings from "./views/account/AccountSettings.js";
 
-import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
+import { Provider as PaperProvider, ThemeProvider } from "react-native-paper";
 import { AppRegistry, StatusBar } from "react-native";
 import React from "react";
 import { name as appName } from "./app.json";
@@ -14,6 +14,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { navigationRef } from "./utils/react/RootNavigation";
+import { IS_DARK_THEME, THEME_OBJECT } from "./utils/react/ThemeModule";
+
+import { DefaultTheme, DarkTheme } from "./utils/react/themes/index.js";
 
 import AppLoading from "expo-app-loading";
 
@@ -73,8 +76,12 @@ export default function App() {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <PaperProvider theme={DarkTheme}>
-        <StatusBar barStyle="light-content" translucent={true} />
+      <PaperProvider theme={IS_DARK_THEME ? DarkTheme : DefaultTheme}>
+        <StatusBar
+          barStyle={IS_DARK_THEME ? "light-content" : "dark-content"}
+          backgroundColor={THEME_OBJECT.colors.primary}
+          translucent={true}
+        />
         <Stack.Navigator>
           {isSignedIn ? (
             <>

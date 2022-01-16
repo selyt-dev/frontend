@@ -7,6 +7,7 @@ import {
   Button,
   Portal,
   ActivityIndicator,
+  RadioButton,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -54,7 +55,6 @@ module.exports = class Account extends React.Component {
   async componentDidMount() {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     getUserData().then((user) => {
-      this.setState({ user });
       if (user.hasAvatar) {
         this.setState({
           avatar: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user.id}.jpg`,
@@ -226,10 +226,14 @@ module.exports = class Account extends React.Component {
               <Paragraph>Tem a certeza que quer sair?</Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
-              <Button onPress={() => this.setState({ logoutVisible: false })}>
+              <Button
+                color={THEME_OBJECT.colors.text}
+                onPress={() => this.setState({ logoutVisible: false })}
+              >
                 Não
               </Button>
               <Button
+                color={THEME_OBJECT.colors.text}
                 onPress={async () => {
                   this.setState({ logoutVisible: false });
                   await clearUserData();
@@ -250,7 +254,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     paddingTop: StatusBar.currentHeight,
   },
   avatarContainer: {
@@ -259,22 +263,22 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     marginTop: 10,
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
   sub: {
     fontSize: 14,
     marginTop: 8,
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
   subtitle: {
     fontSize: 20,
     marginTop: 8,
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
   insideContainer: {
     flex: 1,
-    color: "#fff",
-    backgroundColor: "#222",
+    color: THEME_OBJECT.colors.text,
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     marginBottom: 56,
   },
   fixToText: {
@@ -289,7 +293,6 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoText: {
-    color: "#fff",
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
   },

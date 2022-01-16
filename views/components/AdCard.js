@@ -1,6 +1,7 @@
 import { Caption, Subheading, Title } from "react-native-paper";
 import React from "react";
 import { StyleSheet, Image, View, Pressable } from "react-native";
+import { IS_DARK_THEME, THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 module.exports = class AdCard extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ module.exports = class AdCard extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#333",
+    backgroundColor: THEME_OBJECT.colors.customLightBackgroundColor,
     alignItems: "center",
     justifyContent: "center",
     width: "49%",
@@ -49,7 +50,6 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoText: {
-    color: "#fff",
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
   },

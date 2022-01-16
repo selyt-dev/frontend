@@ -19,6 +19,8 @@ import { login } from "../utils/LoginUtils";
 
 import { getAndStoreUserData } from "../utils/react/DataStore";
 
+import { IS_DARK_THEME, THEME_OBJECT } from "../utils/react/ThemeModule";
+
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -76,6 +78,9 @@ export default function Login({ navigation }) {
             label="Email"
             value={email}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setEmail(text)}
             keyboardType="email-address"
             left={<TextInput.Icon name="email" />}
@@ -84,6 +89,9 @@ export default function Login({ navigation }) {
             label="Palavra-passe"
             value={password}
             style={styles.textInput}
+            selectionColor={THEME_OBJECT.colors.customSelectionColor}
+            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
             onChangeText={(text) => setPassword(text)}
             secureTextEntry={hidePassword}
             left={<TextInput.Icon name="form-textbox-password" />}
@@ -96,7 +104,7 @@ export default function Login({ navigation }) {
             [política de privacidade] da plataforma.
           </Text>
           <Text>&nbsp;</Text>
-          <Button mode="contained" color="#333333" dark="true" onPress={_login}>
+          <Button mode="contained" dark={IS_DARK_THEME} onPress={_login}>
             Entrar
           </Button>
           <Portal>
@@ -114,7 +122,9 @@ export default function Login({ navigation }) {
                 <Paragraph>{text}</Paragraph>
               </Dialog.Content>
               <Dialog.Actions>
-                <Button onPress={hideDialog}>Ok</Button>
+                <Button color={THEME_OBJECT.colors.text} onPress={hideDialog}>
+                  Ok
+                </Button>
               </Dialog.Actions>
             </Dialog>
           </Portal>
@@ -140,14 +150,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     // alignItems: 'center',
     justifyContent: "center",
   },
   insideContainer: {
     flex: 1,
-    color: "#fff",
-    backgroundColor: "#222",
+    color: THEME_OBJECT.colors.text,
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     // alignItems: 'center',
     // justifyContent: 'center',
     padding: 26,
@@ -167,7 +177,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoText: {
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
   },
@@ -175,6 +185,6 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   text: {
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
 });

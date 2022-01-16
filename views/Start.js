@@ -12,6 +12,8 @@ import {
 import AdCard from "./components/AdCard";
 import Footer from "./components/Footer";
 
+import { THEME_OBJECT } from "../utils/react/ThemeModule";
+
 export default function Start() {
   const [search, setSearch] = React.useState("");
 
@@ -134,13 +136,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     paddingTop: StatusBar.currentHeight,
   },
   insideContainer: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     marginBottom: 56,
   },
   fixToText: {
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: 7,
-    backgroundColor: "#2c2c2c",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
   },
   adCard: {
     flex: 1,

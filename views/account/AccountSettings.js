@@ -12,6 +12,8 @@ import moment from "moment/min/moment-with-locales";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import API from "../../utils/API";
 
+import { IS_DARK_THEME, THEME_OBJECT } from "../../utils/react/ThemeModule";
+
 module.exports = class AccountSettings extends React.Component {
   constructor(props) {
     super(props);
@@ -148,6 +150,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="Nome"
                 value={this.state.user?.name}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) =>
                   this.setState({ user: { ...this.state.user, name: text } })
                 }
@@ -158,6 +163,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="Email"
                 value={this.state.user?.email}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) =>
                   this.setState({ user: { ...this.state.user, email: text } })
                 }
@@ -169,6 +177,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="NIF"
                 value={this.state.user?.nif.toString()}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) =>
                   this.setState({ user: { ...this.state.user, nif: text } })
                 }
@@ -180,6 +191,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="Número de Telemóvel"
                 value={this.state.user?.phone.toString()}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) =>
                   this.setState({ user: { ...this.state.user, phone: text } })
                 }
@@ -191,6 +205,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="IBAN"
                 value={this.state.user?.iban}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) =>
                   this.setState({ user: { ...this.state.user, iban: text } })
                 }
@@ -201,6 +218,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="Palavra-passe atual"
                 value={this.state.password}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) => this.setState({ password: text })}
                 secureTextEntry={this.state.hidePassword}
                 left={<TextInput.Icon name="form-textbox-password" />}
@@ -215,6 +235,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="Nova palavra-passe"
                 value={this.state.newPassword}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) => this.setState({ newPassword: text })}
                 secureTextEntry={this.state.hideNewPassword}
                 left={<TextInput.Icon name="form-textbox-password" />}
@@ -229,6 +252,9 @@ module.exports = class AccountSettings extends React.Component {
                 label="Confirmar nova palavra-passe"
                 value={this.state.newPasswordConfirmation}
                 style={styles.textInput}
+                selectionColor={THEME_OBJECT.colors.customSelectionColor}
+                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) =>
                   this.setState({ newPasswordConfirmation: text })
                 }
@@ -244,8 +270,7 @@ module.exports = class AccountSettings extends React.Component {
               <Text>&nbsp;</Text>
               <Button
                 mode="contained"
-                color="#333333"
-                dark="true"
+                dark={IS_DARK_THEME}
                 onPress={() => this._save()}
               >
                 Salvar
@@ -262,7 +287,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: "#fff",
-    backgroundColor: "#222",
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     paddingTop: StatusBar.currentHeight,
   },
   avatarContainer: {
@@ -271,22 +296,22 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     marginTop: 10,
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
   sub: {
     fontSize: 14,
     marginTop: 8,
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
   subtitle: {
     fontSize: 20,
     marginTop: 8,
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
   },
   insideContainer: {
     flex: 1,
-    color: "#fff",
-    backgroundColor: "#222",
+    color: THEME_OBJECT.colors.text,
+    backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
   },
   fixToText: {
     flexDirection: "row",
@@ -300,7 +325,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoText: {
-    color: "#fff",
+    color: THEME_OBJECT.colors.text,
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
   },
