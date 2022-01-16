@@ -240,11 +240,7 @@ export default function Register({ navigation }) {
             de uso] e [política de privacidade] da plataforma.
           </Text>
           <Text>&nbsp;</Text>
-          <Button
-            mode="contained"
-            dark={IS_DARK_THEME}
-            onPress={_register}
-          >
+          <Button mode="contained" dark={IS_DARK_THEME} onPress={_register}>
             Registar
           </Button>
           <Text>&nbsp;</Text>
@@ -265,7 +261,9 @@ export default function Register({ navigation }) {
                 <Paragraph>{text}</Paragraph>
               </Dialog.Content>
               <Dialog.Actions>
-                <Button color={THEME_OBJECT.colors.text} onPress={hideDialog}>Ok</Button>
+                <Button color={THEME_OBJECT.colors.text} onPress={hideDialog}>
+                  Ok
+                </Button>
               </Dialog.Actions>
             </Dialog>
           </Portal>

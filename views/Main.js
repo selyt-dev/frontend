@@ -11,7 +11,11 @@ export default function Main({ navigation }) {
       <Animatable.Image
         animation="fadeInUp"
         style={styles.image}
-        source={IS_DARK_THEME ? require("../assets/selyt-transparent.png") : require("../assets/selyt-transparent-inverted.png")}
+        source={
+          IS_DARK_THEME
+            ? require("../assets/selyt-transparent.png")
+            : require("../assets/selyt-transparent-inverted.png")
+        }
       />
       <Animatable.Text animation="fadeInUp" style={styles.logoText}>
         Selyt
