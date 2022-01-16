@@ -55,6 +55,7 @@ module.exports = class Account extends React.Component {
   async componentDidMount() {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     getUserData().then((user) => {
+      this.setState({ user });
       if (user.hasAvatar) {
         this.setState({
           avatar: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user.id}.jpg`,
