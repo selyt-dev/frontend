@@ -24,6 +24,8 @@ import {
 import Footer from "../components/Footer";
 import { NativeModules } from "react-native";
 
+import { THEME_OBJECT } from "../../utils/react/ThemeModule";
+
 import { getUserData } from "../../utils/react/DataStore";
 
 import moment from "moment/min/moment-with-locales";
@@ -172,7 +174,9 @@ module.exports = class Account extends React.Component {
                 <List.Item
                   title="Saldo"
                   left={() => <List.Icon icon="currency-usd" />}
-                  onPress={() => console.log("Pressed Balance")}
+                  onPress={() =>
+                    this.props.navigation.navigate("AccountBalance")
+                  }
                 />
                 <List.Item
                   title="Os seus anúncios"

@@ -4,6 +4,12 @@ import Login from "./views/Login.js";
 import Start from "./views/Start.js";
 import Account from "./views/account/Account.js";
 import AccountSettings from "./views/account/AccountSettings.js";
+import AccountBalance from "./views/account/AccountBalance.js";
+
+import "intl";
+import "intl/locale-data/jsonp/pt-PT";
+import "intl/locale-data/jsonp/en-US";
+import "react-intl";
 
 import { Provider as PaperProvider, ThemeProvider } from "react-native-paper";
 import { AppRegistry, StatusBar } from "react-native";
@@ -99,6 +105,11 @@ export default function App() {
                 name="AccountSettings"
                 options={{ headerShown: false }}
                 component={AccountSettings}
+              />
+              <Stack.Screen
+                name="AccountBalance"
+                options={{ headerShown: false }}
+                component={AccountBalance}
               />
               <Stack.Screen
                 name="Main"
