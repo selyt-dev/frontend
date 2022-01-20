@@ -21,6 +21,12 @@ module.exports = class API {
     return API.get("/user/@me", { authorization });
   }
 
+  static getTransactions(authorization) {
+    return API.get("/user/@me/transactions", {
+      authorization
+    });
+  }
+
   static updateSelf(authorization, body) {
     return API.put("/user/@me", authorization, body);
   }

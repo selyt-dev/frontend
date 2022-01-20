@@ -8,6 +8,8 @@ import {
   ScrollView,
 } from "react-native";
 
+import TransactionCard from "../components/TransactionCard";
+
 import { NativeModules } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
@@ -25,6 +27,7 @@ module.exports = class AccountBalance extends React.Component {
     this.state = {
       user: null,
       formatter: null,
+      transactions: [],
     };
 
     this.withdraw = this.withdraw.bind(this);
@@ -39,7 +42,14 @@ module.exports = class AccountBalance extends React.Component {
         currency: "EUR",
       }
     );
-    getUserData().then((user) => {
+    getUserData().then(async (user) => {
+      await API.getTransactions(await SecureStore.getItemAsync("authorization"))
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.ok) {
+            this.setState({ transactions: res.transactions });
+          }
+        });
       this.setState({ user, formatter });
     });
   }
@@ -68,10 +78,21 @@ module.exports = class AccountBalance extends React.Component {
             <Card.Content style={styles.card}>
               <Text style={styles.logoTextSmaller}>As suas transações</Text>
               <Text>&nbsp;</Text>
-              <Text style={styles.nameSmaller}>
-                Não existem transações a mostrar.
-              </Text>
-              {/* TODO: display transactions */}
+
+              {this.state.transactions.length > 0 ? (
+                this.state.transactions?.map((transaction) => (
+                  <TransactionCard
+                    key={transaction.id}
+                    createdAt={transaction.createdAt}
+                    amount={this.state.formatter?.format(transaction.amount)}
+                    description={transaction.description}
+                    type={transaction.type} />
+                ))
+              ) : (
+                <Text style={styles.nameSmaller}>
+                  Não existem transações a mostrar.
+                </Text>
+              )}
             </Card.Content>
           </Card>
         </ScrollView>
