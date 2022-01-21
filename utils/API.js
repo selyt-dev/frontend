@@ -23,7 +23,7 @@ module.exports = class API {
 
   static getTransactions(authorization) {
     return API.get("/user/@me/transactions", {
-      authorization
+      authorization,
     });
   }
 

@@ -16,9 +16,13 @@ module.exports = class TransactionCard extends React.Component {
     return (
       <Card.Content style={styles.card}>
         <Title>{this.props.description}</Title>
-        <Subheading style={styles[`${this.props.type}`]}>{`${this.props.type === "credit" ? "+" : "-"} ${this.props.amount}`}</Subheading>
+        <Subheading style={styles[`${this.props.type}`]}>{`${
+          this.props.type === "credit" ? "+" : "-"
+        } ${this.props.amount}`}</Subheading>
 
-        <Caption>{moment(this.props.createdAt).format('DD/MM/YYYY HH:mm')}</Caption>
+        <Caption>
+          {moment(this.props.createdAt).format("DD/MM/YYYY HH:mm")}
+        </Caption>
       </Card.Content>
     );
   }

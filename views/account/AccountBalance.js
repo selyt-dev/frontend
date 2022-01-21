@@ -43,6 +43,8 @@ module.exports = class AccountBalance extends React.Component {
       }
     );
     getUserData().then(async (user) => {
+      this.setState({ user, formatter });
+
       await API.getTransactions(await SecureStore.getItemAsync("authorization"))
         .then((res) => res.json())
         .then((res) => {
@@ -50,7 +52,6 @@ module.exports = class AccountBalance extends React.Component {
             this.setState({ transactions: res.transactions });
           }
         });
-      this.setState({ user, formatter });
     });
   }
 
@@ -86,7 +87,8 @@ module.exports = class AccountBalance extends React.Component {
                     createdAt={transaction.createdAt}
                     amount={this.state.formatter?.format(transaction.amount)}
                     description={transaction.description}
-                    type={transaction.type} />
+                    type={transaction.type}
+                  />
                 ))
               ) : (
                 <Text style={styles.nameSmaller}>

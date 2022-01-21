@@ -7,7 +7,6 @@ import {
   Button,
   Portal,
   ActivityIndicator,
-  RadioButton,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -18,7 +17,6 @@ import {
   View,
   SafeAreaView,
   Pressable,
-  Image,
 } from "react-native";
 
 import Footer from "../components/Footer";
@@ -57,12 +55,12 @@ module.exports = class Account extends React.Component {
   async componentDidMount() {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     getUserData().then((user) => {
-      this.setState({ user });
-      if (user.hasAvatar) {
-        this.setState({
-          avatar: `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user.id}.jpg`,
-        });
-      }
+      this.setState({
+        user,
+        avatar: user.hasAvatar
+          ? `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user.id}.jpg`
+          : "",
+      });
     });
   }
 
@@ -72,8 +70,8 @@ module.exports = class Account extends React.Component {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (status !== "granted") {
-        this.setState({ loadingVisible: false });
         this.setState({
+          loadingVisible: false,
           errorVisible: true,
           errorMessage: "É necessária permissão para aceder à galeria.",
         });
@@ -113,7 +111,6 @@ module.exports = class Account extends React.Component {
               errorMessage: response.message,
             });
           } else {
-            console.log(image.uri);
             this.setState({ loadingVisible: false, avatar: image.uri });
           }
         } else {
