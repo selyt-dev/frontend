@@ -5,6 +5,7 @@ import Start from "./views/Start.js";
 import Account from "./views/account/Account.js";
 import AccountSettings from "./views/account/AccountSettings.js";
 import AccountBalance from "./views/account/AccountBalance.js";
+import CreateAd from "./views/ad/CreateAd.js";
 
 import "intl";
 import "intl/locale-data/jsonp/pt-PT";
@@ -97,6 +98,11 @@ export default function App() {
                 component={Start}
               />
               <Stack.Screen
+                name="CreateAd"
+                options={{ headerShown: false }}
+                component={CreateAd}
+              />
+              <Stack.Screen
                 name="Account"
                 options={{ headerShown: false }}
                 component={Account}
@@ -148,6 +154,11 @@ export default function App() {
                 name="Start"
                 options={{ headerShown: false }}
                 component={Start}
+              />
+              <Stack.Screen
+                name="CreateAd"
+                options={{ headerShown: false }}
+                component={CreateAd}
               />
               <Stack.Screen
                 name="Account"

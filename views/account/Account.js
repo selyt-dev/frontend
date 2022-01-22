@@ -58,7 +58,7 @@ module.exports = class Account extends React.Component {
       this.setState({
         user,
         avatar: user.hasAvatar
-          ? `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user.id}.jpg`
+          ? `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${user.id}.jpg`
           : "",
       });
     });

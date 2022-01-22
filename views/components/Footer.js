@@ -17,7 +17,7 @@ export default function Footer() {
       />
       <Appbar.Action
         icon="plus-circle"
-        onPress={() => console.log("Pressed Sell")}
+        onPress={() => RootNavigation.navigate("CreateAd")}
       />
       <Appbar.Action icon="chat" onPress={() => console.log("Pressed Chat")} />
       <Appbar.Action

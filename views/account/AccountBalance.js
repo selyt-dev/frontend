@@ -1,4 +1,4 @@
-import { Card, TextInput, Button, Portal, Dialog } from "react-native-paper";
+import { Card } from "react-native-paper";
 import React from "react";
 import {
   StyleSheet,
@@ -13,13 +13,13 @@ import TransactionCard from "../components/TransactionCard";
 import { NativeModules } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
-import { getUserData, clearUserData } from "../../utils/react/DataStore";
+import { getUserData } from "../../utils/react/DataStore";
 
 import moment from "moment/min/moment-with-locales";
 
 import API from "../../utils/API";
 
-import { IS_DARK_THEME, THEME_OBJECT } from "../../utils/react/ThemeModule";
+import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 module.exports = class AccountBalance extends React.Component {
   constructor(props) {

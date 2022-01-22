@@ -46,17 +46,22 @@ module.exports = class API {
     });
   }
 
+  static createAd(authorization, body) {
+    return API.post("/ad/create", body, authorization);
+  }
+
   static get(route, headers = {}) {
     return fetch(`${BASE_URL}${route}`, {
       headers,
     });
   }
 
-  static post(route, body) {
+  static post(route, body, authorization = null) {
     return fetch(`${BASE_URL}${route}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: authorization,
       },
       body: JSON.stringify(body),
     });
