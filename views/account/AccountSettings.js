@@ -48,14 +48,6 @@ module.exports = class AccountSettings extends React.Component {
     // TODO: validate data & show proper alerts for stuff
     // TODO: check if password is correct
     try {
-      console.log(this.state.user === this.state._user);
-
-      console.log(
-        this.state.password !== null &&
-          this.state.newPassword !== null &&
-          this.state.newPasswordConfirmation !== null
-      );
-
       const authorization = await SecureStore.getItemAsync("authorization");
 
       if (
