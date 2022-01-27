@@ -34,9 +34,11 @@ module.exports = class AccountBalance extends React.Component {
   }
 
   async componentDidMount() {
-    moment.locale(NativeModules.I18nManager.localeIdentifier);
+    const identifier = NativeModules.I18nManager.localeIdentifier || "pt_PT";
+
+    moment.locale(identifier);
     const formatter = new Intl.NumberFormat(
-      NativeModules.I18nManager.localeIdentifier.replace("_", "-"),
+      identifier.replace("_", "-"),
       {
         style: "currency",
         currency: "EUR",

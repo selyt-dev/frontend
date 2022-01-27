@@ -170,6 +170,11 @@ export default function App() {
                 options={{ headerShown: false }}
                 component={AccountSettings}
               />
+              <Stack.Screen
+                name="AccountBalance"
+                options={{ headerShown: false }}
+                component={AccountBalance}
+              />
             </>
           )}
         </Stack.Navigator>
