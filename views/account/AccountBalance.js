@@ -37,13 +37,10 @@ module.exports = class AccountBalance extends React.Component {
     const identifier = NativeModules.I18nManager.localeIdentifier || "pt_PT";
 
     moment.locale(identifier);
-    const formatter = new Intl.NumberFormat(
-      identifier.replace("_", "-"),
-      {
-        style: "currency",
-        currency: "EUR",
-      }
-    );
+    const formatter = new Intl.NumberFormat(identifier.replace("_", "-"), {
+      style: "currency",
+      currency: "EUR",
+    });
     getUserData().then(async (user) => {
       this.setState({ user, formatter });
 
