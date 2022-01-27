@@ -21,6 +21,10 @@ module.exports = class API {
     return API.get("/user/@me", { authorization });
   }
 
+  static getAds(authorization) {
+    return API.get("/ad", { authorization });
+  }
+
   static getTransactions(authorization) {
     return API.get("/user/@me/transactions", {
       authorization,

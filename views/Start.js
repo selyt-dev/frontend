@@ -14,123 +14,67 @@ import Footer from "./components/Footer";
 
 import { THEME_OBJECT } from "../utils/react/ThemeModule";
 
-export default function Start() {
-  const [search, setSearch] = React.useState("");
+import API from "../utils/API";
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        label="O que procura?"
-        value={search}
-        style={styles.textInput}
-        onChangeText={(text) => setSearch(text)}
-        left={<TextInput.Icon name="magnify" />}
-      />
+module.exports = class Start extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: "",
+      ads: [],
+    };
+  }
 
-      <ScrollView style={styles.insideContainer}>
-        <Pressable onPress={() => console.log("Ver todas as categorias")}>
+  async componentDidMount() {
+    const res = await API.getAds().then((res) => res.json());
+    this.setState({ ads: res.ads });
+  }
+
+  render() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <TextInput
+          label="O que procura?"
+          value={this.state.search}
+          style={styles.textInput}
+          onChangeText={(text) => this.setState({ search: text })}
+          left={<TextInput.Icon name="magnify" />}
+        />
+
+        <ScrollView style={styles.insideContainer}>
+          <Pressable onPress={() => console.log("Ver todas as categorias")}>
+            <Card>
+              <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />
+            </Card>
+          </Pressable>
+
+          <Text>&nbsp;</Text>
+
           <Card>
-            <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />
+            <Card.Title title="Anúncios Recomendados" />
+            <Card.Content style={styles.adCard}>
+              {this.state.ads?.length > 0 ? (
+                this.state.ads?.map((ad) => (
+                  <AdCard
+                    key={ad.id}
+                    id={ad.id}
+                    title={ad.title}
+                    price={ad.price}
+                    region={ad.region}
+                    createdAt={ad.createdAt}
+                  />
+                ))
+              ) : (
+                <Text>Nenhum anúncio encontrado</Text>
+              )}
+            </Card.Content>
           </Card>
-        </Pressable>
-
-        <Text>&nbsp;</Text>
-
-        <Card>
-          <Card.Title title="Anúncios Recomendados" />
-          <Card.Content style={styles.adCard}>
-            <AdCard
-              id="0"
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-            <AdCard
-              title="Livro"
-              price="10"
-              region="Lisboa"
-              image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=="
-              createdAt="2020-05-01"
-            />
-          </Card.Content>
-        </Card>
-      </ScrollView>
-      <Footer />
-    </SafeAreaView>
-  );
-}
+        </ScrollView>
+        <Footer />
+      </SafeAreaView>
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   container: {

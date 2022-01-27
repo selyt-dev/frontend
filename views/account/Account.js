@@ -111,7 +111,9 @@ module.exports = class Account extends React.Component {
               errorMessage: response.message,
             });
           } else {
-            this.setState({ loadingVisible: false, avatar: image.uri });
+            getUserData().then((user) => {
+              this.setState({ loadingVisible: false, avatar: image.uri, user });
+            });
           }
         } else {
           this.setState({ loadingVisible: false });
