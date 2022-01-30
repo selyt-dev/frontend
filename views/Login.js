@@ -21,6 +21,8 @@ import { getAndStoreUserData } from "../utils/react/DataStore";
 
 import { IS_DARK_THEME, THEME_OBJECT } from "../utils/react/ThemeModule";
 
+import * as Linking from "expo-linking";
+
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -99,9 +101,27 @@ export default function Login({ navigation }) {
               <TextInput.Icon name={hidePasswordIcon} onPress={changeIcon} />
             }
           />
+
+          <Text>&nbsp;</Text>
+
+          <Text
+            style={styles.link}
+            onPress={() =>
+              Linking.openURL(
+                "https://personal-95ufgxph.outsystemscloud.com/PasswordRecovery/"
+              )
+            }
+          >
+            Esqueci-me da palavra-passe
+          </Text>
+
+          <Text>&nbsp;</Text>
+
           <Text style={styles.text}>
-            Ao entrar na plataforma Selyt, concorda com os [termos de uso] e
-            [política de privacidade] da plataforma.
+            Ao entrar na plataforma Selyt, concorda com os{" "}
+            <Text style={styles.link}>termos de uso</Text> e a{" "}
+            <Text style={styles.link}>política de privacidade</Text> da
+            plataforma.
           </Text>
           <Text>&nbsp;</Text>
           <Button mode="contained" dark={IS_DARK_THEME} onPress={_login}>
@@ -186,5 +206,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: THEME_OBJECT.colors.text,
+  },
+  link: {
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });
