@@ -50,6 +50,10 @@ module.exports = class API {
     });
   }
 
+  static sendDeviceToken(authorization, token) {
+    return API.post("/user/@me/device", { deviceToken: token }, authorization);
+  }
+
   static createAd(authorization, body) {
     return API.post("/ad/create", body, authorization);
   }

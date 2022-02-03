@@ -24,11 +24,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/selyt-transparent.png",
         "backgroundColor": "#222222"
-      }
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/selyt-transparent.png",
+          "color": "#222222"
+        }
+      ]
+    ],
     "description": ""
   }
 }

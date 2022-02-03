@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "32673705547",
+    "project_id": "selyt-79393",
+    "storage_bucket": "selyt-79393.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32673705547:android:27ac55c795ede60eea27ce",
+        "android_client_info": {
+          "package_name": "pt.selyt.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32673705547-7d3ul0ju04b0v3virom42f1qb7svijd0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQU9TarwTdxvq2dBFgMlQTWXF12l_TFrA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32673705547-7d3ul0ju04b0v3virom42f1qb7svijd0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
