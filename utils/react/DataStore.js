@@ -3,7 +3,7 @@ import API from "../API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 
 module.exports = class DataStore {
   static async getAndStoreUserData(authorization) {
