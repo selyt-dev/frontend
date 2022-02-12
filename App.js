@@ -51,7 +51,6 @@ export default function App() {
   }
 
   async function loadResourcesAsync() {
-    
     const token = await SecureStore.getItemAsync("authorization");
 
     if (token) {

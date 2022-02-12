@@ -298,7 +298,10 @@ module.exports = class Account extends React.Component {
           <Dialog visible={this.state.loadingVisible} dismissable={false}>
             <Dialog.Title>A criar anúncio...</Dialog.Title>
             <Dialog.Content>
-              <ActivityIndicator color={THEME_OBJECT.colors.text} animating={this.state.loadingVisible} />
+              <ActivityIndicator
+                color={THEME_OBJECT.colors.text}
+                animating={this.state.loadingVisible}
+              />
             </Dialog.Content>
           </Dialog>
 
@@ -308,10 +311,15 @@ module.exports = class Account extends React.Component {
           >
             <Dialog.Title>Não foi possível criar o anúncio.</Dialog.Title>
             <Dialog.Content>
-              <Paragraph style={styles.text}>{this.state.errorMessage}</Paragraph>
+              <Paragraph style={styles.text}>
+                {this.state.errorMessage}
+              </Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
-              <Button color={THEME_OBJECT.colors.text} onPress={() => this.setState({ errorVisible: false })}>
+              <Button
+                color={THEME_OBJECT.colors.text}
+                onPress={() => this.setState({ errorVisible: false })}
+              >
                 Ok
               </Button>
             </Dialog.Actions>
