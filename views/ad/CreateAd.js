@@ -263,7 +263,7 @@ module.exports = class Account extends React.Component {
                   parentWidth={Dimensions.get("window").width - 32}
                 />
               ) : (
-                <Text>Nenhuma imagem carregada.</Text>
+                <Text style={styles.text}>Nenhuma imagem carregada.</Text>
               )}
               <Text>&nbsp;</Text>
               <Button
@@ -298,7 +298,7 @@ module.exports = class Account extends React.Component {
           <Dialog visible={this.state.loadingVisible} dismissable={false}>
             <Dialog.Title>A criar anúncio...</Dialog.Title>
             <Dialog.Content>
-              <ActivityIndicator animating={this.state.loadingVisible} />
+              <ActivityIndicator color={THEME_OBJECT.colors.text} animating={this.state.loadingVisible} />
             </Dialog.Content>
           </Dialog>
 
@@ -308,10 +308,10 @@ module.exports = class Account extends React.Component {
           >
             <Dialog.Title>Não foi possível criar o anúncio.</Dialog.Title>
             <Dialog.Content>
-              <Paragraph>{this.state.errorMessage}</Paragraph>
+              <Paragraph style={styles.text}>{this.state.errorMessage}</Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
-              <Button onPress={() => this.setState({ errorVisible: false })}>
+              <Button color={THEME_OBJECT.colors.text} onPress={() => this.setState({ errorVisible: false })}>
                 Ok
               </Button>
             </Dialog.Actions>
@@ -396,13 +396,16 @@ const styles = StyleSheet.create({
   logoText: {
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
+    color: THEME_OBJECT.colors.text,
   },
   subLogoText: {
     fontFamily: "CoolveticaRegular",
     fontSize: 24,
+    color: THEME_OBJECT.colors.text,
   },
   textInput: {
     marginBottom: 7,
+    color: THEME_OBJECT.colors.text,
   },
   adCard: {
     flex: 1,
@@ -417,5 +420,8 @@ const styles = StyleSheet.create({
   },
   logout: {
     color: "#ff3b3b",
+  },
+  text: {
+    color: THEME_OBJECT.colors.text,
   },
 });

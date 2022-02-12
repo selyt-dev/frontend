@@ -13,7 +13,7 @@ import "intl/locale-data/jsonp/en-US";
 import "react-intl";
 
 import { Provider as PaperProvider, ThemeProvider } from "react-native-paper";
-import { AppRegistry, StatusBar } from "react-native";
+import { AppRegistry, StatusBar, useColorScheme } from "react-native";
 import React from "react";
 import { name as appName } from "./app.json";
 import { useFonts } from "expo-font";
@@ -43,11 +43,15 @@ export default function App() {
     MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
   });
 
+  const colorScheme = useColorScheme();
+  const theme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
+
   if (!loaded) {
     return null;
   }
 
   async function loadResourcesAsync() {
+    
     const token = await SecureStore.getItemAsync("authorization");
 
     if (token) {
@@ -83,10 +87,10 @@ export default function App() {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <PaperProvider theme={IS_DARK_THEME ? DarkTheme : DefaultTheme}>
+      <PaperProvider theme={theme}>
         <StatusBar
-          barStyle={IS_DARK_THEME ? "light-content" : "dark-content"}
-          backgroundColor={THEME_OBJECT.colors.primary}
+          barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+          backgroundColor={theme.colors.primary}
           translucent={true}
         />
         <Stack.Navigator>

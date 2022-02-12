@@ -65,7 +65,7 @@ module.exports = class Start extends React.Component {
                   />
                 ))
               ) : (
-                <Text>Nenhum anúncio encontrado</Text>
+                <Text style={styles.text}>Nenhum anúncio encontrado</Text>
               )}
             </Card.Content>
           </Card>
@@ -115,5 +115,8 @@ const styles = StyleSheet.create({
     alignContent: "center",
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  text: {
+    color: THEME_OBJECT.colors.text,
   },
 });

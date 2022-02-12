@@ -11,6 +11,7 @@ const theme = {
     customPartialSelectionColor: "#222222",
     customSelectionColor: "#111111",
     customLightBackgroundColor: "#f3f3f3",
+    textColor: "#222222",
   },
 };
 
