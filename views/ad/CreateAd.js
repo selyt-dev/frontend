@@ -42,7 +42,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { clearUserData } from "../../utils/react/DataStore";
 
-module.exports = class Account extends React.Component {
+module.exports = class CreateAd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

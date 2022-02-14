@@ -1,7 +1,10 @@
+import { NativeModules } from "react-native";
 import { Caption, Subheading, Title } from "react-native-paper";
 import React from "react";
 import { StyleSheet, Image, View, Pressable } from "react-native";
-import { IS_DARK_THEME, THEME_OBJECT } from "../../utils/react/ThemeModule";
+import { THEME_OBJECT } from "../../utils/react/ThemeModule";
+
+import moment from "moment/min/moment-with-locales";
 
 module.exports = class AdCard extends React.Component {
   constructor(props) {
@@ -10,6 +13,8 @@ module.exports = class AdCard extends React.Component {
     this.props = props;
 
     this.onPress = this.onPress.bind(this);
+
+    moment.locale(NativeModules.I18nManager.localeIdentifier);
   }
 
   onPress() {
@@ -19,12 +24,23 @@ module.exports = class AdCard extends React.Component {
   render() {
     return (
       <Pressable onPress={this.onPress} style={styles.container}>
-        <Image style={styles.tinyLogo} source={{ uri: this.props.image }} />
+        {this.props.image ? (
+          <Image
+            style={styles.image}
+            source={{
+              uri: `https://cdn.selyt.pt/ads/${this.props.id}/${this.props.image}.jpg`,
+            }}
+          />
+        ) : (
+          <View style={styles.tinyLogo} />
+        )}
         <Title>{this.props.title}</Title>
         <Subheading>{this.props.price} €</Subheading>
 
         <Caption>{this.props.region}</Caption>
-        <Caption>{this.props.createdAt}</Caption>
+        <Caption>
+          {moment(this.props.createdAt).format("LLL").toString()}
+        </Caption>
       </Pressable>
     );
   }

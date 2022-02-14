@@ -14,6 +14,8 @@ import Footer from "./components/Footer";
 
 import { THEME_OBJECT } from "../utils/react/ThemeModule";
 
+import * as SecureStore from "expo-secure-store";
+
 import API from "../utils/API";
 
 module.exports = class Start extends React.Component {
@@ -26,7 +28,9 @@ module.exports = class Start extends React.Component {
   }
 
   async componentDidMount() {
-    const res = await API.getAds().then((res) => res.json());
+    const authorization = await SecureStore.getItemAsync("authorization");
+    const res = await API.getAds(authorization).then((res) => res.json());
+    console.log(res);
     this.setState({ ads: res.ads });
   }
 
@@ -61,6 +65,7 @@ module.exports = class Start extends React.Component {
                     title={ad.title}
                     price={ad.price}
                     region={ad.region}
+                    image={ad.images[0]}
                     createdAt={ad.createdAt}
                   />
                 ))
