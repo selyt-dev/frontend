@@ -14,8 +14,6 @@ module.exports = class AdCard extends React.Component {
 
     this.props = props;
 
-    console.log(props);
-
     this.onPress = this.onPress.bind(this);
 
     moment.locale(NativeModules.I18nManager.localeIdentifier);

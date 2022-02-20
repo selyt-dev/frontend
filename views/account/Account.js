@@ -171,13 +171,6 @@ module.exports = class Account extends React.Component {
                   }
                 />
                 <List.Item
-                  title="Saldo"
-                  left={() => <List.Icon icon="currency-usd" />}
-                  onPress={() =>
-                    this.props.navigation.navigate("AccountBalance")
-                  }
-                />
-                <List.Item
                   title="Os seus anúncios"
                   left={() => <List.Icon icon="post" />}
                   onPress={() => console.log("Pressed Ads")}

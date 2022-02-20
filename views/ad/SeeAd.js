@@ -1,8 +1,6 @@
 import {
   Avatar,
   Card,
-  List,
-  Dialog,
   Paragraph,
   Button,
   Snackbar,
@@ -11,7 +9,6 @@ import {
 import React from "react";
 import {
   StyleSheet,
-  Text,
   StatusBar,
   View,
   SafeAreaView,
@@ -28,7 +25,7 @@ import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import moment from "moment/min/moment-with-locales";
 
-module.exports = class CreateAd extends React.Component {
+module.exports = class SeeAd extends React.Component {
   constructor(props) {
     super(props);
 

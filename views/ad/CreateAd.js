@@ -1,7 +1,5 @@
 import {
-  Avatar,
   Card,
-  List,
   Dialog,
   Paragraph,
   Button,
@@ -17,7 +15,6 @@ import {
   StyleSheet,
   Text,
   StatusBar,
-  ScrollView,
   View,
   SafeAreaView,
   Dimensions,
@@ -34,13 +31,10 @@ import { THEME_OBJECT, IS_DARK_THEME } from "../../utils/react/ThemeModule";
 import * as SecureStore from "expo-secure-store";
 
 import * as ImagePicker from "expo-image-picker";
-import * as ImageManipulator from "expo-image-manipulator";
 
 import moment from "moment/min/moment-with-locales";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-import { clearUserData } from "../../utils/react/DataStore";
 
 module.exports = class CreateAd extends React.Component {
   constructor(props) {
