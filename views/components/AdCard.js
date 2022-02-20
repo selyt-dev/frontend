@@ -4,6 +4,8 @@ import React from "react";
 import { StyleSheet, Image, View, Pressable } from "react-native";
 import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
+import * as RootNavigation from "../../utils/react/RootNavigation.js";
+
 import moment from "moment/min/moment-with-locales";
 
 module.exports = class AdCard extends React.Component {
@@ -12,34 +14,38 @@ module.exports = class AdCard extends React.Component {
 
     this.props = props;
 
+    console.log(props);
+
     this.onPress = this.onPress.bind(this);
 
     moment.locale(NativeModules.I18nManager.localeIdentifier);
   }
 
   onPress() {
-    console.log(this.props.id);
+    RootNavigation.navigate("SeeAd", {
+      ad: this.props.ad,
+    });
   }
 
   render() {
     return (
       <Pressable onPress={this.onPress} style={styles.container}>
-        {this.props.image ? (
+        {this.props.ad.images ? (
           <Image
             style={styles.image}
             source={{
-              uri: `https://cdn.selyt.pt/ads/${this.props.id}/${this.props.image}.jpg`,
+              uri: `https://cdn.selyt.pt/ads/${this.props.ad.id}/${this.props.ad.images[0]}.jpg`,
             }}
           />
         ) : (
           <View style={styles.tinyLogo} />
         )}
-        <Title>{this.props.title}</Title>
-        <Subheading>{this.props.price} €</Subheading>
+        <Title>{this.props.ad.title}</Title>
+        <Subheading>{this.props.ad.price} €</Subheading>
 
-        <Caption>{this.props.region}</Caption>
+        <Caption>{this.props.ad.region}</Caption>
         <Caption>
-          {moment(this.props.createdAt).format("LLL").toString()}
+          {moment(this.props.ad.createdAt).format("LLL").toString()}
         </Caption>
       </Pressable>
     );

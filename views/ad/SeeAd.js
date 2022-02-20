@@ -1,6 +1,37 @@
+import {
+  Avatar,
+  Card,
+  List,
+  Dialog,
+  Paragraph,
+  Button,
+  Snackbar,
+  FAB,
+} from "react-native-paper";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  StatusBar,
+  View,
+  SafeAreaView,
+  Dimensions,
+} from "react-native";
+
+import { setItemAsync, getItemAsync } from "../../utils/react/DataStore";
+
+import { SliderBox } from "react-native-image-slider-box";
+
+import { NativeModules } from "react-native";
+
+import { THEME_OBJECT } from "../../utils/react/ThemeModule";
+
+import moment from "moment/min/moment-with-locales";
+
 module.exports = class CreateAd extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       user: null,
       ad: {
@@ -12,16 +43,16 @@ module.exports = class CreateAd extends React.Component {
         isNegotiable: false,
         region: "",
       },
-      imagesBase64: [],
       formatter: null,
-      categories: [],
+      isFavorite: false,
+      snackbarVisible: false,
     };
 
-    this.uploadImages = this.uploadImages.bind(this);
-    this.createAd = this.createAd.bind(this);
+    this.setFavorite = this.setFavorite.bind(this);
   }
 
   async componentDidMount() {
+    this.setState({ ad: this.props.route.params.ad });
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     const formatter = new Intl.NumberFormat(
       NativeModules.I18nManager.localeIdentifier.replace("_", "-"),
@@ -31,81 +62,80 @@ module.exports = class CreateAd extends React.Component {
       }
     );
     this.setState({ formatter });
-  }
 
-  async uploadImages() {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-      if (status !== "granted") {
-        this.setState({
-          errorVisible: true,
-          errorMessage: "É necessária permissão para aceder à galeria.",
-        });
-        return;
-      } else {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          quality: 0.7,
-          base64: true,
-        });
-
-        if (!result.cancelled) {
-          console.log(result);
-
-          this.setState({
-            ad: {
-              ...this.state.ad,
-              images: [...this.state.ad.images, result.uri],
-            },
-            imagesBase64: [
-              ...this.state.imagesBase64,
-              "data:image/jpeg;base64," + result.base64,
-            ],
-          });
-          this.setState({ loadingVisible: false });
-        }
-      }
-    }
-  }
-
-  async createAd() {
-    console.log("Create ad");
-    this.setState({ loadingVisible: true });
-    // TODO: Validate form
-    const { ad } = this.state;
-
-    const _ad = { ...ad, images: this.state.imagesBase64 };
-
-    const authorization = await SecureStore.getItemAsync("authorization");
-
-    try {
-      const response = await API.createAd(authorization, _ad);
-
-      if (response.ok) {
-        this.setState({ loadingVisible: false });
-        alert("O seu anúncio foi criado com sucesso!");
-        this.props.navigation.navigate("Start");
-      } else {
-        this.setState({
-          loadingVisible: false,
-          errorVisible: true,
-          errorMessage: response.message,
-        });
-      }
-    } catch (error) {
-      console.log(error);
+    const favorites = await getItemAsync("favorites");
+    if (favorites) {
       this.setState({
-        loadingVisible: false,
-        errorVisible: true,
-        errorMessage: error,
+        isFavorite: favorites.includes(this.props.route.params.ad.id),
       });
     }
   }
 
+  async setFavorite() {
+    const favorites = (await getItemAsync("favorites", true)) || [];
+
+    if (this.state.isFavorite) {
+      favorites.splice(favorites.indexOf(this.props.route.params.ad.id), 1);
+    } else {
+      favorites.push(this.props.route.params.ad.id);
+    }
+
+    await setItemAsync("favorites", JSON.stringify(favorites));
+    this.setState({
+      isFavorite: !this.state.isFavorite,
+      snackbarVisible: true,
+    });
+  }
+
   render() {
-    return <SafeAreaView style={styles.container}></SafeAreaView>;
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          {this.state.ad?.images.length > 0 ? (
+            <SliderBox
+              images={this.state.ad?.images.map(
+                (image) =>
+                  `https://cdn.selyt.pt/ads/${this.state.ad?.id}/${image}.jpg`
+              )}
+              dotColor={THEME_OBJECT.colors.customSelectionColor}
+              parentWidth={Dimensions.get("window").width}
+            />
+          ) : (
+            <View style={styles.tinyLogo} />
+          )}
+          <Card>
+            <FAB
+              style={styles.fab}
+              small
+              icon={this.state.isFavorite ? "heart" : "heart-outline"}
+              onPress={this.setFavorite}
+            />
+            <Card.Title
+              title={this.state.ad?.title}
+              subtitle={this.state.formatter?.format(this.state.ad?.price)}
+            />
+            <Card.Content>
+              <Paragraph>{this.state.ad?.description}</Paragraph>
+            </Card.Content>
+          </Card>
+        </View>
+        <Snackbar
+          visible={this.state.snackbarVisible}
+          onDismiss={() => this.setState({ snackbarVisible: false })}
+          action={{
+            label: "Desfazer",
+            onPress: () => {
+              this.setFavorite();
+              this.setState({ snackbarVisible: false });
+            },
+          }}
+        >
+          {this.state.isFavorite
+            ? "Anúncio adicionado aos favoritos"
+            : "Anúncio removido dos favoritos"}
+        </Snackbar>
+      </SafeAreaView>
+    );
   }
 };
 
@@ -126,6 +156,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 10,
     color: THEME_OBJECT.colors.text,
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
   sub: {
     fontSize: 14,

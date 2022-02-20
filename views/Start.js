@@ -58,17 +58,7 @@ module.exports = class Start extends React.Component {
             <Card.Title title="Anúncios Recomendados" />
             <Card.Content style={styles.adCard}>
               {this.state.ads?.length > 0 ? (
-                this.state.ads?.map((ad) => (
-                  <AdCard
-                    key={ad.id}
-                    id={ad.id}
-                    title={ad.title}
-                    price={ad.price}
-                    region={ad.region}
-                    image={ad.images[0]}
-                    createdAt={ad.createdAt}
-                  />
-                ))
+                this.state.ads?.map((ad) => <AdCard ad={ad} key={ad.id} />)
               ) : (
                 <Text style={styles.text}>Nenhum anúncio encontrado</Text>
               )}

@@ -56,4 +56,26 @@ module.exports = class DataStore {
       }
     });
   }
+
+  static async setItemAsync(key, value) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await AsyncStorage.setItem(key, value);
+        resolve(true);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  static async getItemAsync(key, toObject = false) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const item = await AsyncStorage.getItem(key);
+        resolve(toObject ? JSON.parse(item) : item);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 };
