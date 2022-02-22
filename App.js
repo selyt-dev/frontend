@@ -6,6 +6,7 @@ import Account from "./views/account/Account.js";
 import AccountSettings from "./views/account/AccountSettings.js";
 import CreateAd from "./views/ad/CreateAd.js";
 import SeeAd from "./views/ad/SeeAd.js";
+import SelectCategory from "./views/ad/SelectCategory.js";
 
 import "intl";
 import "intl/locale-data/jsonp/pt-PT";
@@ -106,6 +107,11 @@ export default function App() {
                 component={CreateAd}
               />
               <Stack.Screen
+                name="SelectCategory"
+                options={{ headerShown: false }}
+                component={SelectCategory}
+              />
+              <Stack.Screen
                 name="SeeAd"
                 options={{ headerShown: false }}
                 component={SeeAd}
@@ -162,6 +168,11 @@ export default function App() {
                 name="CreateAd"
                 options={{ headerShown: false }}
                 component={CreateAd}
+              />
+              <Stack.Screen
+                name="SelectCategory"
+                options={{ headerShown: false }}
+                component={SelectCategory}
               />
               <Stack.Screen
                 name="SeeAd"

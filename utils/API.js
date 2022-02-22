@@ -31,6 +31,10 @@ module.exports = class API {
     });
   }
 
+  static getCategories() {
+    return API.get("/category");
+  }
+
   static updateSelf(authorization, body) {
     return API.put("/user/@me", authorization, body);
   }

@@ -36,7 +36,12 @@ module.exports = class AdCard extends React.Component {
             }}
           />
         ) : (
-          <View style={styles.tinyLogo} />
+          <Image
+            style={styles.image}
+            source={{
+              uri: "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg",
+            }}
+          />
         )}
         <Title>{this.props.ad.title}</Title>
         <Subheading>{this.props.ad.price} €</Subheading>

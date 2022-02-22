@@ -30,6 +30,10 @@ import API from "../../utils/API";
 
 import * as SecureStore from "expo-secure-store";
 
+import ImageView from "react-native-image-viewing";
+
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 module.exports = class SeeAd extends React.Component {
   constructor(props) {
     super(props);
@@ -48,6 +52,8 @@ module.exports = class SeeAd extends React.Component {
       formatter: null,
       isFavorite: false,
       snackbarVisible: false,
+      galleryVisible: false,
+      imageIndex: 0,
     };
 
     this.setFavorite = this.setFavorite.bind(this);
@@ -95,8 +101,25 @@ module.exports = class SeeAd extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          {this.state.ad?.images.length > 0 ? (
+        <KeyboardAwareScrollView
+          style={styles.insideContainer}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={true}
+        >
+          {this.state.ad.images?.length > 0 ? (
+            <ImageView
+              images={this.state.ad?.images.map((image) => {
+                return {
+                  uri: `https://cdn.selyt.pt/ads/${this.state.ad?.id}/${image}.jpg`,
+                };
+              })}
+              imageIndex={this.state.imageIndex}
+              visible={this.state.galleryVisible}
+              onRequestClose={() => this.setState({ galleryVisible: false })}
+            />
+          ) : null}
+
+          {this.state.ad.images?.length > 0 ? (
             <SliderBox
               images={this.state.ad?.images.map(
                 (image) =>
@@ -104,23 +127,41 @@ module.exports = class SeeAd extends React.Component {
               )}
               dotColor={THEME_OBJECT.colors.customSelectionColor}
               parentWidth={Dimensions.get("window").width}
+              onCurrentImagePressed={(index) =>
+                this.setState({ imageIndex: index, galleryVisible: true })
+              }
             />
           ) : (
-            <View style={styles.tinyLogo} />
-          )}
-          <Card>
-            <FAB
-              style={styles.fab}
-              small
-              icon={this.state.isFavorite ? "heart" : "heart-outline"}
-              onPress={this.setFavorite}
+            <SliderBox
+              images={[
+                "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg",
+              ]}
+              dotColor={THEME_OBJECT.colors.customSelectionColor}
+              parentWidth={Dimensions.get("window").width}
             />
+          )}
+
+          <FAB
+            style={styles.fabBack}
+            small
+            icon="arrow-left-circle"
+            onPress={() => this.props.navigation.goBack()}
+          />
+
+          <Card>
             <Card.Title
               title={this.state.ad?.title}
               subtitle={this.state.formatter?.format(this.state.ad?.price)}
               left={() => (
                 <Avatar.Icon size={40} icon={this.state.ad?.Category?.icon} />
               )}
+            />
+
+            <FAB
+              style={styles.fab}
+              small
+              icon={this.state.isFavorite ? "heart" : "heart-outline"}
+              onPress={this.setFavorite}
             />
           </Card>
 
@@ -137,6 +178,13 @@ module.exports = class SeeAd extends React.Component {
             <Card.Title title="Região" />
             <Card.Content>
               <Paragraph>{this.state.ad?.region}</Paragraph>
+            </Card.Content>
+          </Card>
+
+          <Card>
+            <Card.Title title="Visitas" />
+            <Card.Content>
+              <Paragraph>{this.state.ad?.visits}</Paragraph>
             </Card.Content>
           </Card>
 
@@ -182,29 +230,25 @@ module.exports = class SeeAd extends React.Component {
               >
                 Contactar Vendedor
               </Button>
-              <Text>&nbsp;</Text>
-              <Text>&nbsp;</Text>
-              <Text>&nbsp;</Text>
-              <Text>&nbsp;</Text>
             </Card.Content>
           </Card>
-        </View>
 
-        <Snackbar
-          visible={this.state.snackbarVisible}
-          onDismiss={() => this.setState({ snackbarVisible: false })}
-          action={{
-            label: "Desfazer",
-            onPress: () => {
-              this.setFavorite();
-              this.setState({ snackbarVisible: false });
-            },
-          }}
-        >
-          {this.state.isFavorite
-            ? "Anúncio adicionado aos favoritos"
-            : "Anúncio removido dos favoritos"}
-        </Snackbar>
+          <Snackbar
+            visible={this.state.snackbarVisible}
+            onDismiss={() => this.setState({ snackbarVisible: false })}
+            action={{
+              label: "Desfazer",
+              onPress: () => {
+                this.setFavorite();
+                this.setState({ snackbarVisible: false });
+              },
+            }}
+          >
+            {this.state.isFavorite
+              ? "Anúncio adicionado aos favoritos"
+              : "Anúncio removido dos favoritos"}
+          </Snackbar>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     );
   }
@@ -232,6 +276,11 @@ const styles = StyleSheet.create({
   marginText: {
     marginLeft: 10,
     fontSize: 13,
+  },
+  fabBack: {
+    position: "absolute",
+    top: StatusBar.currentHeight - 16,
+    left: 10,
   },
   fab: {
     position: "absolute",

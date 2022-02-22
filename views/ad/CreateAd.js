@@ -52,9 +52,9 @@ module.exports = class CreateAd extends React.Component {
       },
       imagesBase64: [],
       formatter: null,
-      categories: [],
     };
 
+    this.selectCategory = this.selectCategory.bind(this);
     this.uploadImages = this.uploadImages.bind(this);
     this.createAd = this.createAd.bind(this);
   }
@@ -69,6 +69,21 @@ module.exports = class CreateAd extends React.Component {
       }
     );
     this.setState({ formatter });
+  }
+
+  async componentDidUpdate() {
+    const { route } = this.props;
+
+    if (route.params && route.params.category && !this.state.category) {
+      this.setState({
+        ad: { ...this.state.ad, categoryId: route.params.category.id },
+        category: route.params.category,
+      });
+    }
+  }
+
+  async selectCategory() {
+    return this.props.navigation.navigate("SelectCategory");
   }
 
   async uploadImages() {
@@ -179,7 +194,8 @@ module.exports = class CreateAd extends React.Component {
 
               <TextInput
                 label="Categoria *"
-                value={this.state.ad?.categoryId}
+                value={this.state.category?.name}
+                disabled={true}
                 style={styles.textInput}
                 selectionColor={THEME_OBJECT.colors.customSelectionColor}
                 underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
@@ -189,6 +205,15 @@ module.exports = class CreateAd extends React.Component {
                 }
                 placeholder="1"
               />
+
+              <Button
+                mode="contained"
+                dark={IS_DARK_THEME}
+                style={{ marginBottom: 10 }}
+                onPress={this.selectCategory}
+              >
+                Selecionar Categoria
+              </Button>
 
               <TextInput
                 label="Descrição *"
