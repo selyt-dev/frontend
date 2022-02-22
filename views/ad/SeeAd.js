@@ -25,6 +25,10 @@ import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import moment from "moment/min/moment-with-locales";
 
+import API from "../../utils/API";
+
+import * as SecureStore from "expo-secure-store";
+
 module.exports = class SeeAd extends React.Component {
   constructor(props) {
     super(props);
@@ -59,6 +63,9 @@ module.exports = class SeeAd extends React.Component {
       }
     );
     this.setState({ formatter });
+
+    const authorization = await SecureStore.getItemAsync("authorization");
+    await API.addVisit(this.state.ad.id, authorization);
 
     const favorites = await getItemAsync("favorites");
     if (favorites) {

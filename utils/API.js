@@ -39,6 +39,10 @@ module.exports = class API {
     return API.put("/user/@me/password", authorization, body);
   }
 
+  static addVisit(adId, authorization) {
+    return API.put(`/ad/${adId}/view`, authorization);
+  }
+
   static updateAvatar(authorization, avatar) {
     return fetch(`${BASE_URL}/user/@me/avatar`, {
       method: "POST",
@@ -75,7 +79,7 @@ module.exports = class API {
     });
   }
 
-  static put(route, authorization, body) {
+  static put(route, authorization, body = {}) {
     return fetch(`${BASE_URL}${route}`, {
       method: "PUT",
       headers: {
