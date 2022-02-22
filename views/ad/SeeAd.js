@@ -5,6 +5,7 @@ import {
   Button,
   Snackbar,
   FAB,
+  Text,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -117,12 +118,78 @@ module.exports = class SeeAd extends React.Component {
             <Card.Title
               title={this.state.ad?.title}
               subtitle={this.state.formatter?.format(this.state.ad?.price)}
+              left={() => (
+                <Avatar.Icon size={40} icon={this.state.ad?.Category?.icon} />
+              )}
             />
+          </Card>
+
+          <Text>&nbsp;</Text>
+
+          <Card>
+            <Card.Title title="Descrição" />
             <Card.Content>
               <Paragraph>{this.state.ad?.description}</Paragraph>
             </Card.Content>
           </Card>
+
+          <Card>
+            <Card.Title title="Região" />
+            <Card.Content>
+              <Paragraph>{this.state.ad?.region}</Paragraph>
+            </Card.Content>
+          </Card>
+
+          <Text>&nbsp;</Text>
+
+          <Card>
+            <Card.Title title="Informações do Vendedor" />
+            <Card.Content>
+              <View style={styles.row}>
+                {this.state.ad?.User?.hasAvatar ? (
+                  <Avatar.Image
+                    style={{ width: 100, height: 100 }}
+                    size={100}
+                    source={{
+                      uri:
+                        this.state.avatar ||
+                        `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
+                    }}
+                  />
+                ) : (
+                  <Avatar.Icon size={100} icon="account" />
+                )}
+                <View>
+                  <Text style={styles.name}>{this.state.ad?.User?.name}</Text>
+                  <Text style={styles.marginText}>
+                    Membro desde{" "}
+                    {moment(this.state.ad?.User?.createdAt)
+                      .format("MMMM YYYY")
+                      .toString()}
+                  </Text>
+                </View>
+              </View>
+            </Card.Content>
+          </Card>
+
+          <Card style={styles.toBottom}>
+            <Card.Content>
+              <Button
+                icon="android-messages"
+                mode="contained"
+                style={styles.button}
+                onPress={() => console.log("Send Message")}
+              >
+                Contactar Vendedor
+              </Button>
+              <Text>&nbsp;</Text>
+              <Text>&nbsp;</Text>
+              <Text>&nbsp;</Text>
+              <Text>&nbsp;</Text>
+            </Card.Content>
+          </Card>
         </View>
+
         <Snackbar
           visible={this.state.snackbarVisible}
           onDismiss={() => this.setState({ snackbarVisible: false })}
@@ -158,8 +225,13 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    marginTop: 10,
+    marginTop: 20,
     color: THEME_OBJECT.colors.text,
+    marginLeft: 10,
+  },
+  marginText: {
+    marginLeft: 10,
+    fontSize: 13,
   },
   fab: {
     position: "absolute",
@@ -223,5 +295,17 @@ const styles = StyleSheet.create({
   },
   text: {
     color: THEME_OBJECT.colors.text,
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  toBottom: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  button: {
+    marginTop: -15,
   },
 });
