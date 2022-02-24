@@ -25,6 +25,14 @@ module.exports = class API {
     return API.get("/ad", { authorization });
   }
 
+  static getMultipleAds(adIds, authorization) {
+    return API.get(`/ad/multiple?ads=${adIds.join(",")}`, { authorization });
+  }
+
+  static getChats(authorization) {
+    return API.get("/inbox/chats", { authorization });
+  }
+
   static getTransactions(authorization) {
     return API.get("/user/@me/transactions", {
       authorization,

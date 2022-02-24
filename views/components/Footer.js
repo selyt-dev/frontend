@@ -13,13 +13,16 @@ export default function Footer() {
       />
       <Appbar.Action
         icon="cards-heart"
-        onPress={() => console.log("Pressed Favorites")}
+        onPress={() => RootNavigation.navigate("FavoriteAds")}
       />
       <Appbar.Action
         icon="plus-circle"
         onPress={() => RootNavigation.navigate("CreateAd")}
       />
-      <Appbar.Action icon="chat" onPress={() => console.log("Pressed Chat")} />
+      <Appbar.Action
+        icon="chat"
+        onPress={() => RootNavigation.navigate("ChatList")}
+      />
       <Appbar.Action
         icon="account"
         onPress={() => RootNavigation.navigate("Account")}

@@ -141,17 +141,12 @@ module.exports = class SeeAd extends React.Component {
             />
           )}
 
-          <FAB
-            style={styles.fabBack}
-            small
-            icon="arrow-left-circle"
-            onPress={() => this.props.navigation.goBack()}
-          />
-
           <Card>
             <Card.Title
               title={this.state.ad?.title}
-              subtitle={this.state.formatter?.format(this.state.ad?.price)}
+              subtitle={`${this.state.formatter?.format(
+                this.state.ad?.price
+              )} ${this.state.ad?.isNegotiable ? "(Negociável)" : ""}`}
               left={() => (
                 <Avatar.Icon size={40} icon={this.state.ad?.Category?.icon} />
               )}
@@ -232,23 +227,29 @@ module.exports = class SeeAd extends React.Component {
               </Button>
             </Card.Content>
           </Card>
-
-          <Snackbar
-            visible={this.state.snackbarVisible}
-            onDismiss={() => this.setState({ snackbarVisible: false })}
-            action={{
-              label: "Desfazer",
-              onPress: () => {
-                this.setFavorite();
-                this.setState({ snackbarVisible: false });
-              },
-            }}
-          >
-            {this.state.isFavorite
-              ? "Anúncio adicionado aos favoritos"
-              : "Anúncio removido dos favoritos"}
-          </Snackbar>
         </KeyboardAwareScrollView>
+        <Snackbar
+          visible={this.state.snackbarVisible}
+          onDismiss={() => this.setState({ snackbarVisible: false })}
+          action={{
+            label: "Desfazer",
+            onPress: () => {
+              this.setFavorite();
+              this.setState({ snackbarVisible: false });
+            },
+          }}
+        >
+          {this.state.isFavorite
+            ? "Anúncio adicionado aos favoritos"
+            : "Anúncio removido dos favoritos"}
+        </Snackbar>
+
+        <FAB
+          style={styles.fabBack}
+          small
+          icon="arrow-left-circle"
+          onPress={() => this.props.navigation.goBack()}
+        />
       </SafeAreaView>
     );
   }
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
   },
   fabBack: {
     position: "absolute",
-    top: StatusBar.currentHeight - 16,
+    top: StatusBar.currentHeight + 10,
     left: 10,
   },
   fab: {
