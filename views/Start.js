@@ -30,7 +30,6 @@ module.exports = class Start extends React.Component {
   async componentDidMount() {
     const authorization = await SecureStore.getItemAsync("authorization");
     const res = await API.getAds(authorization).then((res) => res.json());
-    console.log(res);
     this.setState({ ads: res.ads });
   }
 

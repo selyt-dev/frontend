@@ -23,167 +23,160 @@ import { IS_DARK_THEME, THEME_OBJECT } from "../utils/react/ThemeModule";
 
 import * as Linking from "expo-linking";
 
-export default function Login({ navigation }) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+module.exports = class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      hidePassword: true,
+      showLoading: false,
+      loadingMessage: "",
+      showError: false,
+      errorMessage: "",
+    };
 
-  const [hidePassword, setHidePassword] = React.useState(true);
-  const [hidePasswordIcon, setHidePasswordIcon] = React.useState("eye");
-
-  const [visible, setVisible] = React.useState(false);
-  const [text, setText] = React.useState("");
-
-  const [textLoading, setTextLoading] = React.useState("A autenticar...");
-  const [visibleLoading, setVisibleLoading] = React.useState(false);
-
-  const showDialog = () => setVisible(true);
-
-  const hideDialog = () => setVisible(false);
-
-  function changeIcon() {
-    setHidePassword(!hidePassword);
-    setHidePasswordIcon(hidePassword ? "eye-off" : "eye");
+    this.login = this.login.bind(this);
   }
 
-  async function _login() {
-    setVisibleLoading(true);
+  async login() {
+    this.setState({ showLoading: true, loadingMessage: "A autenticar..." });
 
     try {
-      const { authorization } = await login(email, password);
-
+      const { authorization } = await login(
+        this.state.email,
+        this.state.password
+      );
       await getAndStoreUserData(authorization);
-
-      setVisibleLoading(false);
-
-      navigation.navigate("Start");
+      this.setState({ showLoading: false });
+      this.props.navigation.navigate("Start");
     } catch (error) {
-      setVisibleLoading(false);
-      setText(error.message);
-      showDialog();
+      this.setState({
+        showLoading: false,
+        showError: true,
+        errorMessage: error.message,
+      });
     }
   }
 
-  return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.insideContainer}>
-          <Text animation="fadeInUp" style={styles.logoText}>
-            Login
-          </Text>
+  render() {
+    return (
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView style={styles.insideContainer}>
+            <Text animation="fadeInUp" style={styles.logoText}>
+              Login
+            </Text>
 
-          <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
 
-          <TextInput
-            label="Email"
-            value={email}
-            style={styles.textInput}
-            selectionColor={THEME_OBJECT.colors.customSelectionColor}
-            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
-            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
-            onChangeText={(text) => setEmail(text)}
-            keyboardType="email-address"
-            left={<TextInput.Icon name="email" />}
-          />
-          <TextInput
-            label="Palavra-passe"
-            value={password}
-            style={styles.textInput}
-            selectionColor={THEME_OBJECT.colors.customSelectionColor}
-            underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
-            activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry={hidePassword}
-            left={<TextInput.Icon name="form-textbox-password" />}
-            right={
-              <TextInput.Icon name={hidePasswordIcon} onPress={changeIcon} />
-            }
-          />
+            <TextInput
+              label="Email"
+              value={this.state.email}
+              style={styles.textInput}
+              selectionColor={THEME_OBJECT.colors.customSelectionColor}
+              underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+              activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
+              onChangeText={(text) => this.setState({ email: text })}
+              keyboardType="email-address"
+              left={<TextInput.Icon name="email" />}
+            />
+            <TextInput
+              label="Palavra-passe"
+              value={this.state.password}
+              style={styles.textInput}
+              selectionColor={THEME_OBJECT.colors.customSelectionColor}
+              underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
+              activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
+              onChangeText={(text) => this.setState({ password: text })}
+              secureTextEntry={this.state.hidePassword}
+              left={<TextInput.Icon name="form-textbox-password" />}
+              right={
+                <TextInput.Icon
+                  name={this.state.hidePassword ? "eye-off" : "eye"}
+                  onPress={() =>
+                    this.setState({ hidePassword: !this.state.hidePassword })
+                  }
+                />
+              }
+            />
 
-          <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
 
-          <Text
-            style={styles.link}
-            onPress={() =>
-              Linking.openURL(
-                "https://personal-95ufgxph.outsystemscloud.com/PasswordRecovery/"
-              )
-            }
-          >
-            Esqueci-me da palavra-passe
-          </Text>
+            <Text
+              style={styles.link}
+              onPress={() =>
+                Linking.openURL(
+                  "https://personal-95ufgxph.outsystemscloud.com/PasswordRecovery/"
+                )
+              }
+            >
+              Esqueci-me da palavra-passe
+            </Text>
 
-          <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
 
-          <Text style={styles.text}>
-            Ao entrar na plataforma Selyt, concorda com os{" "}
-            <Text style={styles.link}>termos de uso</Text> e a{" "}
-            <Text style={styles.link}>política de privacidade</Text> da
-            plataforma.
-          </Text>
-          <Text>&nbsp;</Text>
-          <Button mode="contained" dark={IS_DARK_THEME} onPress={_login}>
-            Entrar
-          </Button>
-          <Portal>
-            <Dialog visible={visibleLoading} dismissable={false}>
-              <Dialog.Title>{textLoading}</Dialog.Title>
-              <Dialog.Content>
-                <ActivityIndicator animating={visibleLoading} />
-              </Dialog.Content>
-            </Dialog>
-          </Portal>
-          <Portal>
-            <Dialog visible={visible} onDismiss={hideDialog}>
-              <Dialog.Title>Não foi possível autenticar.</Dialog.Title>
-              <Dialog.Content>
-                <Paragraph>{text}</Paragraph>
-              </Dialog.Content>
-              <Dialog.Actions>
-                <Button color={THEME_OBJECT.colors.text} onPress={hideDialog}>
-                  Ok
-                </Button>
-              </Dialog.Actions>
-            </Dialog>
-          </Portal>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
-  );
-}
-
-/**
- * <DatePickerModal
-          locale="pt-PT"
-          mode="single"
-          visible={open}
-          onDismiss={onDismissSingle}
-          date={birthDate}
-          onConfirm={onConfirmSingle}
-        
-        />
- */
+            <Text style={styles.text}>
+              Ao entrar na plataforma Selyt, concorda com os{" "}
+              <Text style={styles.link}>termos de uso</Text> e a{" "}
+              <Text style={styles.link}>política de privacidade</Text> da
+              plataforma.
+            </Text>
+            <Text>&nbsp;</Text>
+            <Button mode="contained" dark={IS_DARK_THEME} onPress={this.login}>
+              Entrar
+            </Button>
+            <Portal>
+              <Dialog visible={this.state.showLoading} dismissable={false}>
+                <Dialog.Title>{this.state.loadingMessage}</Dialog.Title>
+                <Dialog.Content>
+                  <ActivityIndicator animating={this.state.showLoading} />
+                </Dialog.Content>
+              </Dialog>
+            </Portal>
+            <Portal>
+              <Dialog
+                visible={this.state.showError}
+                onDismiss={() => this.setState({ showError: false })}
+              >
+                <Dialog.Title>Não foi possível autenticar.</Dialog.Title>
+                <Dialog.Content>
+                  <Paragraph>{this.state.errorMessage}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button
+                    color={THEME_OBJECT.colors.text}
+                    onPress={() => this.setState({ showError: false })}
+                  >
+                    Ok
+                  </Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: "#fff",
     backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
-    // alignItems: 'center',
     justifyContent: "center",
   },
   insideContainer: {
     flex: 1,
     color: THEME_OBJECT.colors.text,
     backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
-    // alignItems: 'center',
-    // justifyContent: 'center',
     padding: 26,
     marginTop: 16,
     flex: 1,
-    // justifyContent: "space-around"
   },
   fixToText: {
     flexDirection: "row",

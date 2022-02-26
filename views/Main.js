@@ -5,46 +5,52 @@ import { StyleSheet, Text } from "react-native";
 
 import { IS_DARK_THEME, THEME_OBJECT } from "../utils/react/ThemeModule";
 
-export default function Main({ navigation }) {
-  return (
-    <Animatable.View style={styles.container}>
-      <Animatable.Image
-        animation="fadeInUp"
-        style={styles.image}
-        source={
-          IS_DARK_THEME
-            ? require("../assets/selyt-transparent.png")
-            : require("../assets/selyt-transparent-inverted.png")
-        }
-      />
-      <Animatable.Text animation="fadeInUp" style={styles.logoText}>
-        Selyt
-      </Animatable.Text>
+module.exports = class Main extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-      <Text>&nbsp;</Text>
+  render() {
+    return (
+      <Animatable.View style={styles.container}>
+        <Animatable.Image
+          animation="fadeInUp"
+          style={styles.image}
+          source={
+            IS_DARK_THEME
+              ? require("../assets/selyt-transparent.png")
+              : require("../assets/selyt-transparent-inverted.png")
+          }
+        />
+        <Animatable.Text animation="fadeInUp" style={styles.logoText}>
+          Selyt
+        </Animatable.Text>
 
-      <Animatable.View animation="fadeInUp" style={styles.fixToText}>
-        <Button
-          mode="contained"
-          dark={IS_DARK_THEME}
-          onPress={() => navigation.navigate("Login")}
-        >
-          Login
-        </Button>
         <Text>&nbsp;</Text>
-        <Text>&nbsp;</Text>
-        <Text>&nbsp;</Text>
-        <Button
-          mode="contained"
-          dark={IS_DARK_THEME}
-          onPress={() => navigation.navigate("Register")}
-        >
-          Registo
-        </Button>
+
+        <Animatable.View animation="fadeInUp" style={styles.fixToText}>
+          <Button
+            mode="contained"
+            dark={IS_DARK_THEME}
+            onPress={() => this.props.navigation.navigate("Login")}
+          >
+            Login
+          </Button>
+          <Text>&nbsp;</Text>
+          <Text>&nbsp;</Text>
+          <Text>&nbsp;</Text>
+          <Button
+            mode="contained"
+            dark={IS_DARK_THEME}
+            onPress={() => this.props.navigation.navigate("Register")}
+          >
+            Registo
+          </Button>
+        </Animatable.View>
       </Animatable.View>
-    </Animatable.View>
-  );
-}
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
