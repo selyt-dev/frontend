@@ -6,6 +6,7 @@ import {
   Snackbar,
   FAB,
   Text,
+  IconButton,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -133,9 +134,7 @@ module.exports = class SeeAd extends React.Component {
             />
           ) : (
             <SliderBox
-              images={[
-                "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg",
-              ]}
+              images={["https://cdn.selyt.pt/ads/default.jpg"]}
               dotColor={THEME_OBJECT.colors.customSelectionColor}
               parentWidth={Dimensions.get("window").width}
             />
@@ -170,20 +169,47 @@ module.exports = class SeeAd extends React.Component {
           </Card>
 
           <Card>
-            <Card.Title title="Região" />
+            <Card.Title title="Informações do Anúncio" />
             <Card.Content>
-              <Paragraph>{this.state.ad?.region}</Paragraph>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                }}
+              >
+                <IconButton icon="map-marker" size={18} />
+                <Paragraph>{this.state.ad?.region}</Paragraph>
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                }}
+              >
+                <IconButton icon="calendar" size={18} />
+                <Paragraph>
+                  {moment(this.state.ad?.createdAt).format("LLL")}
+                </Paragraph>
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                }}
+              >
+                <IconButton icon="cursor-default-click" size={18} />
+                <Paragraph>{this.state.ad?.visits} visitas</Paragraph>
+              </View>
             </Card.Content>
           </Card>
-
-          <Card>
-            <Card.Title title="Visitas" />
-            <Card.Content>
-              <Paragraph>{this.state.ad?.visits}</Paragraph>
-            </Card.Content>
-          </Card>
-
-          <Text>&nbsp;</Text>
 
           <Card>
             <Card.Title title="Informações do Vendedor" />

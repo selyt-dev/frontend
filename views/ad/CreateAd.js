@@ -134,12 +134,14 @@ module.exports = class CreateAd extends React.Component {
     const authorization = await SecureStore.getItemAsync("authorization");
 
     try {
-      const response = await API.createAd(authorization, _ad);
+      const response = await API.createAd(authorization, _ad).then((res) =>
+        res.json()
+      );
 
       if (response.ok) {
         this.setState({ loadingVisible: false });
         alert("O seu anúncio foi criado com sucesso!");
-        this.props.navigation.navigate("Start");
+        this.props.navigation.navigate("SeeAd", { ad: response.ad });
       } else {
         this.setState({
           loadingVisible: false,
