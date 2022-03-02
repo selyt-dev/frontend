@@ -1,4 +1,4 @@
-import { TextInput, Card } from "react-native-paper";
+import { Card } from "react-native-paper";
 import React from "react";
 import {
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
-  Pressable,
 } from "react-native";
 
 import AdCard from "../components/AdCard";
@@ -15,7 +14,9 @@ import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import * as SecureStore from "expo-secure-store";
 
-import { setItemAsync, getItemAsync } from "../../utils/react/DataStore";
+import { getItemAsync } from "../../utils/react/DataStore";
+
+import Footer from "../components/Footer";
 
 import API from "../../utils/API";
 
@@ -53,6 +54,7 @@ module.exports = class FavoriteAds extends React.Component {
             </Card.Content>
           </Card>
         </ScrollView>
+        <Footer />
       </SafeAreaView>
     );
   }
