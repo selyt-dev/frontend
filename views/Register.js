@@ -80,8 +80,8 @@ module.exports = class Register extends React.Component {
     try {
       await register({
         ...user,
-        nif: parseInt(nif.replace(/\D/g, "")),
-        phone: parseInt(phone.replace(/\D/g, "")),
+        nif: parseInt(user.nif.replace(/\D/g, "")),
+        phone: parseInt(user.phone.replace(/\D/g, "")),
       });
 
       this.setState({
@@ -263,7 +263,7 @@ module.exports = class Register extends React.Component {
             <Button
               mode="contained"
               dark={IS_DARK_THEME}
-              onPress={this.register}
+              onPress={this.handleRegister}
             >
               Registar
             </Button>
