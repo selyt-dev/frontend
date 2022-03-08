@@ -24,7 +24,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { navigationRef } from "./utils/react/RootNavigation";
-import { IS_DARK_THEME, THEME_OBJECT } from "./utils/react/ThemeModule";
+import * as NavigationBar from 'expo-navigation-bar';
 
 import { DefaultTheme, DarkTheme } from "./utils/react/themes/index.js";
 
@@ -48,6 +48,9 @@ export default function App() {
 
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
+
+  NavigationBar.setBackgroundColorAsync(colorScheme === "dark" ? "#222222" : "#fcfcfc");
+  NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
 
   if (!loaded) {
     return null;
