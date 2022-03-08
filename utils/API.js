@@ -40,7 +40,7 @@ module.exports = class API {
   }
 
   static getCategories() {
-    return API.get("/category");
+    return API.get("/category?limit=100");
   }
 
   static updateSelf(authorization, body) {
