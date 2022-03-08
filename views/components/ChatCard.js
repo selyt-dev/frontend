@@ -31,21 +31,8 @@ module.exports = class ChatCard extends React.Component {
         <Card>
           <Card.Content>
             <View style={styles.row}>
-              {this.state.chat?.User?.hasAvatar ? (
-                <Avatar.Image
-                  style={{ width: 100, height: 100 }}
-                  size={100}
-                  source={{
-                    uri:
-                      this.state.avatar ||
-                      `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.chat.User?.id}.jpg`,
-                  }}
-                />
-              ) : (
-                <Avatar.Icon size={100} icon="account" />
-              )}
               <View>
-                <Text style={styles.name}>{this.state.chat.User?.name}</Text>
+                <Text style={styles.name}>{this.props.chat.ad?.title}</Text>
                 <Text style={styles.marginText}>Last Message</Text>
               </View>
             </View>
@@ -58,15 +45,26 @@ module.exports = class ChatCard extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: THEME_OBJECT.colors.customLightBackgroundColor,
+    // backgroundColor: THEME_OBJECT.colors.customLightBackgroundColor,
     alignItems: "center",
     justifyContent: "center",
-    width: "49%",
+    width: "100%",
     marginBottom: 7,
   },
   fixToText: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 10,
+    justifyContent: "space-between",
+  },
+  name: {
+    fontSize: 24,
+    marginTop: 10,
+    color: THEME_OBJECT.colors.text,
   },
   container2: {
     width: "100%",

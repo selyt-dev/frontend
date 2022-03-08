@@ -39,8 +39,8 @@ module.exports = class API {
     });
   }
 
-  static getCategories() {
-    return API.get("/category?limit=100");
+  static getCategories(authorization) {
+    return API.get("/category?limit=100", { authorization });
   }
 
   static updateSelf(authorization, body) {

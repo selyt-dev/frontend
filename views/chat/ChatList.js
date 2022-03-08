@@ -18,7 +18,7 @@ import Footer from "../components/Footer";
 
 import API from "../../utils/API";
 
-module.exports = class FavoriteAds extends React.Component {
+module.exports = class ChatList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

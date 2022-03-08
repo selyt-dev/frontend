@@ -27,6 +27,8 @@ import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import * as SecureStore from "expo-secure-store";
+
 module.exports = class SelectCategory extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +40,10 @@ module.exports = class SelectCategory extends React.Component {
   }
 
   async componentDidMount() {
-    const data = await API.getCategories().then((res) => res.json());
+    const authorization = await SecureStore.getItemAsync("authorization");
+    const data = await API.getCategories(authorization).then((res) =>
+      res.json()
+    );
     this.setState({ categories: data.categories });
   }
 
@@ -62,7 +67,7 @@ module.exports = class SelectCategory extends React.Component {
             <Card.Content>
               <Text style={styles.logoText}>Escolha a Categoria</Text>
               <List.Section>
-                {this.state.categories.map((category) => (
+                {this.state.categories?.map((category) => (
                   <List.Item
                     key={category.id}
                     title={category.name}
