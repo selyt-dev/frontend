@@ -5,6 +5,7 @@ import {
   Dialog,
   Paragraph,
   ActivityIndicator,
+  HelperText,
 } from "react-native-paper";
 
 import React from "react";
@@ -50,6 +51,15 @@ module.exports = class Register extends React.Component {
       errorMessage: "",
       hidePassword: true,
       hidePasswordConfirmation: true,
+      // Errors
+      nameError: false,
+      emailError: false,
+      passwordError: false,
+      passwordConfirmationError: false,
+      birthDateError: false,
+      nifError: false,
+      phoneError: false,
+      canRegister: false,
     };
 
     moment.locale(NativeModules.I18nManager.localeIdentifier);
@@ -70,34 +80,174 @@ module.exports = class Register extends React.Component {
   }
 
   async handleRegister() {
-    this.setState({
-      showLoading: true,
-      loadingMessage: "A registar a sua conta...",
-    });
-
-    const { user } = this.state;
-
-    try {
-      await register({
-        ...user,
-        nif: parseInt(user.nif.replace(/\D/g, "")),
-        phone: parseInt(user.phone.replace(/\D/g, "")),
+    // Verifications
+    if (this.state.user.name === "") {
+      await this.setState({
+        nameError: true,
+        canRegister: false,
       });
+    } else {
+      await this.setState({
+        nameError: false,
+      });
+    }
 
+    if (this.state.user.email === "") {
+      await this.setState({
+        emailError: true,
+        canRegister: false,
+      });
+    } else {
+      await this.setState({
+        emailError: false,
+      });
+    }
+
+    console.log(
+      new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").test(
+        this.state.user.password
+      )
+    );
+
+    if (this.state.user.password === "") {
+      if (
+        !new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").test(
+          this.state.user.password
+        )
+      ) {
+        await this.setState({
+          passwordError: true,
+          passwordErrorSpecific:
+            "Erro: A palavra-passe deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula e um número.",
+          canRegister: false,
+        });
+      } else {
+        if (this.state.user.password !== this.state.user.passwordConfirmation) {
+          await this.setState({
+            passwordError: true,
+            passwordConfirmationError: true,
+            passwordErrorSpecific: "Erro: As palavras-passe têm que coincidir.",
+            passwordConfirmationErrorSpecific:
+              "Erro: As palavras-passe têm que coincidir.",
+            canRegister: false,
+          });
+        } else {
+          await this.setState({
+            passwordError: false,
+            passwordErrorSpecific: "",
+          });
+        }
+      }
+    }
+
+    if (this.state.passwordConfirmation === "") {
+      if (
+        !new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").test(
+          this.state.user.passwordConfirmation
+        )
+      ) {
+        await this.setState({
+          passwordConfirmationError: true,
+          passwordConfirmationErrorSpecific:
+            "Erro: A palavra-passe deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula e um número.",
+          canRegister: false,
+        });
+      } else {
+        if (this.state.user.password !== this.state.user.passwordConfirmation) {
+          await this.setState({
+            passwordError: true,
+            passwordConfirmationError: true,
+            passwordErrorSpecific: "Erro: As palavras-passe têm que coincidir.",
+            passwordConfirmationErrorSpecific:
+              "Erro: As palavras-passe têm que coincidir.",
+            canRegister: false,
+          });
+        } else {
+          await this.setState({
+            passwordConfirmationError: false,
+            passwordConfirmationErrorSpecific: "",
+          });
+        }
+      }
+    }
+
+    if (this.state.user.birthDate === "") {
+      await this.setState({
+        birthDateError: true,
+        canRegister: false,
+      });
+    } else {
+      await this.setState({
+        birthDateError: false,
+      });
+    }
+
+    if (this.state.user.nif === "") {
+      await this.setState({
+        nifError: true,
+        canRegister: false,
+      });
+    } else {
+      await this.setState({
+        nifError: false,
+      });
+    }
+
+    if (this.state.user.phone === "") {
+      await this.setState({
+        phoneError: true,
+        canRegister: false,
+      });
+    } else {
+      await this.setState({
+        phoneError: false,
+      });
+    }
+
+    if (
+      !this.state.nameError &&
+      !this.state.emailError &&
+      !this.state.passwordError &&
+      !this.state.passwordConfirmationError &&
+      !this.state.birthDateError &&
+      !this.state.nifError &&
+      !this.state.phoneError
+    ) {
+      await this.setState({
+        canRegister: true,
+      });
+    }
+
+    if (this.state.canRegister) {
       this.setState({
-        loadingMessage: "Conta criada com sucesso! A autenticar...",
+        showLoading: true,
+        loadingMessage: "A registar a sua conta...",
       });
 
-      const { authorization } = await login(user.email, user.password);
-      await getAndStoreUserData(authorization);
-      this.setState({ showLoading: false });
-      this.props.navigation.navigate("Start");
-    } catch (error) {
-      this.setState({
-        showLoading: false,
-        showError: true,
-        errorMessage: error.message,
-      });
+      const { user } = this.state;
+
+      try {
+        await register({
+          ...user,
+          nif: parseInt(user.nif.replace(/\D/g, "")),
+          phone: parseInt(user.phone.replace(/\D/g, "")),
+        });
+
+        this.setState({
+          loadingMessage: "Conta criada com sucesso! A autenticar...",
+        });
+
+        const { authorization } = await login(user.email, user.password);
+        await getAndStoreUserData(authorization);
+        this.setState({ showLoading: false });
+        this.props.navigation.navigate("Start");
+      } catch (error) {
+        this.setState({
+          showLoading: false,
+          showError: true,
+          errorMessage: error.message,
+        });
+      }
     }
   }
 
@@ -129,6 +279,10 @@ module.exports = class Register extends React.Component {
               placeholder="João Santos"
               onFocus={() => this.setState({ showDatePicker: false })}
             />
+            <HelperText type="error" visible={this.state.nameError}>
+              Erro: Nome inválido.
+            </HelperText>
+
             <TextInput
               label="Email"
               value={this.state.user.email}
@@ -144,6 +298,10 @@ module.exports = class Register extends React.Component {
               placeholder="joão.santos@selyt.pt"
               onFocus={() => this.setState({ showDatePicker: false })}
             />
+            <HelperText type="error" visible={this.state.emailError}>
+              Erro: Email inválido.
+            </HelperText>
+
             <TextInput
               label="Palavra-passe"
               value={this.state.user.password}
@@ -166,6 +324,10 @@ module.exports = class Register extends React.Component {
               }
               onFocus={() => this.setState({ showDatePicker: false })}
             />
+            <HelperText type="error" visible={this.state.passwordError}>
+              {this.state.passwordErrorSpecific}
+            </HelperText>
+
             <TextInput
               label="Confirmação de palavra-passe"
               value={this.state.user.passwordConfirmation}
@@ -193,6 +355,13 @@ module.exports = class Register extends React.Component {
               }
               onFocus={() => this.setState({ showDatePicker: false })}
             />
+            <HelperText
+              type="error"
+              visible={this.state.passwordConfirmationError}
+            >
+              {this.state.passwordConfirmationErrorSpecific}
+            </HelperText>
+
             <TextInput
               label="Data de Nascimento"
               value={
@@ -218,6 +387,9 @@ module.exports = class Register extends React.Component {
               }}
               left={<TextInput.Icon name="calendar-range" />}
             />
+            <HelperText type="error" visible={this.state.birthDateError}>
+              Erro: Data de nascimento inválida.
+            </HelperText>
 
             <TextInput
               label="NIF"
@@ -237,6 +409,10 @@ module.exports = class Register extends React.Component {
               )}
               onFocus={() => this.setState({ showDatePicker: false })}
             />
+            <HelperText type="error" visible={this.state.nifError}>
+              Erro: NIF inválido. Formato: 000 000 000
+            </HelperText>
+
             <TextInput
               label="Número de Telemóvel"
               value={this.state.user.phone}
@@ -255,6 +431,10 @@ module.exports = class Register extends React.Component {
               )}
               onFocus={() => this.setState({ showDatePicker: false })}
             />
+            <HelperText type="error" visible={this.state.phoneError}>
+              Erro: Número de telemóvel inválido. Formato: 000 000 000
+            </HelperText>
+
             <Text style={styles.text}>
               Ao registar uma conta na plataforma Selyt, concorda com os [termos
               de uso] e [política de privacidade] da plataforma.
