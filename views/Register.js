@@ -103,12 +103,6 @@ module.exports = class Register extends React.Component {
       });
     }
 
-    console.log(
-      new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").test(
-        this.state.user.password
-      )
-    );
-
     if (this.state.user.password === "") {
       if (
         !new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").test(
