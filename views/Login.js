@@ -5,6 +5,7 @@ import {
   Dialog,
   Paragraph,
   ActivityIndicator,
+  HelperText,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -34,28 +35,53 @@ module.exports = class Login extends React.Component {
       loadingMessage: "",
       showError: false,
       errorMessage: "",
+      emailError: false,
+      passwordError: false,
+      canLogin: true,
     };
 
     this.login = this.login.bind(this);
   }
 
   async login() {
-    this.setState({ showLoading: true, loadingMessage: "A autenticar..." });
+    // Verifications
+    if (this.state.email.length == 0) {
+      await this.setState({ emailError: true, canLogin: false });
+    } else {
+      await this.setState({ emailError: false });
+    }
 
-    try {
-      const { authorization } = await login(
-        this.state.email,
-        this.state.password
-      );
-      await getAndStoreUserData(authorization);
-      this.setState({ showLoading: false });
-      this.props.navigation.navigate("Start");
-    } catch (error) {
-      this.setState({
-        showLoading: false,
-        showError: true,
-        errorMessage: error.message,
+    if (this.state.password.length == 0) {
+      await this.setState({ passwordError: true, canLogin: false });
+    } else {
+      await this.setState({ passwordError: false });
+    }
+
+    if (this.state.email.length > 0 && this.state.password.length > 0) {
+      await this.setState({ canLogin: true });
+    }
+
+    if (this.state.canLogin) {
+      await this.setState({
+        showLoading: true,
+        loadingMessage: "A autenticar...",
       });
+
+      try {
+        const { authorization } = await login(
+          this.state.email,
+          this.state.password
+        );
+        await getAndStoreUserData(authorization);
+        this.setState({ showLoading: false });
+        this.props.navigation.navigate("Start");
+      } catch (error) {
+        this.setState({
+          showLoading: false,
+          showError: true,
+          errorMessage: error.message,
+        });
+      }
     }
   }
 
@@ -84,6 +110,10 @@ module.exports = class Login extends React.Component {
               keyboardType="email-address"
               left={<TextInput.Icon name="email" />}
             />
+            <HelperText type="error" visible={this.state.emailError}>
+              Erro: Email inválido.
+            </HelperText>
+
             <TextInput
               label="Palavra-passe"
               value={this.state.password}
@@ -103,6 +133,9 @@ module.exports = class Login extends React.Component {
                 />
               }
             />
+            <HelperText type="error" visible={this.state.passwordError}>
+              Erro: Palavra-passe inválida.
+            </HelperText>
 
             <Text>&nbsp;</Text>
 
