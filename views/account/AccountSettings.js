@@ -86,7 +86,6 @@ module.exports = class AccountSettings extends React.Component {
         email: this.state.user.email,
         nif: this.state.user.nif,
         phone: this.state.user.phone,
-        iban: this.state.user.iban,
       })
         .then((res) => res.json())
         .then(async (res) => {
@@ -192,19 +191,6 @@ module.exports = class AccountSettings extends React.Component {
                 keyboardType="phone-pad"
                 left={<TextInput.Icon name="card-account-phone" />}
                 placeholder="912 345 678"
-              />
-              <TextInput
-                label="IBAN"
-                value={this.state.user?.iban}
-                style={styles.textInput}
-                selectionColor={THEME_OBJECT.colors.customSelectionColor}
-                underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
-                activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
-                onChangeText={(text) =>
-                  this.setState({ user: { ...this.state.user, iban: text } })
-                }
-                left={<TextInput.Icon name="bank" />}
-                placeholder="PT50 0011 2213 3456 7890 0002 3"
               />
               <TextInput
                 label="Palavra-passe atual"
