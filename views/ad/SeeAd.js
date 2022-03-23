@@ -274,7 +274,7 @@ module.exports = class SeeAd extends React.Component {
           style={styles.fabBack}
           small
           icon="arrow-left-circle"
-          onPress={() => this.props.navigation.goBack()}
+          onPress={() => this.props.navigation.navigate("Start")}
         />
       </SafeAreaView>
     );

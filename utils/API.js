@@ -74,6 +74,12 @@ module.exports = class API {
     return API.post("/ad/create", body, authorization);
   }
 
+  static searchAds(authorization, query) {
+    return API.get(`/ad/search?query=${query}`, {
+      authorization,
+    });
+  }
+
   static get(route, headers = {}) {
     return fetch(`${BASE_URL}${route}`, {
       headers,

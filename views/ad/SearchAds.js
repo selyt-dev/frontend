@@ -1,22 +1,20 @@
-import { TextInput, Card } from "react-native-paper";
+import { TextInput, Card, Text } from "react-native-paper";
 import React from "react";
 import {
   StyleSheet,
-  Text,
   StatusBar,
   ScrollView,
   SafeAreaView,
   Pressable,
+  TextInputComponent,
 } from "react-native";
 
-import AdCard from "./components/AdCard";
-import Footer from "./components/Footer";
-
-import { THEME_OBJECT } from "../utils/react/ThemeModule";
+import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import * as SecureStore from "expo-secure-store";
 
-import API from "../utils/API";
+import API from "../../utils/API";
+import AdCard from "../components/AdCard";
 
 module.exports = class Start extends React.Component {
   constructor(props) {
@@ -26,17 +24,22 @@ module.exports = class Start extends React.Component {
       ads: [],
     };
 
-    this.redirectToSearch = this.redirectToSearch.bind(this);
+    this.searchAds = this.searchAds.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
-  async componentDidMount() {
-    const authorization = await SecureStore.getItemAsync("authorization");
-    const res = await API.getAds(authorization).then((res) => res.json());
-    this.setState({ ads: res.ads });
+  async searchAds() {
+    if (this.state.search?.length > 0) {
+      const authorization = await SecureStore.getItemAsync("authorization");
+      const res = await API.searchAds(authorization, this.state.search).then(
+        (res) => res.json()
+      );
+      this.setState({ ads: res.ads });
+    }
   }
 
-  async redirectToSearch() {
-    return this.props.navigation.navigate("SearchAds");
+  async goBack() {
+    return this.props.navigation.navigate("Start");
   }
 
   render() {
@@ -47,24 +50,17 @@ module.exports = class Start extends React.Component {
           value={this.state.search}
           style={styles.textInput}
           onChangeText={(text) => this.setState({ search: text })}
-          onFocus={this.redirectToSearch}
+          left={<TextInput.Icon name="close" onPress={this.goBack} />}
+          right={<TextInput.Icon name="magnify" onPress={this.searchAds} />}
+          autoFocus={true}
           selectionColor={THEME_OBJECT.colors.customSelectionColor}
           underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
           activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
-          left={<TextInput.Icon name="magnify" />}
         />
 
         <ScrollView style={styles.insideContainer}>
-          <Pressable onPress={() => console.log("Ver todas as categorias")}>
-            <Card>
-              <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />
-            </Card>
-          </Pressable>
-
-          <Text>&nbsp;</Text>
-
           <Card>
-            <Card.Title title="Anúncios Recomendados" />
+            <Card.Title title="Anúncios" />
             <Card.Content style={styles.adCard}>
               {this.state.ads?.length > 0 ? (
                 this.state.ads?.map((ad) => <AdCard ad={ad} key={ad.id} />)
@@ -74,7 +70,6 @@ module.exports = class Start extends React.Component {
             </Card.Content>
           </Card>
         </ScrollView>
-        <Footer />
       </SafeAreaView>
     );
   }

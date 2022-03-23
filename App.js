@@ -9,6 +9,7 @@ import SeeAd from "./views/ad/SeeAd.js";
 import SelectCategory from "./views/ad/SelectCategory.js";
 import FavoriteAds from "./views/ad/FavoriteAds.js";
 import ChatList from "./views/chat/ChatList.js";
+import SearchAds from "./views/ad/SearchAds.js";
 
 import "intl";
 import "intl/locale-data/jsonp/pt-PT";
@@ -109,6 +110,11 @@ export default function App() {
                 component={Start}
               />
               <Stack.Screen
+                name="SearchAds"
+                options={{ headerShown: false }}
+                component={SearchAds}
+              />
+              <Stack.Screen
                 name="CreateAd"
                 options={{ headerShown: false }}
                 component={CreateAd}
@@ -180,6 +186,11 @@ export default function App() {
                 name="Start"
                 options={{ headerShown: false }}
                 component={Start}
+              />
+              <Stack.Screen
+                name="SearchAds"
+                options={{ headerShown: false }}
+                component={SearchAds}
               />
               <Stack.Screen
                 name="CreateAd"
