@@ -6,6 +6,7 @@ import Account from "./views/account/Account.js";
 import AccountSettings from "./views/account/AccountSettings.js";
 import CreateAd from "./views/ad/CreateAd.js";
 import SeeAd from "./views/ad/SeeAd.js";
+import EditAd from "./views/ad/EditAd.js";
 import SelectCategory from "./views/ad/SelectCategory.js";
 import FavoriteAds from "./views/ad/FavoriteAds.js";
 import ChatList from "./views/chat/ChatList.js";
@@ -140,6 +141,11 @@ export default function App() {
                 component={SeeAd}
               />
               <Stack.Screen
+                name="EditAd"
+                options={{ headerShown: false }}
+                component={EditAd}
+              />
+              <Stack.Screen
                 name="Account"
                 options={{ headerShown: false }}
                 component={Account}
@@ -216,6 +222,11 @@ export default function App() {
                 name="SeeAd"
                 options={{ headerShown: false }}
                 component={SeeAd}
+              />
+              <Stack.Screen
+                name="EditAd"
+                options={{ headerShown: false }}
+                component={EditAd}
               />
               <Stack.Screen
                 name="Account"

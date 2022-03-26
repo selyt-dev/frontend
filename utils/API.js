@@ -21,6 +21,10 @@ module.exports = class API {
     return API.get("/user/@me", { authorization });
   }
 
+  static getAd(adId, authorization) {
+    return API.get(`/ad/${adId}/data`, { authorization });
+  }
+
   static getAds(authorization) {
     return API.get("/ad", { authorization });
   }
@@ -78,6 +82,10 @@ module.exports = class API {
     return API.get(`/ad/search?query=${query}`, {
       authorization,
     });
+  }
+
+  static editAd(authorization, adId, body) {
+    return API.put(`/ad/${adId}/edit`, authorization, body);
   }
 
   static get(route, headers = {}) {

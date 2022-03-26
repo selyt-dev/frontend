@@ -32,6 +32,8 @@ module.exports = class FavoriteAds extends React.Component {
     const favorites = (await getItemAsync("favorites", true)) || [];
     const authorization = await SecureStore.getItemAsync("authorization");
 
+    console.log(favorites);
+
     const res = await API.getMultipleAds(favorites, authorization)
       .then((res) => res.json())
       .catch((err) => console.log(err));

@@ -49,8 +49,11 @@ module.exports = class SelectCategory extends React.Component {
 
   async selectCategory(category) {
     const { navigation } = this.props;
+    const routes = navigation.getState()?.routes;
+    const prevRoute = routes[routes.length - 2];
+    
     navigation.navigate({
-      name: "CreateAd",
+      name: prevRoute.name,
       params: { category },
     });
   }

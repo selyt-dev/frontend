@@ -40,7 +40,8 @@ module.exports = class SeeAd extends React.Component {
     super(props);
 
     this.state = {
-      user: null,
+      userId: "",
+      adId: "",
       ad: {
         title: "",
         description: "",
@@ -61,7 +62,16 @@ module.exports = class SeeAd extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ ad: this.props.route.params.ad });
+    this.setState({ adId: this.props.route.params.ad.id });
+
+    const authorization = await SecureStore.getItemAsync("authorization");
+
+    const adData = await API.getAd(this.state.adId, authorization).then((res) => res.json());
+
+    this.setState({ ad: adData.ad });
+
+    await API.addVisit(this.state.ad.id, authorization);
+
     moment.locale(NativeModules.I18nManager.localeIdentifier);
     const formatter = new Intl.NumberFormat(
       NativeModules.I18nManager.localeIdentifier.replace("_", "-"),
@@ -72,8 +82,8 @@ module.exports = class SeeAd extends React.Component {
     );
     this.setState({ formatter });
 
-    const authorization = await SecureStore.getItemAsync("authorization");
-    await API.addVisit(this.state.ad.id, authorization);
+    const { id } = await getItemAsync("user").then((user) => JSON.parse(user));
+    this.setState({ userId: id });
 
     const favorites = await getItemAsync("favorites");
     if (favorites) {
@@ -107,7 +117,7 @@ module.exports = class SeeAd extends React.Component {
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={true}
         >
-          {this.state.ad.images?.length > 0 ? (
+          {this.state.ad?.images?.length > 0 ? (
             <ImageView
               images={this.state.ad?.images.map((image) => {
                 return {
@@ -120,7 +130,7 @@ module.exports = class SeeAd extends React.Component {
             />
           ) : null}
 
-          {this.state.ad.images?.length > 0 ? (
+          {this.state.ad?.images?.length > 0 ? (
             <SliderBox
               images={this.state.ad?.images.map(
                 (image) =>
@@ -222,7 +232,7 @@ module.exports = class SeeAd extends React.Component {
                     source={{
                       uri:
                         this.state.avatar ||
-                        `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
+                        `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.ad?.User?.id}.jpg`,
                     }}
                   />
                 ) : (
@@ -276,6 +286,14 @@ module.exports = class SeeAd extends React.Component {
           icon="arrow-left-circle"
           onPress={() => this.props.navigation.navigate("Start")}
         />
+        {this.state.ad?.User?.id === this.state.userId ? (
+          <FAB
+            style={styles.fabEdit}
+            small
+            icon="pencil"
+            onPress={() => this.props.navigation.navigate("EditAd", { ad: this.state.ad })}
+          />
+        ) : null}
       </SafeAreaView>
     );
   }
@@ -308,6 +326,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: StatusBar.currentHeight + 10,
     left: 10,
+  },
+  fabEdit: {
+    position: "absolute",
+    top: StatusBar.currentHeight + 10,
+    right: 10,
   },
   fab: {
     position: "absolute",
