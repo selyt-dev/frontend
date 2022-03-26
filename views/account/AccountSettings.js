@@ -143,7 +143,7 @@ module.exports = class AccountSettings extends React.Component {
               />
               <Text style={styles.logoText}>Definições</Text>
             </Card.Content>
-            
+
             <Card.Content style={styles.card}>
               <Text>&nbsp;</Text>
             </Card.Content>

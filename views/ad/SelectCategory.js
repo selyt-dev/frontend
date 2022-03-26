@@ -51,7 +51,7 @@ module.exports = class SelectCategory extends React.Component {
     const { navigation } = this.props;
     const routes = navigation.getState()?.routes;
     const prevRoute = routes[routes.length - 2];
-    
+
     navigation.navigate({
       name: prevRoute.name,
       params: { category },

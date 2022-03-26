@@ -65,13 +65,15 @@ module.exports = class Start extends React.Component {
           left={<TextInput.Icon name="magnify" />}
         />
 
-        <ScrollView style={styles.insideContainer}
+        <ScrollView
+          style={styles.insideContainer}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this.refresh}
             />
-          }>
+          }
+        >
           <Pressable onPress={() => console.log("Ver todas as categorias")}>
             <Card>
               <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />

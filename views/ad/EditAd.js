@@ -154,8 +154,8 @@ module.exports = class EditAd extends React.Component {
     };
 
     try {
-      const response = await API.editAd(authorization, _ad.id, adObject).then((res) =>
-        res.json()
+      const response = await API.editAd(authorization, _ad.id, adObject).then(
+        (res) => res.json()
       );
 
       if (response.ok) {
