@@ -1,4 +1,4 @@
-import { Card, TextInput, Button } from "react-native-paper";
+import { Card, TextInput, Button, IconButton } from "react-native-paper";
 import React from "react";
 import { StyleSheet, Text, StatusBar, SafeAreaView } from "react-native";
 
@@ -134,9 +134,23 @@ module.exports = class AccountSettings extends React.Component {
           scrollEnabled={true}
         >
           <Card style={styles.card}>
-            <Card.Content style={styles.card}>
+            <Card.Content style={styles.adCard}>
+              <IconButton
+                icon="arrow-left-circle"
+                onPress={() => this.props.navigation.goBack()}
+                color={THEME_OBJECT.colors.customSelectionColor}
+                size={38}
+              />
               <Text style={styles.logoText}>Definições</Text>
+            </Card.Content>
+            
+            <Card.Content style={styles.card}>
               <Text>&nbsp;</Text>
+            </Card.Content>
+          </Card>
+
+          <Card style={styles.card}>
+            <Card.Content style={styles.card}>
               <TextInput
                 label="Nome"
                 value={this.state.user?.name}
@@ -268,8 +282,11 @@ const styles = StyleSheet.create({
     backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
     paddingTop: StatusBar.currentHeight,
   },
-  avatarContainer: {
+  setting: {
+    flexDirection: "row",
     alignItems: "center",
+    margin: 10,
+    justifyContent: "space-between",
   },
   name: {
     fontSize: 24,
@@ -303,24 +320,33 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoText: {
-    color: THEME_OBJECT.colors.text,
     fontFamily: "CoolveticaRegular",
     fontSize: 35,
+    color: THEME_OBJECT.colors.text,
+  },
+  subLogoText: {
+    fontFamily: "CoolveticaRegular",
+    fontSize: 24,
+    color: THEME_OBJECT.colors.text,
   },
   textInput: {
     marginBottom: 7,
+    color: THEME_OBJECT.colors.text,
   },
   adCard: {
     flex: 1,
-    alignContent: "center",
+    //alignContent: "center",
     flexDirection: "row",
-    justifyContent: "center",
+    alignItems: "baseline",
+    //justifyContent: "center",
   },
   card: {
     flex: 1,
-    //    flexDirection: "row",
   },
   logout: {
     color: "#ff3b3b",
+  },
+  text: {
+    color: THEME_OBJECT.colors.text,
   },
 });

@@ -177,6 +177,10 @@ module.exports = class CreateAd extends React.Component {
               />
               <Text style={styles.logoText}>Criar novo anúncio</Text>
             </Card.Content>
+
+            <Card.Content style={styles.card}>
+              <Text>&nbsp;</Text>
+            </Card.Content>
           </Card>
 
           <Card style={styles.card}>

@@ -15,6 +15,7 @@ import {
   View,
   SafeAreaView,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 
 import { setItemAsync, getItemAsync } from "../../utils/react/DataStore";
@@ -56,9 +57,11 @@ module.exports = class SeeAd extends React.Component {
       snackbarVisible: false,
       galleryVisible: false,
       imageIndex: 0,
+      refreshing: false,
     };
 
     this.setFavorite = this.setFavorite.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
   async componentDidMount() {
@@ -66,7 +69,9 @@ module.exports = class SeeAd extends React.Component {
 
     const authorization = await SecureStore.getItemAsync("authorization");
 
-    const adData = await API.getAd(this.state.adId, authorization).then((res) => res.json());
+    const adData = await API.getAd(this.state.adId, authorization).then((res) =>
+      res.json()
+    );
 
     this.setState({ ad: adData.ad });
 
@@ -109,6 +114,18 @@ module.exports = class SeeAd extends React.Component {
     });
   }
 
+  async refresh() {
+    await this.setState({ refreshing: true });
+
+    const authorization = await SecureStore.getItemAsync("authorization");
+
+    const adData = await API.getAd(this.state.adId, authorization).then((res) =>
+      res.json()
+    );
+
+    this.setState({ ad: adData.ad, refreshing: false });
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -116,6 +133,12 @@ module.exports = class SeeAd extends React.Component {
           style={styles.insideContainer}
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={true}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.refresh}
+            />
+          }
         >
           {this.state.ad?.images?.length > 0 ? (
             <ImageView
@@ -166,6 +189,7 @@ module.exports = class SeeAd extends React.Component {
               small
               icon={this.state.isFavorite ? "heart" : "heart-outline"}
               onPress={this.setFavorite}
+              disabled={this.state.ad?.User?.id === this.state.userId}
             />
           </Card>
 
@@ -257,6 +281,7 @@ module.exports = class SeeAd extends React.Component {
                 icon="android-messages"
                 mode="contained"
                 style={styles.button}
+                disabled={this.state.ad?.User?.id === this.state.userId}
                 onPress={() => console.log("Send Message")}
               >
                 Contactar Vendedor
@@ -291,7 +316,9 @@ module.exports = class SeeAd extends React.Component {
             style={styles.fabEdit}
             small
             icon="pencil"
-            onPress={() => this.props.navigation.navigate("EditAd", { ad: this.state.ad })}
+            onPress={() =>
+              this.props.navigation.navigate("EditAd", { ad: this.state.ad })
+            }
           />
         ) : null}
       </SafeAreaView>

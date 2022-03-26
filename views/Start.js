@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   Pressable,
+  RefreshControl,
 } from "react-native";
 
 import AdCard from "./components/AdCard";
@@ -24,9 +25,11 @@ module.exports = class Start extends React.Component {
     this.state = {
       search: "",
       ads: [],
+      refreshing: false,
     };
 
     this.redirectToSearch = this.redirectToSearch.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
   async componentDidMount() {
@@ -37,6 +40,14 @@ module.exports = class Start extends React.Component {
 
   async redirectToSearch() {
     return this.props.navigation.navigate("SearchAds");
+  }
+
+  async refresh() {
+    await this.setState({ refreshing: true });
+
+    const authorization = await SecureStore.getItemAsync("authorization");
+    const res = await API.getAds(authorization).then((res) => res.json());
+    this.setState({ ads: res.ads, refreshing: false });
   }
 
   render() {
@@ -54,7 +65,13 @@ module.exports = class Start extends React.Component {
           left={<TextInput.Icon name="magnify" />}
         />
 
-        <ScrollView style={styles.insideContainer}>
+        <ScrollView style={styles.insideContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.refresh}
+            />
+          }>
           <Pressable onPress={() => console.log("Ver todas as categorias")}>
             <Card>
               <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />

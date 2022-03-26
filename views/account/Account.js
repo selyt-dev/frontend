@@ -47,6 +47,7 @@ module.exports = class Account extends React.Component {
       loadingVisible: false,
       errorVisible: false,
       errorMessage: "",
+      authorization: "",
     };
 
     this.changeAvatar = this.changeAvatar.bind(this);
@@ -54,9 +55,11 @@ module.exports = class Account extends React.Component {
 
   async componentDidMount() {
     moment.locale(NativeModules.I18nManager.localeIdentifier);
+    const authorization = await SecureStore.getItemAsync("authorization");
     getUserData().then((user) => {
       this.setState({
         user,
+        authorization,
         avatar: user.hasAvatar
           ? `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${user.id}.jpg`
           : "",
@@ -173,12 +176,17 @@ module.exports = class Account extends React.Component {
                 <List.Item
                   title="Os seus anúncios"
                   left={() => <List.Icon icon="post" />}
-                  onPress={() => console.log("Pressed Ads")}
+                  onPress={() => this.props.navigation.navigate("AccountAds")}
                 />
                 <List.Item
                   title="Suporte"
                   left={() => <List.Icon icon="help-circle" />}
-                  onPress={() => console.log("Pressed Support")}
+                  onPress={() =>
+                    Linking.openURL(
+                      "https://personal-95ufgxph.outsystemscloud.com/SupportRequest/Create?Token=" +
+                        this.state.authorization.replpace("Basic ", "")
+                    )
+                  }
                 />
                 <List.Item
                   title="Sair"

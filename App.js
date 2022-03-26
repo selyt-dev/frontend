@@ -4,6 +4,7 @@ import Login from "./views/Login.js";
 import Start from "./views/Start.js";
 import Account from "./views/account/Account.js";
 import AccountSettings from "./views/account/AccountSettings.js";
+import AccountAds from "./views/account/AccountAds.js";
 import CreateAd from "./views/ad/CreateAd.js";
 import SeeAd from "./views/ad/SeeAd.js";
 import EditAd from "./views/ad/EditAd.js";
@@ -156,6 +157,11 @@ export default function App() {
                 component={AccountSettings}
               />
               <Stack.Screen
+                name="AccountAds"
+                options={{ headerShown: false }}
+                component={AccountAds}
+              />
+              <Stack.Screen
                 name="Main"
                 options={{ headerShown: false }}
                 component={Main}
@@ -237,6 +243,11 @@ export default function App() {
                 name="AccountSettings"
                 options={{ headerShown: false }}
                 component={AccountSettings}
+              />
+              <Stack.Screen
+                name="AccountAds"
+                options={{ headerShown: false }}
+                component={AccountAds}
               />
             </>
           )}

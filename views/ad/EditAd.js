@@ -48,6 +48,7 @@ module.exports = class EditAd extends React.Component {
         price: "",
         images: [],
         isNegotiable: false,
+        isActive: true,
         region: "",
       },
       imagesBase64: [],
@@ -147,6 +148,7 @@ module.exports = class EditAd extends React.Component {
       categoryId: _ad.categoryId,
       price: _ad.price,
       isNegotiable: _ad.isNegotiable,
+      isActive: _ad.isActive,
       region: _ad.region,
       images: _ad.images,
     };
@@ -283,6 +285,18 @@ module.exports = class EditAd extends React.Component {
                   onValueChange={(value) =>
                     this.setState({
                       ad: { ...this.state.ad, isNegotiable: value },
+                    })
+                  }
+                />
+              </View>
+
+              <View style={styles.setting}>
+                <Text style={styles.textInput}>Anúncio ativo?</Text>
+                <Switch
+                  value={this.state.ad?.isActive}
+                  onValueChange={(value) =>
+                    this.setState({
+                      ad: { ...this.state.ad, isActive: value },
                     })
                   }
                 />
