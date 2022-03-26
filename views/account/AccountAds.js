@@ -93,7 +93,7 @@ module.exports = class AccountAds extends React.Component {
           </Card>
 
           <Card style={styles.card}>
-            <Card.Content style={styles.card}>
+            <Card.Content style={styles.adsCard}>
               {this.state.ads?.length > 0 ? (
                 this.state.ads?.map((ad) => <AdCard ad={ad} key={ad.id} />)
               ) : (
@@ -171,6 +171,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "baseline",
     //justifyContent: "center",
+  },
+  adsCard: {
+    flex: 1,
+    flexWrap: "wrap",
+    alignContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   card: {
     flex: 1,

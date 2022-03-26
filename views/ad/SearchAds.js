@@ -16,7 +16,7 @@ import * as SecureStore from "expo-secure-store";
 import API from "../../utils/API";
 import AdCard from "../components/AdCard";
 
-module.exports = class Start extends React.Component {
+module.exports = class SearchAds extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

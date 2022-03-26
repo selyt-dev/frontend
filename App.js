@@ -9,6 +9,8 @@ import CreateAd from "./views/ad/CreateAd.js";
 import SeeAd from "./views/ad/SeeAd.js";
 import EditAd from "./views/ad/EditAd.js";
 import SelectCategory from "./views/ad/SelectCategory.js";
+import SelectCategoryForSearch from "./views/ad/SelectCategoryForSearch.js";
+import SearchAdsByCategory from "./views/ad/SearchAdsByCategory.js";
 import FavoriteAds from "./views/ad/FavoriteAds.js";
 import ChatList from "./views/chat/ChatList.js";
 import SearchAds from "./views/ad/SearchAds.js";
@@ -137,6 +139,16 @@ export default function App() {
                 component={SelectCategory}
               />
               <Stack.Screen
+                name="SearchAdsByCategory"
+                options={{ headerShown: false }}
+                component={SearchAdsByCategory}
+              />
+              <Stack.Screen
+                name="SelectCategoryForSearch"
+                options={{ headerShown: false }}
+                component={SelectCategoryForSearch}
+              />
+              <Stack.Screen
                 name="SeeAd"
                 options={{ headerShown: false }}
                 component={SeeAd}
@@ -223,6 +235,16 @@ export default function App() {
                 name="SelectCategory"
                 options={{ headerShown: false }}
                 component={SelectCategory}
+              />
+              <Stack.Screen
+                name="SearchAdsByCategory"
+                options={{ headerShown: false }}
+                component={SearchAdsByCategory}
+              />
+              <Stack.Screen
+                name="SelectCategoryForSearch"
+                options={{ headerShown: false }}
+                component={SelectCategoryForSearch}
               />
               <Stack.Screen
                 name="SeeAd"

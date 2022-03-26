@@ -17,6 +17,14 @@ module.exports = class AdCard extends React.Component {
     this.onPress = this.onPress.bind(this);
 
     moment.locale(NativeModules.I18nManager.localeIdentifier);
+
+    this.formatter = new Intl.NumberFormat(
+      NativeModules.I18nManager.localeIdentifier.replace("_", "-"),
+      {
+        style: "currency",
+        currency: "EUR",
+      }
+    );
   }
 
   onPress() {
@@ -44,7 +52,7 @@ module.exports = class AdCard extends React.Component {
           />
         )}
         <Title>{this.props.ad.title}</Title>
-        <Subheading>{this.props.ad.price} €</Subheading>
+        <Subheading>{this.formatter.format(this.props.ad.price)}</Subheading>
 
         <Caption>{this.props.ad.region}</Caption>
         <Caption>

@@ -29,7 +29,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import * as SecureStore from "expo-secure-store";
 
-module.exports = class SelectCategory extends React.Component {
+module.exports = class SelectCategoryForSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,11 +49,8 @@ module.exports = class SelectCategory extends React.Component {
 
   async selectCategory(category) {
     const { navigation } = this.props;
-    const routes = navigation.getState()?.routes;
-    const prevRoute = routes[routes.length - 2];
-
     navigation.navigate({
-      name: prevRoute.name,
+      name: "SearchAdsByCategory",
       params: { category },
     });
   }

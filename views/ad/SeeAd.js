@@ -176,6 +176,7 @@ module.exports = class SeeAd extends React.Component {
           <Card>
             <Card.Title
               title={this.state.ad?.title}
+              titleNumberOfLines={2}
               subtitle={`${this.state.formatter?.format(
                 this.state.ad?.price
               )} ${this.state.ad?.isNegotiable ? "(Negociável)" : ""}`}

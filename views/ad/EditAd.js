@@ -73,7 +73,6 @@ module.exports = class EditAd extends React.Component {
     this.setState({ formatter });
 
     const { route } = this.props;
-    console.log(route.params.ad);
     this.setState({ ad: route.params.ad, category: route.params.ad.Category });
   }
 
@@ -81,7 +80,6 @@ module.exports = class EditAd extends React.Component {
     const { route } = this.props;
 
     if (route.params && route.params.category && !this.state.categoryUpdated) {
-      console.log(route.params.category);
       this.setState({
         ad: { ...this.state.ad, categoryId: route.params.category.id },
         category: route.params.category,
@@ -114,8 +112,6 @@ module.exports = class EditAd extends React.Component {
         });
 
         if (!result.cancelled) {
-          console.log(result);
-
           this.setState({
             ad: {
               ...this.state.ad,
@@ -133,7 +129,6 @@ module.exports = class EditAd extends React.Component {
   }
 
   async editAd() {
-    console.log("Edit ad");
     this.setState({ loadingVisible: true });
 
     const { ad } = this.state;
@@ -310,7 +305,15 @@ module.exports = class EditAd extends React.Component {
               <Text>&nbsp;</Text>
               {this.state.ad?.images && this.state.ad?.images.length > 0 ? (
                 <SliderBox
-                  images={this.state.ad?.images}
+                  images={this.state.ad?.images.map((image) =>
+                    image.startsWith("file:///")
+                      ? image
+                      : "https://cdn.selyt.pt/ads/" +
+                        this.state.ad?.id +
+                        "/" +
+                        image +
+                        ".jpg"
+                  )}
                   dotColor={THEME_OBJECT.colors.customSelectionColor}
                   parentWidth={Dimensions.get("window").width - 32}
                 />

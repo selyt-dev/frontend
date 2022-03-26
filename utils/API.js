@@ -33,6 +33,12 @@ module.exports = class API {
     return API.get("/ad/@me", { authorization });
   }
 
+  static searchAdsByCategory(categoryId, authorization) {
+    return API.get(`/ad/search-by-category?category=${categoryId}`, {
+      authorization,
+    });
+  }
+
   static getMultipleAds(adIds, authorization) {
     return API.get(`/ad/multiple?ads=${adIds.join(",")}`, { authorization });
   }

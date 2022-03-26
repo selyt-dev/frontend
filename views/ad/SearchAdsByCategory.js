@@ -1,53 +1,53 @@
-import { TextInput, Card } from "react-native-paper";
+import { TextInput, Card, Text } from "react-native-paper";
 import React from "react";
 import {
   StyleSheet,
-  Text,
   StatusBar,
   ScrollView,
   SafeAreaView,
   Pressable,
-  RefreshControl,
+  TextInputComponent,
 } from "react-native";
 
-import AdCard from "./components/AdCard";
-import Footer from "./components/Footer";
-
-import { THEME_OBJECT } from "../utils/react/ThemeModule";
+import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import * as SecureStore from "expo-secure-store";
 
-import API from "../utils/API";
+import API from "../../utils/API";
+import AdCard from "../components/AdCard";
 
-module.exports = class Start extends React.Component {
+module.exports = class SearchAdsByCategory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       search: "",
+      category: {},
       ads: [],
-      refreshing: false,
     };
 
-    this.redirectToSearch = this.redirectToSearch.bind(this);
-    this.refresh = this.refresh.bind(this);
+    this.searchAds = this.searchAds.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   async componentDidMount() {
+    const { route } = this.props;
+    const category = route.params.category;
+
+    this.setState({ category });
+    this.searchAds();
+  }
+
+  async searchAds() {
     const authorization = await SecureStore.getItemAsync("authorization");
-    const res = await API.getAds(authorization).then((res) => res.json());
+    const res = await API.searchAdsByCategory(
+      this.state.category?.id,
+      authorization
+    ).then((res) => res.json());
     this.setState({ ads: res.ads });
   }
 
-  async redirectToSearch() {
-    return this.props.navigation.navigate("SearchAds");
-  }
-
-  async refresh() {
-    await this.setState({ refreshing: true });
-
-    const authorization = await SecureStore.getItemAsync("authorization");
-    const res = await API.getAds(authorization).then((res) => res.json());
-    this.setState({ ads: res.ads, refreshing: false });
+  async goBack() {
+    return this.props.navigation.navigate("Start");
   }
 
   render() {
@@ -55,39 +55,20 @@ module.exports = class Start extends React.Component {
       <SafeAreaView style={styles.container}>
         <TextInput
           label="O que procura?"
-          value={this.state.search}
+          value={`Categoria: ${this.state.category?.name}`}
           style={styles.textInput}
           onChangeText={(text) => this.setState({ search: text })}
-          onFocus={this.redirectToSearch}
+          left={<TextInput.Icon name="close" onPress={this.goBack} />}
+          right={<TextInput.Icon name="magnify" onPress={this.searchAds} />}
+          disabled={true}
           selectionColor={THEME_OBJECT.colors.customSelectionColor}
           underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
           activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
-          left={<TextInput.Icon name="magnify" />}
         />
 
-        <ScrollView
-          style={styles.insideContainer}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.refresh}
-            />
-          }
-        >
-          <Pressable
-            onPress={() =>
-              this.props.navigation.navigate("SelectCategoryForSearch")
-            }
-          >
-            <Card>
-              <Card.Title title="Explorar por Categoria" subtitle="Ver Todas" />
-            </Card>
-          </Pressable>
-
-          <Text>&nbsp;</Text>
-
+        <ScrollView style={styles.insideContainer}>
           <Card>
-            <Card.Title title="Anúncios Recomendados" />
+            <Card.Title title="Anúncios" />
             <Card.Content style={styles.adCard}>
               {this.state.ads?.length > 0 ? (
                 this.state.ads?.map((ad) => <AdCard ad={ad} key={ad.id} />)
@@ -97,7 +78,6 @@ module.exports = class Start extends React.Component {
             </Card.Content>
           </Card>
         </ScrollView>
-        <Footer />
       </SafeAreaView>
     );
   }
