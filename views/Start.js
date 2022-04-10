@@ -19,6 +19,8 @@ import * as SecureStore from "expo-secure-store";
 
 import API from "../utils/API";
 
+import Socket from "../utils/Socket";
+
 module.exports = class Start extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +38,8 @@ module.exports = class Start extends React.Component {
     const authorization = await SecureStore.getItemAsync("authorization");
     const res = await API.getAds(authorization).then((res) => res.json());
     this.setState({ ads: res.ads });
+
+    this.socket = new Socket(API.BASE_URL, authorization);
   }
 
   async redirectToSearch() {
