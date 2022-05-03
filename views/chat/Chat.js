@@ -213,7 +213,11 @@ module.exports = class Chat extends React.Component {
               onPress={() => this.props.navigation.goBack()}
             />
             <Title style={styles.title}>
-              {this.state.chat?.receiver?.name}
+              {this.state.chat?.senderId === this.state.self?.id
+                ? this.state.chat?.receiverId === this.state.self?.id
+                  ? "Chat"
+                  : this.state.chat?.receiver?.name
+                : this.state.chat?.sender?.name}
             </Title>
           </View>
         </View>
