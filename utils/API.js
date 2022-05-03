@@ -47,6 +47,18 @@ module.exports = class API {
     return API.get("/inbox/chats", { authorization });
   }
 
+  static getChat(id, authorization) {
+    return API.get(`/inbox/${id}`, { authorization });
+  }
+
+  static createChat(adId, authorization) {
+    return API.post("/inbox/create", { adId }, authorization);
+  }
+
+  static sendMessage(inboxId, message, authorization) {
+    return API.put(`/inbox/${inboxId}`, authorization, { message });
+  }
+
   static getTransactions(authorization) {
     return API.get("/user/@me/transactions", {
       authorization,

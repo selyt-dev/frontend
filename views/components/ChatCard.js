@@ -1,8 +1,10 @@
-import { NativeModules } from "react-native";
-import { Card, Avatar, Text } from "react-native-paper";
+import { NativeModules, Image } from "react-native";
+import { Card, Text } from "react-native-paper";
 import React from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { THEME_OBJECT } from "../../utils/react/ThemeModule";
+
+import { getUserData } from "../../utils/react/DataStore";
 
 import * as RootNavigation from "../../utils/react/RootNavigation.js";
 
@@ -12,6 +14,10 @@ module.exports = class ChatCard extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      self: {},
+    };
+
     this.props = props;
 
     this.onPress = this.onPress.bind(this);
@@ -20,8 +26,15 @@ module.exports = class ChatCard extends React.Component {
   }
 
   onPress() {
-    RootNavigation.navigate("SeeChat", {
-      chat: this.props.chat,
+    RootNavigation.navigate("Chat", {
+      payload: "join",
+      id: this.props.chat.id,
+    });
+  }
+
+  async componentDidMount() {
+    await getUserData().then((user) => {
+      this.setState({ self: user });
     });
   }
 
@@ -29,11 +42,31 @@ module.exports = class ChatCard extends React.Component {
     return (
       <Pressable onPress={this.onPress} style={styles.container}>
         <Card>
-          <Card.Content>
+          <Card.Content style={styles.fixToText}>
             <View style={styles.row}>
+              {this.props.chat.ad.images ? (
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: `https://cdn.selyt.pt/ads/${this.props.chat.ad.id}/${this.props.chat.ad.images[0]}.jpg`,
+                  }}
+                />
+              ) : (
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: "https://cdn.selyt.pt/ads/default.jpg",
+                  }}
+                />
+              )}
               <View>
                 <Text style={styles.name}>{this.props.chat.ad?.title}</Text>
-                <Text style={styles.marginText}>Last Message</Text>
+                <Text style={styles.marginText}>
+                  Conversa com{" "}
+                  {this.props.chat.senderId === this.state.self?.id
+                    ? this.props.chat.sender.name
+                    : this.props.chat.receiver.name}
+                </Text>
               </View>
             </View>
           </Card.Content>
@@ -45,11 +78,8 @@ module.exports = class ChatCard extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: THEME_OBJECT.colors.customLightBackgroundColor,
-    alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginBottom: 7,
   },
   fixToText: {
     flexDirection: "row",
@@ -58,26 +88,23 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    margin: 10,
+    margin: 8,
     justifyContent: "space-between",
   },
   name: {
+    marginLeft: 8,
     fontSize: 24,
-    marginTop: 10,
+    color: THEME_OBJECT.colors.text,
+  },
+  marginText: {
+    marginLeft: 8,
+    fontSize: 12,
     color: THEME_OBJECT.colors.text,
   },
   container2: {
     width: "100%",
   },
   image: {
-    width: 150,
-    height: 150,
-  },
-  logoText: {
-    fontFamily: "CoolveticaRegular",
-    fontSize: 35,
-  },
-  tinyLogo: {
     width: 50,
     height: 50,
   },

@@ -283,7 +283,12 @@ module.exports = class SeeAd extends React.Component {
                 mode="contained"
                 style={styles.button}
                 disabled={this.state.ad?.User?.id === this.state.userId}
-                onPress={() => console.log("Send Message")}
+                onPress={() => {
+                  this.props.navigation.navigate("Chat", {
+                    payload: "create",
+                    adId: this.state.ad?.id,
+                  });
+                }}
               >
                 Contactar Vendedor
               </Button>

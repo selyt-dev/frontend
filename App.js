@@ -13,6 +13,7 @@ import SelectCategoryForSearch from "./views/ad/SelectCategoryForSearch.js";
 import SearchAdsByCategory from "./views/ad/SearchAdsByCategory.js";
 import FavoriteAds from "./views/ad/FavoriteAds.js";
 import ChatList from "./views/chat/ChatList.js";
+import Chat from "./views/chat/Chat.js";
 import SearchAds from "./views/ad/SearchAds.js";
 
 import "intl";
@@ -134,6 +135,11 @@ export default function App() {
                 component={ChatList}
               />
               <Stack.Screen
+                name="Chat"
+                options={{ headerShown: false }}
+                component={Chat}
+              />
+              <Stack.Screen
                 name="SelectCategory"
                 options={{ headerShown: false }}
                 component={SelectCategory}
@@ -230,6 +236,11 @@ export default function App() {
                 name="ChatList"
                 options={{ headerShown: false }}
                 component={ChatList}
+              />
+              <Stack.Screen
+                name="Chat"
+                options={{ headerShown: false }}
+                component={Chat}
               />
               <Stack.Screen
                 name="SelectCategory"
