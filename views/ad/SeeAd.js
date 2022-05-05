@@ -283,10 +283,15 @@ module.exports = class SeeAd extends React.Component {
                 mode="contained"
                 style={styles.button}
                 disabled={this.state.ad?.User?.id === this.state.userId}
-                onPress={() => {
+                onPress={async () => {
+                  const authorization = await SecureStore.getItemAsync("authorization");
+
+                  const res = await API.createChat(this.state.ad?.id, authorization)
+                    .then((res) => res.json())
+                    .catch((err) => console.log(err));
+
                   this.props.navigation.navigate("Chat", {
-                    payload: "create",
-                    adId: this.state.ad?.id,
+                    id: res.chat.id,
                   });
                 }}
               >

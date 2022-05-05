@@ -55,60 +55,42 @@ module.exports = class Chat extends React.Component {
   async componentDidMount() {
     const authorization = await SecureStore.getItemAsync("authorization");
 
-    const { payload, adId, id } = this.props.route.params;
+    const { id } = this.props.route.params;
 
     getUserData().then((user) => {
       this.setState({ self: user });
     });
 
-    switch (payload) {
-      case "create":
-        const res = await API.createChat(adId, authorization)
-          .then((res) => res.json())
-          .catch((err) => console.log(err));
+    const res = await API.getChat(id, authorization)
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
 
-        this.setState({
-          chat: res.chat,
-          senderId: res.chat.senderId,
-          receiverId: res.chat.receiverId,
-        });
+    let gCM = [];
 
-        break;
-
-      case "join":
-        const res2 = await API.getChat(id, authorization)
-          .then((res) => res.json())
-          .catch((err) => console.log(err));
-
-        let gCM = [];
-
-        if (res2.messages) {
-          gCM = res2.messages.map((chatMessage) => {
-            return {
-              _id: chatMessage.id,
-              text: chatMessage.message,
-              createdAt: chatMessage.createdAt,
-              user: {
-                _id: chatMessage.sender.id,
-                name: chatMessage.sender.name,
-                avatar: chatMessage.sender.hasAvatar
-                  ? `https://cdn.selyt.pt/users/${chatMessage.sender.id}.jpg`
-                  : "https://cdn.selyt.pt/users/default.png",
-              },
-            };
-          });
-        }
-
-        this.setState({
-          chat: res2.chat,
-          messages: gCM,
-          senderId: res2.chat.senderId,
-          receiverId: res2.chat.receiverId,
-          isLoadingEarlier: false,
-        });
-
-        break;
+    if (res.messages) {
+      gCM = res.messages.map((chatMessage) => {
+        return {
+          _id: chatMessage.id,
+          text: chatMessage.message,
+          createdAt: chatMessage.createdAt,
+          user: {
+            _id: chatMessage.sender.id,
+            name: chatMessage.sender.name,
+            avatar: chatMessage.sender.hasAvatar
+              ? `https://cdn.selyt.pt/users/${chatMessage.sender.id}.jpg`
+              : "https://cdn.selyt.pt/users/default.png",
+          },
+        };
+      });
     }
+
+    this.setState({
+      chat: res.chat,
+      messages: gCM,
+      senderId: res.chat.senderId,
+      receiverId: res.chat.receiverId,
+      isLoadingEarlier: false,
+    });
 
     this.socket = new Socket(API.BASE_URL, authorization, this.state.chat.id);
 
