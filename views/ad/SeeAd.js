@@ -284,9 +284,14 @@ module.exports = class SeeAd extends React.Component {
                 style={styles.button}
                 disabled={this.state.ad?.User?.id === this.state.userId}
                 onPress={async () => {
-                  const authorization = await SecureStore.getItemAsync("authorization");
+                  const authorization = await SecureStore.getItemAsync(
+                    "authorization"
+                  );
 
-                  const res = await API.createChat(this.state.ad?.id, authorization)
+                  const res = await API.createChat(
+                    this.state.ad?.id,
+                    authorization
+                  )
                     .then((res) => res.json())
                     .catch((err) => console.log(err));
 
