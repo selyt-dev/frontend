@@ -16,7 +16,7 @@ module.exports = class DataStore {
         await SecureStore.setItemAsync("authorization", authorization);
         await SecureStore.setItemAsync("isAuthenticated", "true");
 
-        const token = (await Notifications.getDevicePushTokenAsync()).data;
+        const token = (await Notifications.getExpoPushTokenAsync()).data;
 
         await API.sendDeviceToken(authorization, token);
 

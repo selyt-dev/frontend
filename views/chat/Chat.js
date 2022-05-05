@@ -30,6 +30,7 @@ const customInputToolbar = (props) => {
       {...props}
       containerStyle={{
         backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
+        color: THEME_OBJECT.colors.text,
       }}
     />
   );
