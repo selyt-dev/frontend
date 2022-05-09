@@ -15,12 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "pt.selyt.app"
+      "supportsTablet": true
     },
     "android": {
       "package": "pt.selyt.app",
