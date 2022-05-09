@@ -1,40 +1,20 @@
 import React from "react";
-import {
-  StyleSheet,
-  StatusBar,
-  ScrollView,
-  SafeAreaView,
-  View,
-} from "react-native";
+import { StyleSheet, StatusBar, View } from "react-native";
 
 import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import API from "../../utils/API";
 
-import { GiftedChat, InputToolbar } from "react-native-gifted-chat";
+import { GiftedChat, InputToolbar, Actions } from "react-native-gifted-chat";
 
 import { getUserData } from "../../utils/react/DataStore";
 
 import * as SecureStore from "expo-secure-store";
 
+import * as ImagePicker from "expo-image-picker";
+
 import Socket from "../../utils/Socket";
-import { FAB, Title } from "react-native-paper";
-
-/**
- * Custom Modules for stylizing
- */
-
-const customInputToolbar = (props) => {
-  return (
-    <InputToolbar
-      {...props}
-      containerStyle={{
-        backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
-        color: THEME_OBJECT.colors.text,
-      }}
-    />
-  );
-};
+import { FAB, Title, Avatar } from "react-native-paper";
 
 module.exports = class Chat extends React.Component {
   constructor(props) {
@@ -51,6 +31,112 @@ module.exports = class Chat extends React.Component {
     };
 
     this.onInputTextChanged = this.onInputTextChanged.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
+
+    this.customActions = this.customActions.bind(this);
+    this.customInputToolbar = this.customInputToolbar.bind(this);
+  }
+
+  /**
+   * Custom Modules for stylizing
+   */
+
+  customActions(props) {
+    return (
+      <Actions
+        {...props}
+        containerStyle={{
+          width: 44,
+          height: 44,
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: 4,
+          marginRight: 4,
+          marginBottom: 0,
+        }}
+        icon={() => <Avatar.Icon size={32} icon="plus" />}
+        options={{
+          "Escolher da galeria": () => {
+            this.chooseFromGallery();
+          },
+          "Tirar Fotografia": () => {
+            this.takePicture();
+          },
+          Cancelar: () => {
+            console.log("Cancel");
+          },
+        }}
+        optionTintColor={THEME_OBJECT.colors.customBackgroundColor}
+      />
+    );
+  }
+
+  customInputToolbar(props) {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
+        }}
+        textInputStyle={{
+          color: THEME_OBJECT.colors.text,
+        }}
+      />
+    );
+  }
+
+  async chooseFromGallery() {
+    if (Platform.OS !== "web") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (status !== "granted") {
+        return alert("É necessária permissão para aceder à galeria.");
+      } else {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          quality: 0.7,
+          base64: true,
+        });
+
+        if (!result.cancelled) {
+          console.log("Sending");
+          this.uploadImage(result.base64);
+        }
+      }
+    }
+  }
+
+  async takePicture() {
+    if (Platform.OS !== "web") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (status !== "granted") {
+        return alert("É necessária permissão para aceder à câmara.");
+      } else {
+        let result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          quality: 0.7,
+          base64: true,
+        });
+
+        if (!result.cancelled) {
+          console.log("Sending");
+          this.uploadImage(result.base64);
+        }
+      }
+    }
+  }
+
+  async uploadImage(image) {
+    const authorization = await SecureStore.getItemAsync("authorization");
+    await API.uploadImage(this.state.chat.id, image, authorization)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   }
 
   async componentDidMount() {
@@ -70,9 +156,18 @@ module.exports = class Chat extends React.Component {
 
     if (res.messages) {
       gCM = res.messages.map((chatMessage) => {
+        const image = chatMessage.message.match(/(^{)[a-zA-Z0-9]{32}(.jpg}$)/)
+          ? `https://cdn.selyt.pt/inboxes/${id}/${chatMessage.message
+              .replace("{", "")
+              .replace("}", "")}`
+          : null;
+
         return {
           _id: chatMessage.id,
-          text: chatMessage.message,
+          text: chatMessage.message.match(/(^{)[a-zA-Z0-9]{32}(.jpg}$)/)
+            ? null
+            : chatMessage.message,
+          image,
           createdAt: chatMessage.createdAt,
           user: {
             _id: chatMessage.sender.id,
@@ -112,9 +207,18 @@ module.exports = class Chat extends React.Component {
 
       if (res.messages) {
         gCM = res.messages.map((chatMessage) => {
+          const image = chatMessage.message.match(/(^{)[a-zA-Z0-9]{32}(.jpg}$)/)
+            ? `https://cdn.selyt.pt/inboxes/${id}/${chatMessage.message
+                .replace("{", "")
+                .replace("}", "")}`
+            : null;
+
           return {
             _id: chatMessage.id,
-            text: chatMessage.message,
+            text: chatMessage.message.match(/(^{)[a-zA-Z0-9]{32}(.jpg}$)/)
+              ? null
+              : chatMessage.message,
+            image,
             createdAt: chatMessage.createdAt,
             user: {
               _id: chatMessage.sender.id,
@@ -217,10 +321,12 @@ module.exports = class Chat extends React.Component {
           isTyping={this.state.isTyping}
           isLoadingEarlier={this.state.isLoadingEarlier}
           inverted={false}
-          alwaysShowSend={true}
+          alwaysShowSend
+          scrollToBottom
           placeholder={"Escreva uma mensagem..."}
           onInputTextChanged={(text) => this.onInputTextChanged(text)}
-          renderInputToolbar={(props) => customInputToolbar(props)}
+          renderInputToolbar={(props) => this.customInputToolbar(props)}
+          renderActions={(props) => this.customActions(props)}
           listViewProps={{
             style: {
               backgroundColor: THEME_OBJECT.colors.customBackgroundColor,

@@ -59,6 +59,10 @@ module.exports = class API {
     return API.put(`/inbox/${inboxId}`, authorization, { message });
   }
 
+  static uploadImage(inboxId, image, authorization) {
+    return API.put(`/inbox/${inboxId}/upload`, authorization, { image });
+  }
+
   static getTransactions(authorization) {
     return API.get("/user/@me/transactions", {
       authorization,
