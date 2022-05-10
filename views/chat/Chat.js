@@ -100,7 +100,6 @@ module.exports = class Chat extends React.Component {
         });
 
         if (!result.cancelled) {
-          console.log("Sending");
           this.uploadImage(result.base64);
         }
       }
@@ -122,7 +121,6 @@ module.exports = class Chat extends React.Component {
         });
 
         if (!result.cancelled) {
-          console.log("Sending");
           this.uploadImage(result.base64);
         }
       }
@@ -132,10 +130,6 @@ module.exports = class Chat extends React.Component {
   async uploadImage(image) {
     const authorization = await SecureStore.getItemAsync("authorization");
     await API.uploadImage(this.state.chat.id, image, authorization)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-      })
       .catch((err) => console.log(err));
   }
 
