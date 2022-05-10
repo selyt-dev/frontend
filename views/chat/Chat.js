@@ -129,8 +129,9 @@ module.exports = class Chat extends React.Component {
 
   async uploadImage(image) {
     const authorization = await SecureStore.getItemAsync("authorization");
-    await API.uploadImage(this.state.chat.id, image, authorization)
-      .catch((err) => console.log(err));
+    await API.uploadImage(this.state.chat.id, image, authorization).catch(
+      (err) => console.log(err)
+    );
   }
 
   async componentDidMount() {
