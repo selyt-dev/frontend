@@ -30,6 +30,7 @@ import moment from "moment/min/moment-with-locales";
 
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
+import * as Linking from "expo-linking";
 
 import API from "../../utils/API";
 
@@ -184,7 +185,7 @@ module.exports = class Account extends React.Component {
                   onPress={() =>
                     Linking.openURL(
                       "https://personal-95ufgxph.outsystemscloud.com/SupportRequest/Create?Token=" +
-                        this.state.authorization.replpace("Basic ", "")
+                        this.state.authorization.replace("Basic ", "")
                     )
                   }
                 />
