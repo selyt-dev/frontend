@@ -32,4 +32,4 @@ jobs:
         run: expo publish --non-interactive
 
       - name: 🚀 Build app
-        run: eas build --non-interactive --platform android
+        run: eas build --non-interactive --platform android --profile preview
