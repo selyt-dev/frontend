@@ -8,6 +8,8 @@ import * as SecureStore from "expo-secure-store";
 import { getUserData, clearUserData } from "../../utils/react/DataStore";
 
 import moment from "moment/min/moment-with-locales";
+import 'moment/locale/en-gb';
+import 'moment/locale/pt';
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import API from "../../utils/API";
@@ -38,7 +40,7 @@ module.exports = class AccountSettings extends React.Component {
   }
 
   async componentDidMount() {
-    moment.locale(NativeModules.I18nManager.localeIdentifier);
+    moment.locale(NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, ''));
     getUserData().then((user) => {
       this.setState({ user, _user: user });
     });

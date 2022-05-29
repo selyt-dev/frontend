@@ -27,6 +27,8 @@ import { NativeModules } from "react-native";
 import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import moment from "moment/min/moment-with-locales";
+import 'moment/locale/en-gb';
+import 'moment/locale/pt';
 
 import API from "../../utils/API";
 
@@ -77,7 +79,7 @@ module.exports = class SeeAd extends React.Component {
 
     await API.addVisit(this.state.ad.id, authorization);
 
-    moment.locale(NativeModules.I18nManager.localeIdentifier);
+    moment.locale(NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, ''));
     const formatter = new Intl.NumberFormat(
       NativeModules.I18nManager.localeIdentifier.replace("_", "-"),
       {

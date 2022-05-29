@@ -33,6 +33,8 @@ import * as SecureStore from "expo-secure-store";
 import * as ImagePicker from "expo-image-picker";
 
 import moment from "moment/min/moment-with-locales";
+import 'moment/locale/en-gb';
+import 'moment/locale/pt';
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -60,7 +62,7 @@ module.exports = class CreateAd extends React.Component {
   }
 
   async componentDidMount() {
-    moment.locale(NativeModules.I18nManager.localeIdentifier);
+    moment.locale(NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, ''));
     const formatter = new Intl.NumberFormat(
       NativeModules.I18nManager.localeIdentifier.replace("_", "-"),
       {

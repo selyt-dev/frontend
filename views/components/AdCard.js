@@ -7,6 +7,8 @@ import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 import * as RootNavigation from "../../utils/react/RootNavigation.js";
 
 import moment from "moment/min/moment-with-locales";
+import 'moment/locale/en-gb';
+import 'moment/locale/pt';
 
 module.exports = class AdCard extends React.Component {
   constructor(props) {
@@ -16,7 +18,7 @@ module.exports = class AdCard extends React.Component {
 
     this.onPress = this.onPress.bind(this);
 
-    moment.locale(NativeModules.I18nManager.localeIdentifier);
+    moment.locale(NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, ''));
 
     this.formatter = new Intl.NumberFormat(
       NativeModules.I18nManager.localeIdentifier.replace("_", "-"),

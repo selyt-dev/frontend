@@ -27,6 +27,8 @@ import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 import { getUserData } from "../../utils/react/DataStore";
 
 import moment from "moment/min/moment-with-locales";
+import 'moment/locale/en-gb';
+import 'moment/locale/pt';
 
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -55,7 +57,7 @@ module.exports = class Account extends React.Component {
   }
 
   async componentDidMount() {
-    moment.locale(NativeModules.I18nManager.localeIdentifier);
+    moment.locale(NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, ''));
     const authorization = await SecureStore.getItemAsync("authorization");
     getUserData().then((user) => {
       this.setState({

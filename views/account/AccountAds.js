@@ -22,8 +22,6 @@ import {
 
 import API from "../../utils/API";
 
-import { SliderBox } from "react-native-image-slider-box";
-
 import { NativeModules } from "react-native";
 
 import { THEME_OBJECT, IS_DARK_THEME } from "../../utils/react/ThemeModule";
@@ -32,9 +30,9 @@ import AdCard from "../components/AdCard";
 
 import * as SecureStore from "expo-secure-store";
 
-import * as ImagePicker from "expo-image-picker";
-
 import moment from "moment/min/moment-with-locales";
+import 'moment/locale/en-gb';
+import 'moment/locale/pt';
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -48,7 +46,7 @@ module.exports = class AccountAds extends React.Component {
   }
 
   async componentDidMount() {
-    moment.locale(NativeModules.I18nManager.localeIdentifier);
+    moment.locale(NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, ''));
     const formatter = new Intl.NumberFormat(
       NativeModules.I18nManager.localeIdentifier.replace("_", "-"),
       {
