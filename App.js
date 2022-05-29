@@ -41,14 +41,13 @@ import API from "./utils/API.js";
 
 import { getAndStoreUserData } from "./utils/react/DataStore";
 
-import * as Sentry from 'sentry-expo';
+import * as Sentry from "sentry-expo";
 
 Sentry.init({
-  dsn: 'https://d542c4e9dee84aaca56a1677544b8e09@o1266838.ingest.sentry.io/6452288',
+  dsn: "https://d542c4e9dee84aaca56a1677544b8e09@o1266838.ingest.sentry.io/6452288",
   enableInExpoDevelopment: true,
   debug: true,
 });
-
 
 const Stack = createNativeStackNavigator();
 
