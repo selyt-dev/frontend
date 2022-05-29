@@ -17,7 +17,8 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "pt.selyt.app"
     },
     "android": {
       "package": "pt.selyt.app",
@@ -37,6 +38,20 @@
         {
           "icon": "./assets/selyt-transparent.png",
           "color": "#222222"
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Permita $(PRODUCT_NAME) para acessar as suas fotografias.",
+          "savePhotosPermission": "Permita $(PRODUCT_NAME) para salvar as suas fotografias.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Esta aplicação usa as suas fotografias para partilhar com outros utilizadores da plataforma."
         }
       ]
     ],
