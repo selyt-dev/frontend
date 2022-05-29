@@ -12,8 +12,8 @@ import React from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import moment from "moment/min/moment-with-locales";
-import 'moment/locale/en-gb';
-import 'moment/locale/pt';
+import "moment/locale/en-gb";
+import "moment/locale/pt";
 
 import {
   StyleSheet,
@@ -64,7 +64,9 @@ module.exports = class Register extends React.Component {
       canRegister: false,
     };
 
-    moment.locale(NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, ''));
+    moment.locale(
+      NativeModules.I18nManager.localeIdentifier.replace(/_[a-zA-Z]*/g, "")
+    );
     this.handleDatePicked = this.handleDatePicked.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
   }
