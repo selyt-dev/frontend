@@ -7,6 +7,18 @@
     "icon": "./assets/selyt.png",
     "jsEngine": "hermes",
     "userInterfaceStyle": "automatic",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "selyt",
+            "project": "react-native-app",
+            "authToken": "06229a49ede74e649bd64eb5afcd962f019370b8a30941298dd4c48112860b83"
+          }
+        }
+      ]
+    },
     "splash": {
       "image": "./assets/selyt-splash.png",
       "resizeMode": "contain",
@@ -15,7 +27,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "pt.selyt.app"
@@ -33,27 +47,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/selyt-transparent.png",
-          "color": "#222222"
-        }
-      ],
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Permita $(PRODUCT_NAME) para acessar as suas fotografias.",
-          "savePhotosPermission": "Permita $(PRODUCT_NAME) para salvar as suas fotografias.",
-          "isAccessMediaLocationEnabled": true
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Esta aplicação usa as suas fotografias para partilhar com outros utilizadores da plataforma."
-        }
-      ]
+      "sentry-expo"
     ],
     "description": ""
   }
