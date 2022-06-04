@@ -9,6 +9,7 @@ import {
   TextInput,
   Switch,
   Divider,
+  HelperText,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -56,6 +57,11 @@ module.exports = class EditAd extends React.Component {
       imagesBase64: [],
       formatter: null,
       categoryUpdated: false,
+      titleError: false,
+      categoryError: false,
+      descriptionError: false,
+      locationError: false,
+      priceError: false,
     };
 
     this.selectCategory = this.selectCategory.bind(this);
@@ -137,43 +143,95 @@ module.exports = class EditAd extends React.Component {
 
     const { ad } = this.state;
 
-    const _ad = { ...ad, images: this.state.imagesBase64 };
+    if (ad.title.length < 3 || ad.title.length > 70) {
+      await this.setState({
+        titleError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ titleError: false });
+    }
 
-    const authorization = await SecureStore.getItemAsync("authorization");
+    if (!ad.categoryId) {
+      await this.setState({
+        categoryError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ categoryError: false });
+    }
 
-    const adObject = {
-      title: _ad.title,
-      description: _ad.description,
-      categoryId: _ad.categoryId,
-      price: _ad.price,
-      isNegotiable: _ad.isNegotiable,
-      isActive: _ad.isActive,
-      region: _ad.region,
-      images: _ad.images,
-    };
+    if (ad.description.length < 10 || ad.description.length > 2000) {
+      await this.setState({
+        descriptionError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ descriptionError: false });
+    }
 
-    try {
-      const response = await API.editAd(authorization, _ad.id, adObject).then(
-        (res) => res.json()
-      );
+    if (!ad.region) {
+      await this.setState({
+        locationError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ locationError: false });
+    }
+    if (!ad.price) {
+      await this.setState({
+        priceError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ priceError: false });
+    }
 
-      if (response.ok) {
-        this.setState({ loadingVisible: false });
-        alert("O seu anúncio foi editado com sucesso!");
-        this.props.navigation.navigate("SeeAd", { ad: response.ad });
-      } else {
+    if (
+      !this.state.titleError &&
+      !this.state.categoryError &&
+      !this.state.descriptionError &&
+      !this.state.locationError &&
+      !this.state.priceError
+    ) {
+      const _ad = { ...ad, images: this.state.imagesBase64 };
+
+      const authorization = await SecureStore.getItemAsync("authorization");
+
+      const adObject = {
+        title: _ad.title,
+        description: _ad.description,
+        categoryId: _ad.categoryId,
+        price: _ad.price,
+        isNegotiable: _ad.isNegotiable,
+        isActive: _ad.isActive,
+        region: _ad.region,
+        images: _ad.images,
+      };
+
+      try {
+        const response = await API.editAd(authorization, _ad.id, adObject).then(
+          (res) => res.json()
+        );
+
+        if (response.ok) {
+          this.setState({ loadingVisible: false });
+          alert("O seu anúncio foi editado com sucesso!");
+          this.props.navigation.navigate("SeeAd", { ad: response.ad });
+        } else {
+          this.setState({
+            loadingVisible: false,
+            errorVisible: true,
+            errorMessage: response.message,
+          });
+        }
+      } catch (error) {
         this.setState({
           loadingVisible: false,
           errorVisible: true,
-          errorMessage: response.message,
+          errorMessage: error,
         });
       }
-    } catch (error) {
-      this.setState({
-        loadingVisible: false,
-        errorVisible: true,
-        errorMessage: error,
-      });
     }
   }
 
@@ -211,6 +269,9 @@ module.exports = class EditAd extends React.Component {
                 }
                 placeholder="p. ex. iPhone XS"
               />
+              <HelperText type="error" visible={this.state.titleError}>
+                Erro: Título inválido.
+              </HelperText>
 
               <TextInput
                 label="Categoria *"
@@ -234,6 +295,9 @@ module.exports = class EditAd extends React.Component {
               >
                 Selecionar Categoria
               </Button>
+              <HelperText type="error" visible={this.state.categoryError}>
+                Erro: Categoria inválida.
+              </HelperText>
 
               <TextInput
                 label="Descrição *"
@@ -249,6 +313,9 @@ module.exports = class EditAd extends React.Component {
                 }
                 placeholder="Escreva uma breve descrição sobre o produto."
               />
+              <HelperText type="error" visible={this.state.categoryError}>
+                Erro: Descrição inválida.
+              </HelperText>
 
               <TextInput
                 label="Localização *"
@@ -262,6 +329,9 @@ module.exports = class EditAd extends React.Component {
                 }
                 placeholder="Sintra"
               />
+              <HelperText type="error" visible={this.state.categoryError}>
+                Erro: Localização inválida.
+              </HelperText>
 
               <TextInput
                 label="Preço *"
@@ -276,6 +346,9 @@ module.exports = class EditAd extends React.Component {
                 left={<TextInput.Affix text="€" />}
                 placeholder="30"
               />
+              <HelperText type="error" visible={this.state.categoryError}>
+                Erro: Preço inválido.
+              </HelperText>
 
               <View style={styles.setting}>
                 <Text style={styles.textInput}>Negociável?</Text>

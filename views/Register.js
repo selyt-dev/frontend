@@ -109,7 +109,7 @@ module.exports = class Register extends React.Component {
 
     if (this.state.user.password === "") {
       if (
-        !new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").test(
+        !new RegExp("^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").test(
           this.state.user.password
         )
       ) {
@@ -140,7 +140,7 @@ module.exports = class Register extends React.Component {
 
     if (this.state.passwordConfirmation === "") {
       if (
-        !new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").test(
+        !new RegExp("^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").test(
           this.state.user.passwordConfirmation
         )
       ) {

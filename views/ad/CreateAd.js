@@ -9,6 +9,7 @@ import {
   TextInput,
   Switch,
   Divider,
+  HelperText,
 } from "react-native-paper";
 import React from "react";
 import {
@@ -54,6 +55,11 @@ module.exports = class CreateAd extends React.Component {
       },
       imagesBase64: [],
       formatter: null,
+      titleError: false,
+      categoryError: false,
+      descriptionError: false,
+      locationError: false,
+      priceError: false,
     };
 
     this.selectCategory = this.selectCategory.bind(this);
@@ -128,38 +134,88 @@ module.exports = class CreateAd extends React.Component {
   }
 
   async createAd() {
-    console.log("Create ad");
     this.setState({ loadingVisible: true });
-    // TODO: Validate form
     const { ad } = this.state;
 
-    const _ad = { ...ad, images: this.state.imagesBase64 };
+    if (ad.title.length < 3 || ad.title.length > 70) {
+      await this.setState({
+        titleError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ titleError: false });
+    }
 
-    const authorization = await SecureStore.getItemAsync("authorization");
+    if (!ad.categoryId) {
+      await this.setState({
+        categoryError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ categoryError: false });
+    }
 
-    try {
-      const response = await API.createAd(authorization, _ad).then((res) =>
-        res.json()
-      );
+    if (ad.description.length < 10 || ad.description.length > 2000) {
+      await this.setState({
+        descriptionError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ descriptionError: false });
+    }
 
-      if (response.ok) {
-        this.setState({ loadingVisible: false });
-        alert("O seu anúncio foi criado com sucesso!");
-        this.props.navigation.navigate("SeeAd", { ad: response.ad });
-      } else {
+    if (!ad.region) {
+      await this.setState({
+        locationError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ locationError: false });
+    }
+    if (!ad.price) {
+      await this.setState({
+        priceError: true,
+        loadingVisible: false,
+      });
+    } else {
+      await this.setState({ priceError: false });
+    }
+
+    if (
+      !this.state.titleError &&
+      !this.state.categoryError &&
+      !this.state.descriptionError &&
+      !this.state.locationError &&
+      !this.state.priceError
+    ) {
+      const _ad = { ...ad, images: this.state.imagesBase64 };
+
+      const authorization = await SecureStore.getItemAsync("authorization");
+
+      try {
+        const response = await API.createAd(authorization, _ad).then((res) =>
+          res.json()
+        );
+
+        if (response.ok) {
+          this.setState({ loadingVisible: false });
+          alert("O seu anúncio foi criado com sucesso!");
+          this.props.navigation.navigate("SeeAd", { ad: response.ad });
+        } else {
+          this.setState({
+            loadingVisible: false,
+            errorVisible: true,
+            errorMessage: response.message,
+          });
+        }
+      } catch (error) {
+        console.log(error);
         this.setState({
           loadingVisible: false,
           errorVisible: true,
-          errorMessage: response.message,
+          errorMessage: error,
         });
       }
-    } catch (error) {
-      console.log(error);
-      this.setState({
-        loadingVisible: false,
-        errorVisible: true,
-        errorMessage: error,
-      });
     }
   }
 
@@ -181,10 +237,6 @@ module.exports = class CreateAd extends React.Component {
               />
               <Text style={styles.logoText}>Criar novo anúncio</Text>
             </Card.Content>
-
-            <Card.Content style={styles.card}>
-              <Text>&nbsp;</Text>
-            </Card.Content>
           </Card>
 
           <Card style={styles.card}>
@@ -201,6 +253,9 @@ module.exports = class CreateAd extends React.Component {
                 }
                 placeholder="p. ex. iPhone XS"
               />
+              <HelperText type="error" visible={this.state.titleError}>
+                Erro: Título inválido.
+              </HelperText>
 
               <TextInput
                 label="Categoria *"
@@ -225,6 +280,10 @@ module.exports = class CreateAd extends React.Component {
                 Selecionar Categoria
               </Button>
 
+              <HelperText type="error" visible={this.state.categoryError}>
+                Erro: Tem de selecionar uma categoria.
+              </HelperText>
+
               <TextInput
                 label="Descrição *"
                 value={this.state.ad?.description}
@@ -239,6 +298,9 @@ module.exports = class CreateAd extends React.Component {
                 }
                 placeholder="Escreva uma breve descrição sobre o produto."
               />
+              <HelperText type="error" visible={this.state.descriptionError}>
+                Erro: Descrição inválida.
+              </HelperText>
 
               <TextInput
                 label="Localização *"
@@ -252,6 +314,9 @@ module.exports = class CreateAd extends React.Component {
                 }
                 placeholder="Sintra"
               />
+              <HelperText type="error" visible={this.state.locationError}>
+                Erro: Localização inválida.
+              </HelperText>
 
               <TextInput
                 label="Preço *"
@@ -266,6 +331,9 @@ module.exports = class CreateAd extends React.Component {
                 left={<TextInput.Affix text="€" />}
                 placeholder="30"
               />
+              <HelperText type="error" visible={this.state.priceError}>
+                Erro: Preço inválido.
+              </HelperText>
 
               <View style={styles.setting}>
                 <Text style={styles.textInput}>Negociável?</Text>

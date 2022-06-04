@@ -43,6 +43,8 @@ import { getAndStoreUserData } from "./utils/react/DataStore";
 
 import * as Sentry from "sentry-expo";
 
+import { getDeviceOs } from "./utils/react/Device";
+
 Sentry.init({
   dsn: "https://d542c4e9dee84aaca56a1677544b8e09@o1266838.ingest.sentry.io/6452288",
   enableInExpoDevelopment: true,
@@ -63,10 +65,15 @@ export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
 
-  NavigationBar.setBackgroundColorAsync(
-    colorScheme === "dark" ? "#222222" : "#fcfcfc"
-  );
-  NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
+  if (getDeviceOs() === "android") {
+    NavigationBar.setBackgroundColorAsync(
+      colorScheme === "dark" ? "#222222" : "#fcfcfc"
+    );
+
+    NavigationBar.setButtonStyleAsync(
+      colorScheme === "dark" ? "light" : "dark"
+    );
+  }
 
   if (!loaded) {
     return null;
