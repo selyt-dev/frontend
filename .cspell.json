@@ -6,7 +6,9 @@
     ".vscode",
     "megalinter",
     "package-lock.json",
-    "report"
+    "report",
+    "android",
+    "ios"
   ],
   "language": "en",
   "noConfigSearch": true,
