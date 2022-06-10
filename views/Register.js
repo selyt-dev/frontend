@@ -342,7 +342,9 @@ module.exports = class Register extends React.Component {
               left={<TextInput.Icon name="key" />}
               right={
                 <TextInput.Icon
-                  name={this.state.hidePasswordConfirmation ? "eye-slash" : "eye"}
+                  name={
+                    this.state.hidePasswordConfirmation ? "eye-slash" : "eye"
+                  }
                   onPress={() =>
                     this.setState({
                       hidePasswordConfirmation:

@@ -1,14 +1,6 @@
-import {
-  Card,
-  IconButton,
-} from "react-native-paper";
+import { Card, IconButton } from "react-native-paper";
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  StatusBar,
-  SafeAreaView,
-} from "react-native";
+import { StyleSheet, Text, StatusBar, SafeAreaView } from "react-native";
 
 import API from "../../utils/API";
 

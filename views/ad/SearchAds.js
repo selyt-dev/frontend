@@ -1,11 +1,6 @@
 import { TextInput, Card, Text } from "react-native-paper";
 import React from "react";
-import {
-  StyleSheet,
-  StatusBar,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { StyleSheet, StatusBar, ScrollView, SafeAreaView } from "react-native";
 
 import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
