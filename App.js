@@ -21,7 +21,7 @@ import "intl/locale-data/jsonp/pt-PT";
 import "intl/locale-data/jsonp/en-US";
 import "react-intl";
 
-import { Provider as PaperProvider, ThemeProvider } from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import { AppRegistry, StatusBar, useColorScheme } from "react-native";
 import React from "react";

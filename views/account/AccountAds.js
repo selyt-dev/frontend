@@ -1,23 +1,13 @@
 import {
   Card,
-  Dialog,
-  Paragraph,
-  Button,
-  Portal,
-  ActivityIndicator,
   IconButton,
-  TextInput,
-  Switch,
-  Divider,
 } from "react-native-paper";
 import React from "react";
 import {
   StyleSheet,
   Text,
   StatusBar,
-  View,
   SafeAreaView,
-  Dimensions,
 } from "react-native";
 
 import API from "../../utils/API";
