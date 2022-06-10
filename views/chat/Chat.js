@@ -291,7 +291,7 @@ module.exports = class Chat extends React.Component {
             <FAB
               style={styles.fabBack}
               small
-              icon="arrow-left-circle"
+              icon="arrow-circle-left"
               onPress={() => this.props.navigation.goBack()}
             />
             <Title style={styles.title}>

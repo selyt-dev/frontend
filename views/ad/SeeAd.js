@@ -192,7 +192,7 @@ module.exports = class SeeAd extends React.Component {
             <FAB
               style={styles.fab}
               small
-              icon={this.state.isFavorite ? "heart" : "heart-outline"}
+              icon={this.state.isFavorite ? "heart" : "heart-o"}
               onPress={this.setFavorite}
               disabled={this.state.ad?.User?.id === this.state.userId}
             />
@@ -244,7 +244,7 @@ module.exports = class SeeAd extends React.Component {
                   flexWrap: "wrap",
                 }}
               >
-                <IconButton icon="cursor-default-click" size={18} />
+                <IconButton icon="mouse-pointer" size={18} />
                 <Paragraph>{this.state.ad?.visits} visitas</Paragraph>
               </View>
             </Card.Content>
@@ -265,7 +265,7 @@ module.exports = class SeeAd extends React.Component {
                     }}
                   />
                 ) : (
-                  <Avatar.Icon size={100} icon="account" />
+                  <Avatar.Icon size={100} icon="user" />
                 )}
                 <View>
                   <Text style={styles.name}>{this.state.ad?.User?.name}</Text>
@@ -283,7 +283,7 @@ module.exports = class SeeAd extends React.Component {
           <Card style={styles.toBottom}>
             <Card.Content>
               <Button
-                icon="android-messages"
+                icon="comment"
                 mode="contained"
                 style={styles.button}
                 disabled={this.state.ad?.User?.id === this.state.userId}
@@ -328,14 +328,14 @@ module.exports = class SeeAd extends React.Component {
         <FAB
           style={styles.fabBack}
           small
-          icon="arrow-left-circle"
+          icon="arrow-circle-left"
           onPress={() => this.props.navigation.navigate("Start")}
         />
         {this.state.ad?.User?.id === this.state.userId ? (
           <FAB
             style={styles.fabEdit}
             small
-            icon="pencil"
+            icon="pencil-square-o"
             onPress={() =>
               this.props.navigation.navigate("EditAd", { ad: this.state.ad })
             }

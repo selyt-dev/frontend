@@ -69,7 +69,7 @@ module.exports = class SelectCategory extends React.Component {
           <Card style={styles.card}>
             <Card.Content style={styles.adCard}>
               <IconButton
-                icon="arrow-left-circle"
+                icon="arrow-circle-left"
                 onPress={() => this.props.navigation.goBack()}
                 color={THEME_OBJECT.colors.customSelectionColor}
                 size={38}

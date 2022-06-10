@@ -51,7 +51,7 @@ module.exports = class SearchAds extends React.Component {
           style={styles.textInput}
           onChangeText={(text) => this.setState({ search: text })}
           left={<TextInput.Icon name="close" onPress={this.goBack} />}
-          right={<TextInput.Icon name="magnify" onPress={this.searchAds} />}
+          right={<TextInput.Icon name="search" onPress={this.searchAds} />}
           autoFocus={true}
           selectionColor={THEME_OBJECT.colors.customSelectionColor}
           underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}

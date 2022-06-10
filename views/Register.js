@@ -273,7 +273,7 @@ module.exports = class Register extends React.Component {
               onChangeText={(text) =>
                 this.setState({ user: { ...this.state.user, name: text } })
               }
-              left={<TextInput.Icon name="account" />}
+              left={<TextInput.Icon name="user" />}
               placeholder="João Santos"
               onFocus={() => this.setState({ showDatePicker: false })}
             />
@@ -292,7 +292,7 @@ module.exports = class Register extends React.Component {
                 this.setState({ user: { ...this.state.user, email: text } })
               }
               keyboardType="email-address"
-              left={<TextInput.Icon name="email" />}
+              left={<TextInput.Icon name="envelope" />}
               placeholder="joão.santos@selyt.pt"
               onFocus={() => this.setState({ showDatePicker: false })}
             />
@@ -311,10 +311,10 @@ module.exports = class Register extends React.Component {
                 this.setState({ user: { ...this.state.user, password: text } })
               }
               secureTextEntry={this.state.hidePassword}
-              left={<TextInput.Icon name="form-textbox-password" />}
+              left={<TextInput.Icon name="key" />}
               right={
                 <TextInput.Icon
-                  name={this.state.hidePassword ? "eye-off" : "eye"}
+                  name={this.state.hidePassword ? "eye-slash" : "eye"}
                   onPress={() =>
                     this.setState({ hidePassword: !this.state.hidePassword })
                   }
@@ -339,10 +339,10 @@ module.exports = class Register extends React.Component {
                 })
               }
               secureTextEntry={this.state.hidePasswordConfirmation}
-              left={<TextInput.Icon name="form-textbox-password" />}
+              left={<TextInput.Icon name="key" />}
               right={
                 <TextInput.Icon
-                  name={this.state.hidePasswordConfirmation ? "eye-off" : "eye"}
+                  name={this.state.hidePasswordConfirmation ? "eye-slash" : "eye"}
                   onPress={() =>
                     this.setState({
                       hidePasswordConfirmation:
@@ -383,7 +383,7 @@ module.exports = class Register extends React.Component {
                   showDatePicker: true,
                 });
               }}
-              left={<TextInput.Icon name="calendar-range" />}
+              left={<TextInput.Icon name="calendar" />}
             />
             <HelperText type="error" visible={this.state.birthDateError}>
               Erro: Data de nascimento inválida.
@@ -400,7 +400,7 @@ module.exports = class Register extends React.Component {
                 this.setState({ user: { ...this.state.user, nif: text } })
               }
               keyboardType="phone-pad"
-              left={<TextInput.Icon name="card-account-details" />}
+              left={<TextInput.Icon name="info" />}
               placeholder="123 456 789"
               render={(props) => (
                 <MaskedTextInput {...props} mask="999 999 999" />
@@ -422,7 +422,7 @@ module.exports = class Register extends React.Component {
                 this.setState({ user: { ...this.state.user, phone: text } })
               }
               keyboardType="phone-pad"
-              left={<TextInput.Icon name="card-account-phone" />}
+              left={<TextInput.Icon name="phone" />}
               placeholder="912 345 678"
               render={(props) => (
                 <MaskedTextInput {...props} mask="999 999 999" />

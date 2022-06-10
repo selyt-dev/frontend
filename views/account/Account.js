@@ -149,7 +149,7 @@ module.exports = class Account extends React.Component {
                       }}
                     />
                   ) : (
-                    <Avatar.Icon size={100} icon="account" />
+                    <Avatar.Icon size={100} icon="user" />
                   )}
                 </Pressable>
                 <Text style={styles.name}>{this.state.user?.name}</Text>
@@ -180,12 +180,12 @@ module.exports = class Account extends React.Component {
                 />
                 <List.Item
                   title="Os seus anúncios"
-                  left={() => <List.Icon icon="post" />}
+                  left={() => <List.Icon icon="newspaper-o" />}
                   onPress={() => this.props.navigation.navigate("AccountAds")}
                 />
                 <List.Item
                   title="Suporte"
-                  left={() => <List.Icon icon="help-circle" />}
+                  left={() => <List.Icon icon="question-circle" />}
                   onPress={() =>
                     Linking.openURL(
                       "https://personal-95ufgxph.outsystemscloud.com/SupportRequest/Create?Token=" +
@@ -196,14 +196,14 @@ module.exports = class Account extends React.Component {
                 {this.state.user?.role === "admin" && (
                   <List.Item
                     title="Painel de Administração"
-                    left={() => <List.Icon icon="cog" />}
+                    left={() => <List.Icon icon="lock" />}
                     onPress={() => Linking.openURL("https://admin.selyt.pt")}
                   />
                 )}
                 <List.Item
                   title="Sair"
                   titleStyle={styles.logout}
-                  left={() => <List.Icon icon="exit-to-app" color="#ff3b3b" />}
+                  left={() => <List.Icon icon="sign-out" color="#ff3b3b" />}
                   onPress={() => this.setState({ logoutVisible: true })}
                 />
               </List.Section>

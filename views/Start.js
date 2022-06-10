@@ -66,7 +66,7 @@ module.exports = class Start extends React.Component {
           selectionColor={THEME_OBJECT.colors.customSelectionColor}
           underlineColor={THEME_OBJECT.colors.customPartialSelectionColor}
           activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
-          left={<TextInput.Icon name="magnify" />}
+          left={<TextInput.Icon name="search" />}
         />
 
         <ScrollView

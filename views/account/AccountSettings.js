@@ -109,14 +109,14 @@ module.exports = class AccountSettings extends React.Component {
   async changeIcon() {
     this.setState({
       hidePassword: !this.state.hidePassword,
-      hidePasswordIcon: this.state.hidePassword ? "eye-off" : "eye",
+      hidePasswordIcon: this.state.hidePassword ? "eye-slash" : "eye",
     });
   }
 
   async changeNewIcon() {
     this.setState({
       hideNewPassword: !this.state.hideNewPassword,
-      hideNewPasswordIcon: this.state.hideNewPassword ? "eye-off" : "eye",
+      hideNewPasswordIcon: this.state.hideNewPassword ? "eye-slash" : "eye",
     });
   }
 
@@ -124,7 +124,7 @@ module.exports = class AccountSettings extends React.Component {
     this.setState({
       hideNewPasswordConfirmation: !this.state.hideNewPasswordConfirmation,
       hideNewPasswordConfirmationIcon: this.state.hideNewPasswordConfirmation
-        ? "eye-off"
+        ? "eye-slash"
         : "eye",
     });
   }
@@ -140,7 +140,7 @@ module.exports = class AccountSettings extends React.Component {
           <Card style={styles.card}>
             <Card.Content style={styles.adCard}>
               <IconButton
-                icon="arrow-left-circle"
+                icon="arrow-circle-left"
                 onPress={() => this.props.navigation.goBack()}
                 color={THEME_OBJECT.colors.customSelectionColor}
                 size={38}
@@ -165,7 +165,7 @@ module.exports = class AccountSettings extends React.Component {
                 onChangeText={(text) =>
                   this.setState({ user: { ...this.state.user, name: text } })
                 }
-                left={<TextInput.Icon name="account" />}
+                left={<TextInput.Icon name="user" />}
                 placeholder="João Santos"
               />
               <TextInput
@@ -179,7 +179,7 @@ module.exports = class AccountSettings extends React.Component {
                   this.setState({ user: { ...this.state.user, email: text } })
                 }
                 keyboardType="email-address"
-                left={<TextInput.Icon name="email" />}
+                left={<TextInput.Icon name="envelope" />}
                 placeholder="joão.santos@selyt.pt"
               />
               <TextInput
@@ -193,7 +193,7 @@ module.exports = class AccountSettings extends React.Component {
                   this.setState({ user: { ...this.state.user, nif: text } })
                 }
                 keyboardType="phone-pad"
-                left={<TextInput.Icon name="card-account-details" />}
+                left={<TextInput.Icon name="info" />}
                 placeholder="123 456 789"
               />
               <TextInput
@@ -207,7 +207,7 @@ module.exports = class AccountSettings extends React.Component {
                   this.setState({ user: { ...this.state.user, phone: text } })
                 }
                 keyboardType="phone-pad"
-                left={<TextInput.Icon name="card-account-phone" />}
+                left={<TextInput.Icon name="phone" />}
                 placeholder="912 345 678"
               />
               <TextInput
@@ -219,7 +219,7 @@ module.exports = class AccountSettings extends React.Component {
                 activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) => this.setState({ password: text })}
                 secureTextEntry={this.state.hidePassword}
-                left={<TextInput.Icon name="form-textbox-password" />}
+                left={<TextInput.Icon name="key" />}
                 right={
                   <TextInput.Icon
                     name={this.state.hidePasswordIcon}
@@ -236,7 +236,7 @@ module.exports = class AccountSettings extends React.Component {
                 activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
                 onChangeText={(text) => this.setState({ newPassword: text })}
                 secureTextEntry={this.state.hideNewPassword}
-                left={<TextInput.Icon name="form-textbox-password" />}
+                left={<TextInput.Icon name="key" />}
                 right={
                   <TextInput.Icon
                     name={this.state.hideNewPasswordIcon}
@@ -255,7 +255,7 @@ module.exports = class AccountSettings extends React.Component {
                   this.setState({ newPasswordConfirmation: text })
                 }
                 secureTextEntry={this.state.hideNewPasswordConfirmation}
-                left={<TextInput.Icon name="form-textbox-password" />}
+                left={<TextInput.Icon name="key" />}
                 right={
                   <TextInput.Icon
                     name={this.state.hideNewPasswordConfirmationIcon}

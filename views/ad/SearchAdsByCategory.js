@@ -5,8 +5,6 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
-  Pressable,
-  TextInputComponent,
 } from "react-native";
 
 import { THEME_OBJECT } from "../../utils/react/ThemeModule";

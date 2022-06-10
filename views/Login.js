@@ -108,7 +108,7 @@ module.exports = class Login extends React.Component {
               activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
               onChangeText={(text) => this.setState({ email: text })}
               keyboardType="email-address"
-              left={<TextInput.Icon name="email" />}
+              left={<TextInput.Icon name="envelope" />}
             />
             <HelperText type="error" visible={this.state.emailError}>
               Erro: Email inválido.
@@ -123,10 +123,10 @@ module.exports = class Login extends React.Component {
               activeUnderlineColor={THEME_OBJECT.colors.customSelectionColor}
               onChangeText={(text) => this.setState({ password: text })}
               secureTextEntry={this.state.hidePassword}
-              left={<TextInput.Icon name="form-textbox-password" />}
+              left={<TextInput.Icon name="key" />}
               right={
                 <TextInput.Icon
-                  name={this.state.hidePassword ? "eye-off" : "eye"}
+                  name={this.state.hidePassword ? "eye-slash" : "eye"}
                   onPress={() =>
                     this.setState({ hidePassword: !this.state.hidePassword })
                   }
