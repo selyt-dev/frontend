@@ -66,7 +66,7 @@ module.exports = class Account extends React.Component {
         user,
         authorization,
         avatar: user.hasAvatar
-          ? `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${user.id}.jpg`
+          ? `https://cdn.selyt.pt/users/${user.id}.jpg`
           : "",
       });
     });
@@ -193,6 +193,13 @@ module.exports = class Account extends React.Component {
                     )
                   }
                 />
+                {this.state.user?.role === "admin" && (
+                  <List.Item
+                    title="Painel de Administração"
+                    left={() => <List.Icon icon="cog" />}
+                    onPress={() => Linking.openURL("https://admin.selyt.pt")}
+                  />
+                )}
                 <List.Item
                   title="Sair"
                   titleStyle={styles.logout}
