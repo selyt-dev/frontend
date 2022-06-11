@@ -71,6 +71,18 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
+  buttonCircle: {
+    width: 40,
+    height: 40,
+    backgroundColor: "rgba(0, 0, 0, .2)",
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cardImage: {
+    width: 320,
+    height: 320,
+  },
   logoText: {
     color: THEME_OBJECT.colors.text,
     fontFamily: "CoolveticaRegular",

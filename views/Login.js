@@ -41,6 +41,16 @@ module.exports = class Login extends React.Component {
     };
 
     this.login = this.login.bind(this);
+    this.openTermsOfService = this.openTermsOfService.bind(this);
+    this.openPrivacyPolicy = this.openPrivacyPolicy.bind(this);
+  }
+
+  openTermsOfService() {
+    return Linking.openURL("https://selyt.pt/terms-and-conditions");
+  }
+
+  openPrivacyPolicy() {
+    return Linking.openURL("https://selyt.pt/privacy-policy");
   }
 
   async login() {
@@ -154,9 +164,14 @@ module.exports = class Login extends React.Component {
 
             <Text style={styles.text}>
               Ao entrar na plataforma Selyt, concorda com os{" "}
-              <Text style={styles.link}>termos de uso</Text> e a{" "}
-              <Text style={styles.link}>política de privacidade</Text> da
-              plataforma.
+              <Text style={styles.link} onPress={this.openTermsOfService}>
+                termos de uso
+              </Text>{" "}
+              e a{" "}
+              <Text style={styles.link} onPress={this.openPrivacyPolicy}>
+                política de privacidade
+              </Text>{" "}
+              da plataforma.
             </Text>
             <Text>&nbsp;</Text>
             <Button mode="contained" dark={IS_DARK_THEME} onPress={this.login}>
@@ -234,7 +249,7 @@ const styles = StyleSheet.create({
     color: THEME_OBJECT.colors.text,
   },
   link: {
-    color: "blue",
+    color: "#00a0ff",
     textDecorationLine: "underline",
   },
 });

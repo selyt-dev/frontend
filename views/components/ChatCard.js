@@ -68,8 +68,8 @@ module.exports = class ChatCard extends React.Component {
                 <Text style={styles.marginText}>
                   Conversa com{" "}
                   {this.props.chat.senderId === this.state.self?.id
-                    ? this.props.chat.sender.name
-                    : this.props.chat.receiver.name}
+                    ? this.props.chat.receiver.name
+                    : this.props.chat.sender.name}
                 </Text>
               </View>
             </View>

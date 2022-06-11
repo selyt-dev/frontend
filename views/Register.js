@@ -69,6 +69,17 @@ module.exports = class Register extends React.Component {
     );
     this.handleDatePicked = this.handleDatePicked.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
+
+    this.openTermsOfService = this.openTermsOfService.bind(this);
+    this.openPrivacyPolicy = this.openPrivacyPolicy.bind(this);
+  }
+
+  openTermsOfService() {
+    return Linking.openURL("https://selyt.pt/terms-and-conditions");
+  }
+
+  openPrivacyPolicy() {
+    return Linking.openURL("https://selyt.pt/privacy-policy");
   }
 
   async handleDatePicked(event, date) {
@@ -436,8 +447,15 @@ module.exports = class Register extends React.Component {
             </HelperText>
 
             <Text style={styles.text}>
-              Ao registar uma conta na plataforma Selyt, concorda com os [termos
-              de uso] e [política de privacidade] da plataforma.
+              Ao registar uma conta na plataforma Selyt, concorda com os{" "}
+              <Text style={styles.link} onPress={this.openTermsOfService}>
+                termos de uso
+              </Text>{" "}
+              e a{" "}
+              <Text style={styles.link} onPress={this.openPrivacyPolicy}>
+                política de privacidade
+              </Text>{" "}
+              da plataforma.
             </Text>
             <Text>&nbsp;</Text>
             <Button
@@ -533,5 +551,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: THEME_OBJECT.colors.text,
+  },
+  link: {
+    color: "#00a0ff",
+    textDecorationLine: "underline",
   },
 });

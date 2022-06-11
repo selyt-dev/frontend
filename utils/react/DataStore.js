@@ -5,6 +5,8 @@ import * as SecureStore from "expo-secure-store";
 
 import * as Notifications from "expo-notifications";
 
+import NotificationsUtil from "./Notifications";
+
 module.exports = class DataStore {
   static async getAndStoreUserData(authorization) {
     return new Promise(async (resolve, reject) => {
@@ -16,9 +18,11 @@ module.exports = class DataStore {
         await SecureStore.setItemAsync("authorization", authorization);
         await SecureStore.setItemAsync("isAuthenticated", "true");
 
-        const token = (await Notifications.getExpoPushTokenAsync()).data;
-
-        await API.sendDeviceToken(authorization, token);
+        NotificationsUtil.registerForPushNotificationsAsync().then(
+          async (token) => {
+            await API.sendDeviceToken(authorization, token);
+          }
+        );
 
         resolve(userData.user);
       } catch (error) {

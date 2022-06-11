@@ -65,6 +65,12 @@ module.exports = class CreateAd extends React.Component {
     this.selectCategory = this.selectCategory.bind(this);
     this.uploadImages = this.uploadImages.bind(this);
     this.createAd = this.createAd.bind(this);
+
+    this.openTermsOfService = this.openTermsOfService.bind(this);
+  }
+
+  openTermsOfService() {
+    return Linking.openURL("https://selyt.pt/terms-and-conditions");
   }
 
   async componentDidMount() {
@@ -376,8 +382,11 @@ module.exports = class CreateAd extends React.Component {
               <Text>&nbsp;</Text>
 
               <Text style={styles.text}>
-                Ao criar um anúncio na plataforma Selyt, concorda com os [termos
-                de uso] da plataforma.
+                Ao criar um anúncio na plataforma Selyt, concorda com os{" "}
+                <Text style={styles.link} onPress={this.openTermsOfService}>
+                  termos de uso
+                </Text>{" "}
+                da plataforma.
               </Text>
               <Text>&nbsp;</Text>
               <Button
@@ -528,5 +537,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: THEME_OBJECT.colors.text,
+  },
+  link: {
+    color: "#00a0ff",
+    textDecorationLine: "underline",
   },
 });

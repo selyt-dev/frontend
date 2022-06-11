@@ -1,6 +1,5 @@
-import Constants from "expo-constants";
-
-const BASE_URL = "https://api.selyt.pt";
+// const BASE_URL = "https://api.selyt.pt";
+const BASE_URL = "https://6abf-168-63-107-180.eu.ngrok.io";
 
 module.exports = class API {
   static BASE_URL = BASE_URL;
@@ -52,11 +51,11 @@ module.exports = class API {
   }
 
   static sendMessage(inboxId, message, authorization) {
-    return API.put(`/inbox/${inboxId}`, authorization, { message });
+    return API.post(`/inbox/${inboxId}`, { message }, authorization);
   }
 
   static uploadImage(inboxId, image, authorization) {
-    return API.put(`/inbox/${inboxId}/upload`, authorization, { image });
+    return API.post(`/inbox/${inboxId}/upload`, { image }, authorization);
   }
 
   static getTransactions(authorization) {
