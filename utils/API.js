@@ -1,5 +1,4 @@
-// const BASE_URL = "https://api.selyt.pt";
-const BASE_URL = "https://6abf-168-63-107-180.eu.ngrok.io";
+const BASE_URL = "https://api.selyt.pt";
 
 module.exports = class API {
   static BASE_URL = BASE_URL;
