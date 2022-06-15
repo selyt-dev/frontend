@@ -269,6 +269,9 @@ module.exports = class EditAd extends React.Component {
                 }
                 placeholder="p. ex. iPhone XS"
               />
+              <HelperText type="info">
+                {this.state.ad?.title.length}/70
+              </HelperText>
               <HelperText type="error" visible={this.state.titleError}>
                 Erro: Título inválido.
               </HelperText>
@@ -313,6 +316,9 @@ module.exports = class EditAd extends React.Component {
                 }
                 placeholder="Escreva uma breve descrição sobre o produto."
               />
+              <HelperText type="info">
+                {this.state.ad?.description.length}/2000
+              </HelperText>
               <HelperText type="error" visible={this.state.categoryError}>
                 Erro: Descrição inválida.
               </HelperText>

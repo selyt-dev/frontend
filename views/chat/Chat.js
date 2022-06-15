@@ -243,8 +243,6 @@ module.exports = class Chat extends React.Component {
   async onSend(messages = []) {
     const authorization = await SecureStore.getItemAsync("authorization");
 
-    console.log(messages);
-
     await API.sendMessage(this.state.chat?.id, messages[0].text, authorization);
 
     const _res = await API.getChat(this.state.chat?.id, authorization)
