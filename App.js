@@ -72,7 +72,7 @@ export default function App() {
     );
 
     NavigationBar.setButtonStyleAsync(
-      colorScheme === "dark" ? "light" : "dark"
+      colorScheme === "light" ? "dark" : "light"
     );
   }
 
