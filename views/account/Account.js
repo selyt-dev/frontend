@@ -66,7 +66,7 @@ module.exports = class Account extends React.Component {
         user,
         authorization,
         avatar: user.hasAvatar
-          ? `https://cdn.selyt.pt/users/${user.id}.jpg`
+          ? `https://cdn.selyt.pt/users/${user.id}.jpg?t=${Date.now()}`
           : "",
       });
     });
@@ -120,7 +120,13 @@ module.exports = class Account extends React.Component {
             });
           } else {
             getUserData().then((user) => {
-              this.setState({ loadingVisible: false, avatar: image.uri, user });
+              this.setState({
+                loadingVisible: false,
+                avatar: `https://cdn.selyt.pt/users/${
+                  user.id
+                }.jpg?t=${Date.now()}`,
+                user,
+              });
             });
           }
         } else {
@@ -145,7 +151,9 @@ module.exports = class Account extends React.Component {
                       source={{
                         uri:
                           this.state.avatar ||
-                          `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.user?.id}.jpg`,
+                          `https://cdn.selyt.pt/users/${
+                            this.state.user?.id
+                          }.jpg?t=${Date.now()}`,
                       }}
                     />
                   ) : (

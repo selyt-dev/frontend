@@ -148,7 +148,9 @@ module.exports = class SeeAd extends React.Component {
             <ImageView
               images={this.state.ad?.images.map((image) => {
                 return {
-                  uri: `https://cdn.selyt.pt/ads/${this.state.ad?.id}/${image}.jpg`,
+                  uri: `https://cdn.selyt.pt/ads/${
+                    this.state.ad?.id
+                  }/${image}.jpg?t=${Date.now()}`,
                 };
               })}
               imageIndex={this.state.imageIndex}
@@ -161,7 +163,9 @@ module.exports = class SeeAd extends React.Component {
             <SliderBox
               images={this.state.ad?.images.map(
                 (image) =>
-                  `https://cdn.selyt.pt/ads/${this.state.ad?.id}/${image}.jpg`
+                  `https://cdn.selyt.pt/ads/${
+                    this.state.ad?.id
+                  }/${image}.jpg?t=${Date.now()}`
               )}
               dotColor={THEME_OBJECT.colors.customSelectionColor}
               parentWidth={Dimensions.get("window").width}
@@ -261,7 +265,9 @@ module.exports = class SeeAd extends React.Component {
                     source={{
                       uri:
                         this.state.avatar ||
-                        `https://s3.eu-west-3.amazonaws.com/cdn.selyt.pt/users/${this.state.ad?.User?.id}.jpg`,
+                        `https://cdn.selyt.pt/users/${
+                          this.state.ad?.User?.id
+                        }.jpg?t=${Date.now()}`,
                     }}
                   />
                 ) : (
