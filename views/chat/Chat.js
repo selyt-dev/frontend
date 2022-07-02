@@ -5,7 +5,12 @@ import { THEME_OBJECT } from "../../utils/react/ThemeModule";
 
 import API from "../../utils/API";
 
-import { GiftedChat, InputToolbar, Actions } from "react-native-gifted-chat";
+import {
+  GiftedChat,
+  InputToolbar,
+  Actions,
+  Send,
+} from "react-native-gifted-chat";
 
 import { getUserData } from "../../utils/react/DataStore";
 
@@ -66,9 +71,13 @@ module.exports = class Chat extends React.Component {
             console.log("Cancel");
           },
         }}
-        optionTintColor={THEME_OBJECT.colors.customBackgroundColor}
+        optionTintColor={THEME_OBJECT.colors.text}
       />
     );
+  }
+
+  customSendButton(props) {
+    return <Send {...props} label="Enviar" />;
   }
 
   customInputToolbar(props) {
@@ -322,6 +331,7 @@ module.exports = class Chat extends React.Component {
           onInputTextChanged={(text) => this.onInputTextChanged(text)}
           renderInputToolbar={(props) => this.customInputToolbar(props)}
           renderActions={(props) => this.customActions(props)}
+          renderSend={(props) => this.customSendButton(props)}
           listViewProps={{
             style: {
               backgroundColor: THEME_OBJECT.colors.customBackgroundColor,
