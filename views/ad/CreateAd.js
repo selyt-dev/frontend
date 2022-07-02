@@ -341,6 +341,7 @@ module.exports = class CreateAd extends React.Component {
                   this.setState({ ad: { ...this.state.ad, price: text } })
                 }
                 left={<TextInput.Affix text="€" />}
+                keyboardType="numeric"
                 placeholder="30"
               />
               <HelperText type="error" visible={this.state.priceError}>
