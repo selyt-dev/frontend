@@ -121,7 +121,22 @@ module.exports = class Register extends React.Component {
     }
 
     if (this.state.user.password === "") {
-      if (
+      await this.setState({
+        passwordError: true,
+        canRegister: false,
+        passwordErrorSpecific: "Erro: A palavra-passe não pode ser vazia.",
+      });
+    } else {
+      if (this.state.user.password !== this.state.user.passwordConfirmation) {
+        await this.setState({
+          passwordError: true,
+          passwordConfirmationError: true,
+          passwordErrorSpecific: "Erro: As palavras-passe têm que coincidir.",
+          passwordConfirmationErrorSpecific:
+            "Erro: As palavras-passe têm que coincidir.",
+          canRegister: false,
+        });
+      } else if (
         !new RegExp("^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").test(
           this.state.user.password
         )
@@ -129,30 +144,35 @@ module.exports = class Register extends React.Component {
         await this.setState({
           passwordError: true,
           passwordErrorSpecific:
-            "Erro: A palavra-passe deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula e um número.",
+            "Erro: A palavra-passe deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um símbolo especial.",
           canRegister: false,
         });
       } else {
-        if (this.state.user.password !== this.state.user.passwordConfirmation) {
-          await this.setState({
-            passwordError: true,
-            passwordConfirmationError: true,
-            passwordErrorSpecific: "Erro: As palavras-passe têm que coincidir.",
-            passwordConfirmationErrorSpecific:
-              "Erro: As palavras-passe têm que coincidir.",
-            canRegister: false,
-          });
-        } else {
-          await this.setState({
-            passwordError: false,
-            passwordErrorSpecific: "",
-          });
-        }
+        await this.setState({
+          passwordError: false,
+          passwordErrorSpecific: "",
+        });
       }
     }
 
     if (this.state.passwordConfirmation === "") {
-      if (
+      await this.setState({
+        passwordConfirmationError: true,
+        canRegister: false,
+        passwordConfirmationErrorSpecific:
+          "Erro: A confirmação da palavra-passe não pode ser vazia.",
+      });
+    } else {
+      if (this.state.user.password !== this.state.user.passwordConfirmation) {
+        await this.setState({
+          passwordError: true,
+          passwordConfirmationError: true,
+          passwordErrorSpecific: "Erro: As palavras-passe têm que coincidir.",
+          passwordConfirmationErrorSpecific:
+            "Erro: As palavras-passe têm que coincidir.",
+          canRegister: false,
+        });
+      } else if (
         !new RegExp("^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").test(
           this.state.user.passwordConfirmation
         )
@@ -160,25 +180,14 @@ module.exports = class Register extends React.Component {
         await this.setState({
           passwordConfirmationError: true,
           passwordConfirmationErrorSpecific:
-            "Erro: A palavra-passe deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula e um número.",
+            "Erro: A palavra-passe deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um símbolo especial.",
           canRegister: false,
         });
       } else {
-        if (this.state.user.password !== this.state.user.passwordConfirmation) {
-          await this.setState({
-            passwordError: true,
-            passwordConfirmationError: true,
-            passwordErrorSpecific: "Erro: As palavras-passe têm que coincidir.",
-            passwordConfirmationErrorSpecific:
-              "Erro: As palavras-passe têm que coincidir.",
-            canRegister: false,
-          });
-        } else {
-          await this.setState({
-            passwordConfirmationError: false,
-            passwordConfirmationErrorSpecific: "",
-          });
-        }
+        await this.setState({
+          passwordConfirmationError: false,
+          passwordConfirmationErrorSpecific: "",
+        });
       }
     }
 
@@ -199,9 +208,16 @@ module.exports = class Register extends React.Component {
         canRegister: false,
       });
     } else {
-      await this.setState({
-        nifError: false,
-      });
+      if (!new RegExp("/^[123]|45|5|7/.").test(this.state.user.nif)) {
+        await this.setState({
+          nifError: true,
+          canRegister: false,
+        });
+      } else {
+        await this.setState({
+          nifError: false,
+        });
+      }
     }
 
     if (this.state.user.phone === "") {
@@ -210,9 +226,16 @@ module.exports = class Register extends React.Component {
         canRegister: false,
       });
     } else {
-      await this.setState({
-        phoneError: false,
-      });
+      if (!validatePhoneNumber(this.state.user.phone)) {
+        await this.setState({
+          phoneError: true,
+          canRegister: false,
+        });
+      } else {
+        await this.setState({
+          phoneError: false,
+        });
+      }
     }
 
     if (
@@ -559,3 +582,17 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
 });
+
+const validatePhoneNumber = (num) => {
+  num = parseInt(num);
+  const tamanho = num.length === 9;
+  const listaDeIndicativos = [91, 92, 93, 94, 96];
+  let indicativoValido = false;
+  for (let i of listaDeIndicativos) {
+    if (num.startsWith(i)) {
+      indicativoValido = true;
+      break;
+    }
+  }
+  return tamanho && indicativoValido;
+};
