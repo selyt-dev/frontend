@@ -208,7 +208,11 @@ module.exports = class Register extends React.Component {
         canRegister: false,
       });
     } else {
-      if (!new RegExp("/^[123]|45|5|7/.").test(this.state.user.nif)) {
+      if (
+        !new RegExp("/^[123]|45|5|7/.").test(
+          this.state.user.nif.replace(/\D/g, "")
+        )
+      ) {
         await this.setState({
           nifError: true,
           canRegister: false,
@@ -226,7 +230,10 @@ module.exports = class Register extends React.Component {
         canRegister: false,
       });
     } else {
-      if (!new RegExp("/^9/.").test(this.state.user.phone)) {
+      if (
+        !this.state.user.phone.replace(/\D/g, "").startsWith(9) &&
+        this.state.user.phone.replace(/\D/g, "").length !== 9
+      ) {
         await this.setState({
           phoneError: true,
           canRegister: false,
