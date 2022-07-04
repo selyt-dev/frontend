@@ -33,6 +33,8 @@ import { getAndStoreUserData } from "../utils/react/DataStore";
 
 import { IS_DARK_THEME, THEME_OBJECT } from "../utils/react/ThemeModule";
 
+import Linking from "expo-linking";
+
 module.exports = class Register extends React.Component {
   constructor(props) {
     super(props);

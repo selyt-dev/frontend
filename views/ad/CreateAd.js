@@ -39,6 +39,8 @@ import "moment/locale/pt";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import Linking from "expo-linking";
+
 module.exports = class CreateAd extends React.Component {
   constructor(props) {
     super(props);
