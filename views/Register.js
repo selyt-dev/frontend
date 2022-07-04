@@ -226,7 +226,7 @@ module.exports = class Register extends React.Component {
         canRegister: false,
       });
     } else {
-      if (!validatePhoneNumber(this.state.user.phone)) {
+      if (!new RegExp("/^9/.").test(this.state.user.phone)) {
         await this.setState({
           phoneError: true,
           canRegister: false,
@@ -582,17 +582,3 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
 });
-
-const validatePhoneNumber = (num) => {
-  num = parseInt(num);
-  const tamanho = num.length === 9;
-  const listaDeIndicativos = [91, 92, 93, 94, 96];
-  let indicativoValido = false;
-  for (let i of listaDeIndicativos) {
-    if (num.startsWith(i)) {
-      indicativoValido = true;
-      break;
-    }
-  }
-  return tamanho && indicativoValido;
-};
